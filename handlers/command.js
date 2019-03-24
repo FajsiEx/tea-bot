@@ -13,13 +13,32 @@ const COMMANDS = [
             }
         ]
     },
+
+    {
+        categoryName: "invalid",
+        commands: [
+            {
+                keywords: ["category"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/category").handler
+            },
+            {
+                keywords: ["command"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/command").handler
+            }
+        ]
+    },
+    
     {
         categoryName: false, // Without prefix
         commands: [
             {
                 keywords: ["hi", "hello", "konichiwa"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "hi").handler
-            }
+            },
+            {
+                keywords: ["help", "tasukete"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "help").handler
+            },
         ]
     },
 ];
@@ -64,7 +83,16 @@ module.exports = {
 
         if (!requestedCommandCategory) {
             console.log(`[HANDLE:COMMAND] WARN Command category [${requestedCommandCategoryName}] does not exist.`.warn);
-            msg.channel.send(CONFIG.MSGS.INVALID_COMMAND_CATEGORY);
+
+            let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+                return commandCategory.categoryName == "invalid";
+            })[0];
+            let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => {
+                return command.keywords.indexOf("category") > -1;
+            })[0];
+
+            invalidCommandCategoryCommand.handler(handleData);
+            
             return;
         }
 
@@ -74,7 +102,16 @@ module.exports = {
 
         if (!requestedCommand) { // If no command was found
             console.log(`[HANDLE:COMMAND] WARN Command [${requestedCommandName}] does not exist.`.warn);
-            msg.channel.send(CONFIG.MSGS.INVALID_COMMAND);
+            
+            let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+                return commandCategory.categoryName == "invalid";
+            })[0];
+            let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
+                return command.keywords.indexOf("command") > -1;
+            })[0];
+
+            invalidCommandCommand.handler(handleData);
+
             return;
         }
 
