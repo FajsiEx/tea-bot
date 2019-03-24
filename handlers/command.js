@@ -62,12 +62,19 @@ module.exports = {
             return commandCategory.categoryName == requestedCommandCategoryName;
         })[0];
 
+        if (!requestedCommandCategory) {
+            console.log(`[HANDLE:COMMAND] WARN Command category [${requestedCommandCategoryName}] does not exist.`.warn);
+            msg.channel.send(CONFIG.MSGS.INVALID_COMMAND_CATEGORY);
+            return;
+        }
+
         let requestedCommand = requestedCommandCategory.commands.filter(command => { // Get command itself from the category by the command name entered.
             return command.keywords.indexOf(requestedCommandName) > -1;
         })[0];
 
         if (!requestedCommand) { // If no command was found
             console.log(`[HANDLE:COMMAND] WARN Command [${requestedCommandName}] does not exist.`.warn);
+            msg.channel.send(CONFIG.MSGS.INVALID_COMMAND);
             return;
         }
 
