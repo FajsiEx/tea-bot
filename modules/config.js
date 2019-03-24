@@ -3,7 +3,7 @@ console.log("[MODULE:CONFIG] WORKING Init config.".working);
 
 const BUILD = "19.3a";
 const BUILD_STRING = `${BUILD} InDev`;
-const COMMAND_PREFIXES = ["t!"];
+const COMMAND_PREFIXES = ["tea!"];
 const COLORS = {
     FAIL:       16720418,
     WARN:       14540032,
