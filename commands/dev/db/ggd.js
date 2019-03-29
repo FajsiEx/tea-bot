@@ -12,8 +12,9 @@ module.exports = {
         }
 
         console.log("[COMMAND:DEV:GGD] DEBUG ARG1: " + msg.content.split(" ")[1]);
-        if (parseInt(msg.content.split(" ")[1])) {
-            guildId = msg.content.split(" ")[1];
+        let commandArg_guildId = parseInt(msg.content.split(" ")[1])
+        if (commandArg_guildId) {
+            guildId = commandArg_guildId;
         }
 
         if (!guildId) { // If the msg isn't in a guild (to get id from) and trhe user hasn't specified an id in the params, please fuck off
@@ -37,6 +38,7 @@ module.exports = {
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                         Check logs for result.
+                        Guild ID: ${guildId}
                     `,
                     "footer": CONFIG.EMBED.FOOTER
                 }
