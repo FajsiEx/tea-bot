@@ -70,6 +70,9 @@ module.exports = {
     SECRETS: {
         DISCORD: {
             TOKEN: process.env.T_DT
+        },
+        DATABASE: {
+            URI: process.env.T_DURI
         }
     },
 

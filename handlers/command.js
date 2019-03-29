@@ -10,6 +10,10 @@ const COMMANDS = [
             {
                 keywords: ["ping"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "ping").handler
+            },
+            {
+                keywords: ["dbggd"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/ggd").handler
             }
         ]
     },

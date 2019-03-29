@@ -5,7 +5,7 @@ module.exports = {
         let msg = handleData.msg;
         msg.channel.send({
             embed: {
-                "title": "Tea-bot / Help",
+                "title": "Tea-bot | Help",
                 "color": CONFIG.EMBED.COLORS.INFO,
                 "description": `
                     Tea-bot Project
