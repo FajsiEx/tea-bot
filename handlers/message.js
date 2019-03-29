@@ -13,9 +13,10 @@ module.exports = {
             console.log("[HANDLER:MSG] Bot message ignored.".debug);
         }
 
-        if (module.exports.stringStartsWithPrefix(handleData.msg.content)) {
+        let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
+        if (commandPrefix) {
             console.log("[HANDLER:MSG] Passing off to COMMAND handler");
-            commandHandler(handleData);
+            commandHandler(handleData, commandPrefix);
             return true;
         }
     },

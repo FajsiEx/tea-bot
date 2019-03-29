@@ -48,7 +48,7 @@ const COMMANDS = [
 ];
 
 module.exports = {
-    handler: (handleData)=>{
+    handler: (handleData, prefixUsed)=>{
         console.log("[HANDLER:COMMAND] INFO Called.");
 
         if (handleDataCheck(handleData)) {
@@ -57,7 +57,8 @@ module.exports = {
         }
         
         let msg = handleData.msg; // Get msg from handle data
-        let requestedCommandString = msg.content.split(CONFIG.DISCORD.PREFIXES[0])[1].toLowerCase(); // t!dEv:PiNg => dev:ping
+        console.log("[HANDLER:COMMAND] DEBUG Prefix used: " + prefixUsed);
+        let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
 
         /* 
             Splits command category and command itself to an array as follows:
