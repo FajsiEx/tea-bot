@@ -34,10 +34,11 @@ console.log("[BOOT] WORKING Adding event listeners".working);
 // Add evennt listeners
 dClient.on("ready", ()=>{
     console.log(`[EVENT:READY] Ready. Delta start-ready: ${new Date().getTime() - startTimestamp}ms`.event);
-    dClient.user.setActivity(`${dClient.guilds.array().length} guilds | ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`, { type: "LISTENING" }).then(()=>{
-        console.log("[SET_STATUS] Done.".success);
-    });
 });
+
+// TODO: Add checks if the dclient is ready
+let statusInterval = require("./intervals/setStatus").interval;
+setInterval(()=>{statusInterval(dClient)}, 5000);
 
 dClient.on("message", (msg)=> {
     console.log("[EVENT:MESSAGE] Message recieved.".event);

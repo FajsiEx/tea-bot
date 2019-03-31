@@ -14,6 +14,7 @@ module.exports = {
     tests: function(handleData) {
         if (!handleData) {return "handleData is false";}
         if (!handleData.msg) {return "handleData.msg is false";}
+        if (!handleData.dClient) {return "handleData.dClient is false";}
         return false;
     }
 };

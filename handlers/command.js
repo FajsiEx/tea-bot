@@ -9,25 +9,28 @@ const COMMANDS = [
         commands: [
             {
                 keywords: ["ping"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "ping").handler
+                handler: require(DEFAULT_COMMMANDS_PATH + "ping").handler,
             },
             {
                 keywords: ["dbggd"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/ggd").handler
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/ggd").handler,
+                rights: {
+                    devOnly: true
+                }
             }
         ]
     },
 
     {
-        categoryName: "invalid",
+        categoryName: "invalid", // Invalid
         commands: [
             {
                 keywords: ["category"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/category").handler
+                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/category").handler,
             },
             {
                 keywords: ["command"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/command").handler
+                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/command").handler,
             }
         ]
     },
@@ -37,11 +40,11 @@ const COMMANDS = [
         commands: [
             {
                 keywords: ["hi", "hello", "konichiwa"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "hi").handler
+                handler: require(DEFAULT_COMMMANDS_PATH + "hi").handler,
             },
             {
                 keywords: ["help", "tasukete"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "help").handler
+                handler: require(DEFAULT_COMMMANDS_PATH + "help").handler,
             },
         ]
     },
