@@ -29,6 +29,16 @@ const COMMANDS = [
     },
 
     {
+        categoryName: "cpp",
+        commands: [
+            {
+                keywords: ["congrats", "congratulations"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "copypaste/congrats").handler,
+            }
+        ]
+    },
+
+    {
         categoryName: "invalid", // Invalid
         commands: [
             {
@@ -41,6 +51,8 @@ const COMMANDS = [
             }
         ]
     },
+
+
     
     {
         categoryName: false, // Without prefix
