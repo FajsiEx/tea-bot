@@ -46,5 +46,25 @@ module.exports = {
                 });
             });
         });
+    },
+
+    writeGuildDocument: function(guildId, guildDoc) {
+        return new Promise((resolve)=>{
+            console.log(`[DB:WGD] WORKING Write guild doc for [${guildId}]`.working);
+            console.log(`[DB:WGD] DEBUG About to write this [${guildId}]`.debug);
+            console.log(guildDoc);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) return console.error(err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("guilds").updateOne({guildId: guildId}, {$set:guildDoc}, (err, res)=> { // Update doc with guildId
+                    if (err) return console.error(err); // If there's a problem, return.
+
+                    console.log(`[DB:WGD] DONE Write guild doc for [${guildId}]`.success);
+
+                    resolve(true);
+                });
+            });
+        });
     }
 };

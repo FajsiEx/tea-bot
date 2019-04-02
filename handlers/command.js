@@ -17,6 +17,13 @@ const COMMANDS = [
                 rights: {
                     devOnly: true
                 }
+            },
+            {
+                keywords: ["testwrite"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testwrite").handler,
+                rights: {
+                    devOnly: true
+                }
             }
         ]
     },

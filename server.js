@@ -33,12 +33,15 @@ console.log("[BOOT] DONE Initializing dClient".success);
 console.log("[BOOT] WORKING Adding event listeners".working);
 // Add evennt listeners
 dClient.on("ready", ()=>{
+    // Call intervals first time
+    statusInterval(dClient);
+
     console.log(`[EVENT:READY] Ready. Delta start-ready: ${new Date().getTime() - startTimestamp}ms`.event);
 });
 
 // TODO: Add checks if the dclient is ready
 let statusInterval = require("./intervals/setStatus").interval;
-setInterval(()=>{statusInterval(dClient)}, 5000);
+setInterval(()=>{statusInterval(dClient);}, 15000);
 
 dClient.on("message", (msg)=> {
     console.log("[EVENT:MESSAGE] Message recieved.".event);
