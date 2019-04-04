@@ -66,6 +66,8 @@ module.exports = {
 
                     console.log(`[DB:CGD] DONE Delete guild doc for [${guildId}]`.success);
 
+                    cache.setCache(guildId, false); // Delete guild doc from cache kthx
+
                     resolve(true); // Return with success
                 });
             });
