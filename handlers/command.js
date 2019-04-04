@@ -38,6 +38,14 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["intget"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/int/get").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["testread"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testread").handler,
                 cannotBeUsedWithoutCommandCategory: true,
@@ -48,6 +56,22 @@ let COMMANDS = [
             {
                 keywords: ["testwrite"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testwrite").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
+                keywords: ["cacheread"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/cache/getcache").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
+                keywords: ["cachewrite"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/cache/setcache").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true

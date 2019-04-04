@@ -2,6 +2,8 @@ const DB_URI = require("../modules/config").SECRETS.DATABASE.URI;
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 
+const cache = require("./cache");
+
 module.exports = {
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
     getGuildDocument: function(guildId) {
@@ -18,11 +20,13 @@ module.exports = {
                         console.log(`[DB:GGD] WARN No guild document for [${guildId}]`.warn);
                         this.createGuildDocument(guildId).then((doc)=>{ // so create it
                             console.log(`[DB:GGD] DONE Get guild document for [${guildId}] - just created`.success);
+                            cache.setCache(guildId, doc); // store the doc in cache
                             resolve(doc); // and return that newly created doc.
                         });
                     }else{ // If the guild doc exist
                         console.log(`[DB:GGD] DONE Get guild document for [${guildId}]`.success);
-                        resolve(docs[0]); // return that.
+                        cache.setCache(guildId, docs[0]); // store the doc in cache
+                        resolve(docs[0]); // and return that.
                     }
                 });
             });
