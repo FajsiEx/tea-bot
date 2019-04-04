@@ -14,6 +14,14 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMMANDS_PATH + "ping").handler,
             },
             {
+                keywords: ["shutdown"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/shutdown").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["dbggd"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
@@ -225,6 +233,39 @@ module.exports = {
             invalidCommandCommand.handler(handleData);
 
             return false;
+        }
+
+        if(requestedCommand.rights.adminOnly) {
+            if (!msg.member.hasPermission('MANAGE_GUILD') || !msg.member.hasPermission('ADMINISTRATOR')) {
+                msg.channel.send({
+                    "embed": {
+                        "title": "Nope",
+                        "color": CONFIG.EMBED.COLORS.FAIL,
+                        "description": `
+                            You don't have the MANAGE_GUILD permission. Oops.
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER
+                    }
+                }).then((botMsg)=>{botMsg.delete(15000);});
+
+                return false;
+            }
+        }
+        if(requestedCommand.rights.devOnly) {
+            if (msg.author.id != 342227744513327107) { 
+                // Basically fake invalid command so no one sees anything
+
+                let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+                    return commandCategory.categoryName == "invalid";
+                })[0];
+                let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
+                    return command.keywords.indexOf("command") > -1;
+                })[0];
+    
+                invalidCommandCommand.handler(handleData);
+
+                return false;
+            }
         }
 
         console.log(`[HANDLE:COMMAND] INFO Command [${requestedCommandName}]`.info);

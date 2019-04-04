@@ -4,16 +4,16 @@ module.exports = {
     handler: (handleData)=>{
         let msg = handleData.msg;
         msg.channel.send({
-            embed: {
-                "title": "Invalid command",
-                "color": CONFIG.EMBED.COLORS.FAIL,
+            "embed": {
+                "title": "Shutdown",
+                "color": CONFIG.EMBED.COLORS.INFO,
                 "description": `
-                    Look at the docs for valid command categories and their commands
+                    Ok then. Here goes nothing.
                 `,
                 "footer": CONFIG.EMBED.FOOTER
             }
-        }).then((botMsg)=>{
-            botMsg.delete(15000);
         });
+
+        handleData.dClient.destroy();
     }
 };
