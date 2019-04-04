@@ -22,6 +22,22 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["deletegd"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/deletegd").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
+                keywords: ["testread"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testread").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["testwrite"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testwrite").handler,
                 cannotBeUsedWithoutCommandCategory: true,

@@ -48,6 +48,26 @@ module.exports = {
         });
     },
 
+    // Creates a doc in the guilds collection based on guildId
+    deleteGuildDocument: function(guildId) {
+        return new Promise((resolve)=>{
+            console.log(`[DB:DELETEGD] WARNING Deleting guild document [${guildId}] !`.warn);
+            console.log(`[DB:DELETEGD] WORKING Delete guild doc for [${guildId}]`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) return console.error(err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("guilds").deleteOne({guildId: guildId}, (err, res)=> { // Delete doc with guildId to the guilds collection
+                    if (err) return console.error(err); // If there's a problem, return.
+
+                    console.log(`[DB:CGD] DONE Delete guild doc for [${guildId}]`.success);
+
+                    resolve(true); // Return with success
+                });
+            });
+        });
+    },
+
     writeGuildDocument: function(guildId, guildDoc) {
         return new Promise((resolve)=>{
             console.log(`[DB:WGD] WORKING Write guild doc for [${guildId}]`.working);

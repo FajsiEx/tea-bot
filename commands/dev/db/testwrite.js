@@ -14,7 +14,7 @@ module.exports = {
         if (!guildId) { // If the msg isn't in a guild (to get id from) please fuck off
             msg.channel.send({
                 "embed": {
-                    "title": "Get guild document",
+                    "title": "Write guild document",
                     "color": CONFIG.EMBED.COLORS.FAIL,
                     "description": `
                         Could not get guild id from the message.

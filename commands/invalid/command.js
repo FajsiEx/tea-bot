@@ -12,6 +12,6 @@ module.exports = {
                 `,
                 "footer": CONFIG.EMBED.FOOTER
             }
-        });
+        }).then((botMsg)=>{botMsg.delete(15000);});
     }
-}
+};

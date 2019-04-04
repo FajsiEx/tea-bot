@@ -14,7 +14,7 @@ const COLORS = {
     STICKY:     65491
 };
 const FOOTER = {
-    "icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+    //"icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
     "text": `Build ${BUILD_STRING} | by FajsiEx`
 };
 const BOT_LOGO_ASCII = `

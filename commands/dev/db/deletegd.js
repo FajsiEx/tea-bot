@@ -11,13 +11,19 @@ module.exports = {
             guildId = msg.guild.id;
         }
 
-        if (!guildId) { // If the msg isn't in a guild (to get id from) please fuck off
+        console.log("[COMMAND:DEV:GGD] DEBUG ARG1: " + msg.content.split(" ")[1]);
+        let commandArg_guildId = parseInt(msg.content.split(" ")[1])
+        if (commandArg_guildId) {
+            guildId = commandArg_guildId;
+        }
+
+        if (!guildId) { // If the msg isn't in a guild (to get id from) and trhe user hasn't specified an id in the params, please fuck off
             msg.channel.send({
                 "embed": {
-                    "title": "Read guild document",
+                    "title": "Delete guild document",
                     "color": CONFIG.EMBED.COLORS.FAIL,
                     "description": `
-                        Could not get guild id from the message.
+                        Could not get guild id from the message and no id was specified.
                     `,
                     "footer": CONFIG.EMBED.FOOTER
                 }
@@ -25,21 +31,20 @@ module.exports = {
             return false;
         }
 
-        dbBridge.getGuildDocument(guildId).then((doc)=>{
-            console.log("[COMMAND:DEV:TESTWRITE] DEBUG Got guild doc".debug);
-
+        dbBridge.deleteGuildDocument(guildId).then((doc)=>{
             msg.channel.send({
                 "embed": {
-                    "title": "Test write of guild document",
+                    "title": "Delete guild document",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
-                        Done.
+                        Deleted guild document.
                         Guild ID: ${guildId}
-                        Guild doc: ${JSON.stringify(doc)}
                     `,
                     "footer": CONFIG.EMBED.FOOTER
                 }
             });
         });
+
+        
     }
 };
