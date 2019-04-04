@@ -77,6 +77,9 @@ module.exports = {
             console.log(`[DB:WGD] WORKING Write guild doc for [${guildId}]`.working);
             console.log(`[DB:WGD] DEBUG About to write this [${guildId}]`.debug);
             console.log(guildDoc);
+
+            cache.setCache(guildId, guildDoc); // store the doc in cache
+
             MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
                 if (err) return console.error(err); // If there's a problem, return.
 

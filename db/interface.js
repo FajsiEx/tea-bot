@@ -27,7 +27,10 @@ module.exports = {
 
     setGuildDoc: function (guildId, guildDoc) {
         return new Promise((resolve) => {
-
+            dbBridge.writeGuildDocument(guildId, guildDoc).then(()=>{
+                console.log(`[DB:INT:SET] Done Set guild doc [${guildId}]`.working);
+                resolve(true);
+            });
         });
     }
 };

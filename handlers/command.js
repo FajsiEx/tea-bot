@@ -38,8 +38,16 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["intget"],
+                keywords: ["intread"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "dev/int/get").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
+                keywords: ["intwrite"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/int/set").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
