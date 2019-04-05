@@ -5,13 +5,15 @@ const handleDataCheck = require("../checks/handleData").check;
 const DEFAULT_COMMMANDS_PATH = "../commands/";
 
 // Just add command™
-let COMMANDS = [
-    {
+let COMMANDS = [{
         categoryName: "dev",
-        commands: [
-            {
+        commands: [{
                 keywords: ["ping"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "ping").handler,
+            },
+            {
+                keywords: ["send"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/send").handler,
             },
             {
                 keywords: ["shutdown"],
@@ -90,18 +92,15 @@ let COMMANDS = [
 
     {
         categoryName: "cpp",
-        commands: [
-            {
-                keywords: ["congrats", "congratulations"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "copypaste/congrats").handler,
-            }
-        ]
+        commands: [{
+            keywords: ["congrats", "congratulations"],
+            handler: require(DEFAULT_COMMMANDS_PATH + "copypaste/congrats").handler,
+        }]
     },
 
     {
         categoryName: "invalid", // Invalid command/category replies
-        commands: [
-            {
+        commands: [{
                 keywords: ["category"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "invalid/category").handler,
             },
@@ -111,11 +110,10 @@ let COMMANDS = [
             }
         ]
     },
-    
+
     {
         categoryName: false, // Without prefix
-        commands: [
-            {
+        commands: [{
                 keywords: ["hi", "hello", "konichiwa"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "hi").handler,
             },
@@ -137,11 +135,15 @@ let noprefixCommandCategory = COMMANDS.filter(commandCategory => {
 // Now we merge all commands into one array
 let allCommands = [];
 let allCommandNames = [];
-COMMANDS.forEach((commandCategory)=>{
-    if (!commandCategory.categoryName) {return;} // We don't want to include the commands without prefix
-    if (commandCategory.categoryName == "invalid") {return;} // We wanna filter out the invalid category (only for replying when user enters an invalid smth)
+COMMANDS.forEach((commandCategory) => {
+    if (!commandCategory.categoryName) {
+        return;
+    } // We don't want to include the commands without prefix
+    if (commandCategory.categoryName == "invalid") {
+        return;
+    } // We wanna filter out the invalid category (only for replying when user enters an invalid smth)
 
-    commandCategory.commands.forEach((command)=>{ // For every command in the category
+    commandCategory.commands.forEach((command) => { // For every command in the category
         allCommands = allCommands.concat(command); // We add it to allCommands array
         allCommandNames = allCommandNames.concat(command.keywords); // And it's keywords to allCommandNames array
     });
@@ -153,22 +155,24 @@ console.log(allCommandNames);
 // Now we detect duplicates
 let duplicateCommandNames = [];
 let c = [];
-allCommandNames.forEach((commandName)=>{
+allCommandNames.forEach((commandName) => {
     if (c.indexOf(commandName) > -1) {
         if (duplicateCommandNames.indexOf(commandName) < 0) {
             duplicateCommandNames.push(commandName);
         }
-    }else{
+    } else {
         c.push(commandName);
     }
 });
 console.log("[HANDLER:COMMAND] DEBUG init dump of command name dups".debug);
 console.log(duplicateCommandNames);
 
-let nonDuplicateCommands = allCommands.filter((command)=> {
+let nonDuplicateCommands = allCommands.filter((command) => {
     let hasDuplicateKayword = false;
-    if (command.cannotBeUsedWithoutCommandCategory) {return false;}
-    command.keywords.forEach((keyword)=>{
+    if (command.cannotBeUsedWithoutCommandCategory) {
+        return false;
+    }
+    command.keywords.forEach((keyword) => {
         if (duplicateCommandNames.indexOf(keyword) > -1) {
             hasDuplicateKayword = true;
         }
@@ -186,23 +190,23 @@ let commandsWithoutWithoutPrefixCommandCategory = COMMANDS.filter((commandCatego
 });
 
 // We merge commands from nonDuplicateCommands and commands wothout prefix into withoutPrefixCommandCategory commands
-withoutPrefixCommandCategory.commands = withoutPrefixCommandCategory.commands.concat(nonDuplicateCommands); 
+withoutPrefixCommandCategory.commands = withoutPrefixCommandCategory.commands.concat(nonDuplicateCommands);
 
 // Now we push the without prefix category to the rest (that eas without without prefix category up until now)
-commandsWithoutWithoutPrefixCommandCategory.push(withoutPrefixCommandCategory); 
+commandsWithoutWithoutPrefixCommandCategory.push(withoutPrefixCommandCategory);
 
 COMMANDS = commandsWithoutWithoutPrefixCommandCategory; // Now with without command prefix category™
 
 // TODO: Add admin and dev checks plz
 module.exports = {
-    handler: (handleData, prefixUsed)=>{
+    handler: (handleData, prefixUsed) => {
         console.log("[HANDLER:COMMAND] INFO Called.");
 
         if (handleDataCheck(handleData)) {
             console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
             return false;
         }
-        
+
         let msg = handleData.msg; // Get msg from handle data
         console.log("[HANDLER:COMMAND] DEBUG Prefix used: " + prefixUsed);
         let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
@@ -218,12 +222,12 @@ module.exports = {
         let requestedCommandName; // string (command name itself)
 
         // If the command array has a category and a command name (length:>=2) NOTE: We don't really care about elements other than the first 2.
-        if (requestedCommandArray.length > 1) { 
+        if (requestedCommandArray.length > 1) {
             requestedCommandCategoryName = requestedCommandArray[0]; // The first element in the array is the category name
             requestedCommandName = requestedCommandArray[1]; // and the second one is the command
-        }else if (requestedCommandArray.length == 1) { // If the array has 1 element (command only)
+        } else if (requestedCommandArray.length == 1) { // If the array has 1 element (command only)
             requestedCommandName = requestedCommandArray[0]; // Just use the 1st (and only) element in the array
-        }else{ // No elements in the array ("t!"" will get an element in the array [""])
+        } else { // No elements in the array ("t!"" will get an element in the array [""])
             // Houston we have a problem.
             console.log("[HANDLE:COMMAND] ERR No element in command array. Aborting.".error);
             return false;
@@ -244,7 +248,7 @@ module.exports = {
             })[0];
 
             invalidCommandCategoryCommand.handler(handleData);
-            
+
             return;
         }
 
@@ -254,7 +258,7 @@ module.exports = {
 
         if (!requestedCommand) { // If no command was found
             console.log(`[HANDLE:COMMAND] WARN Command [${requestedCommandName}] does not exist.`.warn);
-            
+
             let invalidCommandCategory = COMMANDS.filter(commandCategory => {
                 return commandCategory.categoryName == "invalid";
             })[0];
@@ -267,36 +271,40 @@ module.exports = {
             return false;
         }
 
-        if(requestedCommand.rights.adminOnly) {
-            if (!msg.member.hasPermission('MANAGE_GUILD') || !msg.member.hasPermission('ADMINISTRATOR')) {
-                msg.channel.send({
-                    "embed": {
-                        "title": "Nope",
-                        "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+        if (requestedCommand.rights) { // If the command has any rights
+            if (requestedCommand.rights.adminOnly) {
+                if (!msg.member.hasPermission('MANAGE_GUILD') || !msg.member.hasPermission('ADMINISTRATOR')) {
+                    msg.channel.send({
+                        "embed": {
+                            "title": "Nope",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
                             You don't have the MANAGE_GUILD permission. Oops.
                         `,
-                        "footer": CONFIG.EMBED.FOOTER
-                    }
-                }).then((botMsg)=>{botMsg.delete(15000);});
+                            "footer": CONFIG.EMBED.FOOTER
+                        }
+                    }).then((botMsg) => {
+                        botMsg.delete(15000);
+                    });
 
-                return false;
+                    return false;
+                }
             }
-        }
-        if(requestedCommand.rights.devOnly) {
-            if (msg.author.id != 342227744513327107) { 
-                // Basically fake invalid command so no one sees anything
+            if (requestedCommand.rights.devOnly) {
+                if (msg.author.id != 342227744513327107) {
+                    // Basically fake invalid command so no one sees anything
 
-                let invalidCommandCategory = COMMANDS.filter(commandCategory => {
-                    return commandCategory.categoryName == "invalid";
-                })[0];
-                let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
-                    return command.keywords.indexOf("command") > -1;
-                })[0];
-    
-                invalidCommandCommand.handler(handleData);
+                    let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+                        return commandCategory.categoryName == "invalid";
+                    })[0];
+                    let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
+                        return command.keywords.indexOf("command") > -1;
+                    })[0];
 
-                return false;
+                    invalidCommandCommand.handler(handleData);
+
+                    return false;
+                }
             }
         }
 
