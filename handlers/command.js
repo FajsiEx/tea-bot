@@ -91,6 +91,14 @@ let COMMANDS = [{
     },
 
     {
+        categoryName: "mod",
+        commands: [{
+            keywords: ["nuke", "bulkdelete"],
+            handler: require(DEFAULT_COMMMANDS_PATH + "moderation/nuke").handler,
+        }]
+    },
+
+    {
         categoryName: "cpp",
         commands: [{
             keywords: ["congrats", "congratulations"],
