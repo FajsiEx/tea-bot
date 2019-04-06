@@ -64,7 +64,7 @@ module.exports = {
                         "title": "Nuked",
                         "color": CONFIG.EMBED.COLORS.SUCCESS,
                         "description": `
-                            by count
+                            Deleted \`${arg}\` messages.
                         `,
                         "footer": CONFIG.EMBED.FOOTER
                     }
@@ -92,7 +92,7 @@ module.exports = {
                             "title": "Nuked",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
                             "description": `
-                                by from
+                                Deleted \`${messages.size}\` messages.
                             `,
                             "footer": CONFIG.EMBED.FOOTER
                         }
