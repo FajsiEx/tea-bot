@@ -60,7 +60,7 @@ console.log("[BOOT] DONE Adding event listeners".success);
 console.log("[BOOT] WORKING Init express server".working);
 let express = require("express");
 let app = express();
-require("./api/server").init(app);
+require("./api/server").init(app, dClient);
 require("./modules/stats").init(dClient);
 console.log("[BOOT] DONE Init express server".success);
 
