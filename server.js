@@ -51,6 +51,10 @@ dClient.on("message", (msg)=> {
         footer: false
     });
 });
+
+dClient.on("error", (err)=> {
+    console.error(err);
+});
 console.log("[BOOT] DONE Adding event listeners".success);
 
 console.log("[BOOT] WORKING Init express server".working);
