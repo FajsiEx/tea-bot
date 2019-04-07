@@ -53,6 +53,13 @@ dClient.on("message", (msg)=> {
 });
 console.log("[BOOT] DONE Adding event listeners".success);
 
+console.log("[BOOT] WORKING Init express server".working);
+let express = require("express");
+let app = express();
+require("./api/server").init(app);
+require("./modules/stats").init(dClient);
+console.log("[BOOT] DONE Init express server".success);
+
 console.log("[BOOT] WORKING Authenticating".working);
 dClient.login(CONFIG.SECRETS.DISCORD.TOKEN).then(()=>{
     console.log("[BOOT] DONE Authenticating".success);
