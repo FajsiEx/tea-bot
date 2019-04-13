@@ -17,6 +17,6 @@ module.exports = {
         let minutes = (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
         let seconds = (dt.getSeconds() < 10 ? '0' : '') + dt.getSeconds();
 
-        return `${hours}:${minutes}:${seconds}`
+        return `${hours}:${minutes}:${seconds}`;
     }
 };
