@@ -10,7 +10,7 @@ module.exports = {
                 "description": `
                     Server message latency: ${new Date().getTime() - msg.createdTimestamp} ms
                 `,
-                "footer": CONFIG.EMBED.FOOTER
+                "footer": CONFIG.EMBED.FOOTER(handleData)
             }
         });
     }

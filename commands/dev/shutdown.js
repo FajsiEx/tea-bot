@@ -10,7 +10,7 @@ module.exports = {
                 "description": `
                     Ok then. Here goes nothing.
                 `,
-                "footer": CONFIG.EMBED.FOOTER
+                "footer": CONFIG.EMBED.FOOTER(handleData)
             }
         });
 

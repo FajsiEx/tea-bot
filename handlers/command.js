@@ -289,7 +289,7 @@ module.exports = {
                             "description": `
                             You don't have the MANAGE_GUILD permission. Oops.
                         `,
-                            "footer": CONFIG.EMBED.FOOTER
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then((botMsg) => {
                         botMsg.delete(15000);

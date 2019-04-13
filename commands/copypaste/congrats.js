@@ -10,7 +10,7 @@ module.exports = {
                 "description": `
                 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
                 `,
-                "footer": CONFIG.EMBED.FOOTER
+                "footer": CONFIG.EMBED.FOOTER(handleData)
             }
         });
     }

@@ -25,7 +25,7 @@ module.exports = {
                     "description": `
                         Could not get guild id from the message and no id was specified.
                     `,
-                    "footer": CONFIG.EMBED.FOOTER
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             });
             return false;
@@ -41,7 +41,7 @@ module.exports = {
                         Guild ID: ${guildId}
                         Guild doc: ${JSON.stringify(doc)}
                     `,
-                    "footer": CONFIG.EMBED.FOOTER
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             });
         });

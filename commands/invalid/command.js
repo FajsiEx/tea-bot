@@ -10,7 +10,7 @@ module.exports = {
                 "description": `
                     Look at the docs for valid command categories and their commands
                 `,
-                "footer": CONFIG.EMBED.FOOTER
+                "footer": CONFIG.EMBED.FOOTER(handleData)
             }
         }).then((botMsg)=>{
             botMsg.delete(15000);

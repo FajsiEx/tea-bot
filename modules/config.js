@@ -1,6 +1,8 @@
 
 console.log("[MODULE:CONFIG] WORKING Init config.".working);
 
+const handleDataCheck = require("../checks/handleData").check;
+
 const BUILD = "19.4a";
 const BUILD_STRING = `${BUILD} InDev - not ready for deployment`;
 const COMMAND_PREFIXES = ["!", "tea!"];
@@ -13,9 +15,17 @@ const COLORS = {
     SUCCESS:    4521796,
     STICKY:     65491
 };
-const FOOTER = {
-    //"icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
-    "text": `Build ${BUILD_STRING} | by FajsiEx`
+const FOOTER = (handleData)=>{
+    if (handleDataCheck(handleData)) {
+        console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
+        return {
+            text: `Failed to get footer. Reason: handleData check failed.`
+        };
+    }
+    return {
+        //"icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+        "text": `Build ${BUILD_STRING} | by FajsiEx | Caller: ${handleData.msg.author.tag}`
+    };
 };
 const BOT_LOGO_ASCII = `
                                  .,***********,.                                  

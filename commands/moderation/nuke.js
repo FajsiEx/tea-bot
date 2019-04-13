@@ -18,7 +18,7 @@ module.exports = {
                     "description": `
                         Nuke works only in guild text channels. oof.
                     `,
-                    "footer": CONFIG.EMBED.FOOTER
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             }).then((botMsg)=>{botMsg.delete(10000);});
             return false;
@@ -38,7 +38,7 @@ module.exports = {
                             You must specify the number of msgs to be nuked (maximum 99)
                             \`!nuke count 15\`
                         `,
-                        "footer": CONFIG.EMBED.FOOTER
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then((botMsg)=>{botMsg.delete(10000);});
                 return false;
@@ -52,7 +52,7 @@ module.exports = {
                         "description": `
                             Number of messages to be nuked must be in a range of 1-99
                         `,
-                        "footer": CONFIG.EMBED.FOOTER
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then((botMsg)=>{botMsg.delete(10000);});
                 return false;
@@ -66,7 +66,7 @@ module.exports = {
                         "description": `
                             Deleted \`${arg}\` messages.
                         `,
-                        "footer": CONFIG.EMBED.FOOTER
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then((botMsg)=>{botMsg.delete(10000);});  
             }).catch(()=>{
@@ -77,7 +77,7 @@ module.exports = {
                         "description": `
                             Either the messages are older than 14 days OR I don't have manage messages permission.
                         `,
-                        "footer": CONFIG.EMBED.FOOTER
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then((botMsg)=>{botMsg.delete(10000);});    
                 return false;
@@ -94,7 +94,7 @@ module.exports = {
                             "description": `
                                 Deleted \`${messages.size}\` messages.
                             `,
-                            "footer": CONFIG.EMBED.FOOTER
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then((botMsg)=>{botMsg.delete(10000);});
                 }).catch(()=>{
@@ -105,7 +105,7 @@ module.exports = {
                             "description": `
                                 Either the messages are older than 14 days OR there are more than 99 messages to be deleted OR I don't have manage messages permission.
                             `,
-                            "footer": CONFIG.EMBED.FOOTER
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then((botMsg)=>{botMsg.delete(10000);});
                     return false;
@@ -122,7 +122,7 @@ module.exports = {
                         \`nuke count 60\`
                         \`nuke from (msgId)\`
                     `,
-                    "footer": CONFIG.EMBED.FOOTER
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             }).then((botMsg)=>{botMsg.delete(10000);});
             return false;
