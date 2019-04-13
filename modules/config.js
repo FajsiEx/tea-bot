@@ -3,7 +3,7 @@ console.log("[MODULE:CONFIG] WORKING Init config.".working);
 
 const handleDataCheck = require("../checks/handleData").check;
 
-const BUILD = "19.4a";
+const BUILD = "";
 const BUILD_STRING = `${BUILD} InDev - not ready for deployment`;
 const COMMAND_PREFIXES = ["!", "tea!"];
 const COLORS = {
