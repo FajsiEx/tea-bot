@@ -1,3 +1,14 @@
+/*
+
+    Tea-bot
+    © FajsiEx 2019
+    Licensed under MIT license - see LICENSE.md for the full license text
+
+    Module: command (handler)
+    Desc: handles incomming msg which msgHandler judged to be a command and passes the control over to the specific command module - if found.
+
+*/
+
 const CONFIG = require("../modules/config");
 
 const handleDataCheck = require("../checks/handleData").check;
@@ -5,10 +16,15 @@ const handleDataCheck = require("../checks/handleData").check;
 const COMMANDS = require("../modules/commandData").getCommands();
 
 module.exports = {
+    /*
+        Desc: Handler for message containing a prefix
+        Input: handleData - handle data passed from msgHandler created from main on("msg") handler
+        Output: bool[true=passed control over to the command module; false=any other action]
+    */
     handler: (handleData, prefixUsed) => {
         console.log("[HANDLER:COMMAND] INFO Called.");
 
-        if (handleDataCheck(handleData)) {
+        if (handleDataCheck(handleData)) { // Check your data, kids
             console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
             return false;
         }
@@ -43,38 +59,38 @@ module.exports = {
             return commandCategory.categoryName == requestedCommandCategoryName;
         })[0];
 
-        if (!requestedCommandCategory) {
+        if (!requestedCommandCategory) { // If the command category for the requested command isn't found
             console.log(`[HANDLE:COMMAND] WARN Command category [${requestedCommandCategoryName}] does not exist.`.warn);
 
-            let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+            let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid ccat
                 return commandCategory.categoryName == "invalid";
             })[0];
-            let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => {
+            let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:category "command" from it
                 return command.keywords.indexOf("category") > -1;
             })[0];
 
-            invalidCommandCategoryCommand.handler(handleData);
+            invalidCommandCategoryCommand.handler(handleData); // Call it
 
-            return;
+            return false; // And we're done.
         }
 
         let requestedCommand = requestedCommandCategory.commands.filter(command => { // Get command itself from the category by the command name entered.
             return command.keywords.indexOf(requestedCommandName) > -1;
         })[0];
 
-        if (!requestedCommand) { // If no command was found
+        if (!requestedCommand) { // If no command was found in it's category
             console.log(`[HANDLE:COMMAND] WARN Command [${requestedCommandName}] does not exist.`.warn);
 
-            let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+            let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid ccat
                 return commandCategory.categoryName == "invalid";
             })[0];
-            let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
+            let invalidCommandCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:command "command" from it
                 return command.keywords.indexOf("command") > -1;
             })[0];
 
-            invalidCommandCommand.handler(handleData);
+            invalidCommandCommand.handler(handleData); // Call it
 
-            return false;
+            return false; // And we're done.
         }
 
         if (requestedCommand.rights) { // If the command has any rights
@@ -96,8 +112,8 @@ module.exports = {
                     return false;
                 }
             }
-            if (requestedCommand.rights.devOnly) {
-                if (msg.author.id != 342227744513327107) {
+            if (requestedCommand.rights.devOnly) { // If the command is dev only,
+                if (msg.author.id != 342227744513327107) { // and the caller is not me,
                     // Basically fake invalid command so no one sees anything
 
                     let invalidCommandCategory = COMMANDS.filter(commandCategory => {
