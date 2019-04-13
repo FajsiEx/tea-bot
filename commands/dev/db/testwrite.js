@@ -19,7 +19,7 @@ module.exports = {
                     "description": `
                         Could not get guild id from the message.
                     `,
-                    "footer": CONFIG.EMBED.FOOTER
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             });
             return false;
@@ -42,7 +42,7 @@ module.exports = {
                             Done.
                             Guild ID: ${guildId}
                         `,
-                        "footer": CONFIG.EMBED.FOOTER
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 });
             }); // and write the doc

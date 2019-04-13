@@ -23,7 +23,7 @@ module.exports = {
                     The following message will be sent to \`${channelId}\`
                     \`\`\`${sendMsg}\`\`\`
                 `,
-                "footer": CONFIG.EMBED.FOOTER
+                "footer": CONFIG.EMBED.FOOTER(handleData)
             }
         });
 

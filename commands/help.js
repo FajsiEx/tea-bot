@@ -11,7 +11,7 @@ module.exports = {
                     Tea-bot Project
                     Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}
                 `,
-                "footer": CONFIG.EMBED.FOOTER
+                "footer": CONFIG.EMBED.FOOTER(handleData)
             }
         });
     }
