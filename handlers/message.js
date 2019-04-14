@@ -12,6 +12,7 @@ module.exports = {
         
         if (handleData.msg.author.bot) {
             console.log("[HANDLER:MSG] Bot message ignored.".debug);
+            return false;
         }
 
         let guildId = handleData.msg.guild.id;

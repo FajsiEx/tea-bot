@@ -23,7 +23,7 @@ const FOOTER = (handleData)=>{
         };
     }
     return {
-        //"icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+        "icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
         "text": `Build ${BUILD_STRING} | by FajsiEx | Caller: ${handleData.msg.author.tag}`
     };
 };
