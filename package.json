@@ -1,7 +1,7 @@
 {
-  "name": "caj-ministrator",
-  "version": "1.0.0",
-  "description": "Stará sa o pokoj na adleráckom discord serveri",
+  "name": "tea-bot",
+  "version": "2.0.0",
+  "description": "Just another discord bot",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FajsiEx/caj-ministrator.git"
+    "url": "git+https://github.com/FajsiEx/tea-bot.git"
   },
   "keywords": [
     "caj",
@@ -18,25 +18,19 @@
   "author": "FajsiEx",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/FajsiEx/caj-ministrator/issues"
+    "url": "https://github.com/FajsiEx/tea-bot/issues"
   },
-  "homepage": "https://github.com/FajsiEx/caj-ministrator#readme",
+  "homepage": "https://github.com/FajsiEx/tea-bot#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "colors": "^1.3.3",
     "cors": "^2.8.5",
     "discord.js": "^11.4.2",
-    "easy-ffmpeg": "0.0.15",
     "express": "^4.16.4",
-    "image-scraper": "^0.2.1",
-    "jsdom": "^13.2.0",
     "mathjs": "^5.2.3",
     "mongodb": "^3.1.10",
-    "node-opus": "^0.3.1",
     "request": "^2.88.0",
     "string-similarity": "^3.0.0",
-    "youtube-info": "^1.3.2",
-    "youtube-search": "^1.1.4",
-    "ytdl": "^0.11.1"
+    "youtube-info": "^1.3.2"
   }
 }
