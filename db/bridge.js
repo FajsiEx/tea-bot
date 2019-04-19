@@ -95,5 +95,23 @@ module.exports = {
                 });
             });
         });
+    },
+
+    createStickyMsgDocument: function(documentData) {
+        return new Promise((resolve, reject)=>{
+            console.log(`[DB:CSMSGD] WORKING Create sticky msg doc`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").insertOne(documentData, (err, res)=> { // Insert doc with the data of the sticky message to "sticky" collection
+                    if (err) reject("Insert error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:CSMSGD] DONE Create sticky msg doc`.success);
+
+                    resolve(res.ops[0]); // Return the new sticky msg doc
+                });
+            });
+        });
     }
 };

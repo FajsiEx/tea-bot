@@ -1,6 +1,7 @@
 
 const generators = require("./generatorData").generators;
-const crypto = require('crypto');
+const crypto = require("crypto");
+const dbBridge = require("../db/bridge");
 
 module.exports = {
     createStickyPost: function(creationData){
@@ -22,6 +23,16 @@ module.exports = {
                     stickyMsgId = stickyMsg.id;
                     hash = this.hashMsgData(messageData);
                     console.log(hash);
+
+                    dbBridge.createStickyMsgDocument({
+                        hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
+                        g_id: guildId, // Guild id
+                        c_id: channel.id, // Channel id
+                        m_id: stickyMsgId, // Message id
+                        expiry: new Date().getTime() + (1*60*1000), // Timestamp when the data needs to be regenerated. Used in the interval db query, TODO: Make this a const somewhere
+                        type: type // Type for generator purposes 
+                    });
+
                 }).catch((e)=>{
                     reject("Failed to send a message: " + e);
                 });
