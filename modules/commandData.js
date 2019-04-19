@@ -5,7 +5,7 @@
     Licensed under MIT license - see LICENSE.md for the full license text
 
     Module: commandData
-    Desc: handles storing and access to command data.
+    Description: handles storing and access to command data.
 
 */
 
