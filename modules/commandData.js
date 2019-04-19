@@ -9,7 +9,7 @@
 
 */
 
-const DEFAULT_COMMMANDS_PATH = "../commands/";
+const DEFAULT_COMMANDS_PATH = "../commands/";
 
 // Just add command™
 let COMMANDS = [
@@ -17,15 +17,15 @@ let COMMANDS = [
         categoryName: "dev",
         commands: [{
                 keywords: ["ping"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "ping").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "ping").handler,
             },
             {
                 keywords: ["send"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/send").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler,
             },
             {
                 keywords: ["shutdown"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/shutdown").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/shutdown").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -33,7 +33,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["stickycreate"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/sticky/create").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/create").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -41,7 +41,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["dbggd"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/ggd").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -49,7 +49,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["deletegd"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/deletegd").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/deletegd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -57,7 +57,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["intread"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/int/get").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/int/get").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -65,7 +65,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["intwrite"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/int/set").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/int/set").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -73,7 +73,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["testread"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testread").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testread").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -81,7 +81,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["testwrite"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/testwrite").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testwrite").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -89,7 +89,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["cacheread"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/cache/getcache").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/getcache").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -97,7 +97,7 @@ let COMMANDS = [
             },
             {
                 keywords: ["cachewrite"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "dev/cache/setcache").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/setcache").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -110,7 +110,7 @@ let COMMANDS = [
         categoryName: "mod",
         commands: [{
             keywords: ["nuke", "bulkdelete"],
-            handler: require(DEFAULT_COMMMANDS_PATH + "moderation/nuke").handler,
+            handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
         }]
     },
 
@@ -118,7 +118,7 @@ let COMMANDS = [
         categoryName: "cpp",
         commands: [{
             keywords: ["congrats", "congratulations"],
-            handler: require(DEFAULT_COMMMANDS_PATH + "copypaste/congrats").handler,
+            handler: require(DEFAULT_COMMANDS_PATH + "copypaste/congrats").handler,
         }]
     },
 
@@ -126,11 +126,11 @@ let COMMANDS = [
         categoryName: "invalid", // Invalid command/category replies
         commands: [{
                 keywords: ["category"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/category").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "invalid/category").handler,
             },
             {
                 keywords: ["command"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "invalid/command").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "invalid/command").handler,
             }
         ]
     },
@@ -139,11 +139,11 @@ let COMMANDS = [
         categoryName: false, // Without prefix
         commands: [{
                 keywords: ["hi", "hello", "konichiwa"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "hi").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "hi").handler,
             },
             {
                 keywords: ["help", "tasukete"],
-                handler: require(DEFAULT_COMMMANDS_PATH + "help").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "help").handler,
             },
         ]
     },
