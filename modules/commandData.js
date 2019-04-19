@@ -32,6 +32,14 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["stickycreate"],
+                handler: require(DEFAULT_COMMMANDS_PATH + "dev/sticky/create").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["dbggd"],
                 handler: require(DEFAULT_COMMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
