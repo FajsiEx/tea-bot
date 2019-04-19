@@ -1,5 +1,6 @@
 
 const generators = require("./generatorData").generators;
+const crypto = require('crypto');
 
 module.exports = {
     createStickyPost: function(creationData){
@@ -13,11 +14,14 @@ module.exports = {
             }
 
             let stickyMsgId;
+            let hash;
 
             this.generateMessageData(creationData).then((messageData)=>{
                 console.log(messageData);
                 channel.send(messageData).then((stickyMsg)=>{
                     stickyMsgId = stickyMsg.id;
+                    hash = this.hashMsgData(messageData);
+                    console.log(hash);
                 }).catch((e)=>{
                     reject("Failed to send a message: " + e);
                 });
@@ -50,5 +54,9 @@ module.exports = {
                 reject(`Did not find generator with type [${type}]. Please check if you imported it correctly in /sticky/generatorData`);
             }
         });
+    },
+
+    hashMsgData: function(messageData) {
+        return crypto.createHash('md5').update(JSON.stringify(messageData)).digest("hex");
     }
 };
