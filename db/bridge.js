@@ -99,6 +99,7 @@ module.exports = {
 
     createStickyMsgDocument: function(documentData) {
         return new Promise((resolve, reject)=>{
+            // TODO: add checks plz
             console.log(`[DB:CSMSGD] WORKING Create sticky msg doc`.working);
             MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
                 if (err) reject("Connection error " + err); // If there's a problem, return.
