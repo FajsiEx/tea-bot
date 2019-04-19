@@ -1,11 +1,17 @@
 const CONFIG = require("../../../modules/config");
+const stickyController = require("../../../sticky/stickyController");
 
 module.exports = {
     handler: (handleData)=>{
         let msg = handleData.msg;
 
-        console.log("[COMMAND:STICKY:CREATE] DEBUG test.");
+        stickyController.createStickyPost({
 
+        }).then(()=>{
+            console.log("[COMMAND:DEV:STICKYCREATE] Resolved");
+        }).catch((e)=>{
+            console.log(`[COMMAND:DEV:STICKYCREATE] createStickyPost has rejected it's promise: ${e}`.error);
+        });
         /* msg.channel.send({
             "embed": {
                 "title": "Ping",
