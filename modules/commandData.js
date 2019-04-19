@@ -151,7 +151,7 @@ let COMMANDS = [
 
 // Beware. Bellow this line lies madness.
 
-// Move all command that don't have a name in >1 categoty to cat without prefix
+// Move all command that don't have a name in >1 category to cat without prefix
 let noprefixCommandCategory = COMMANDS.filter(commandCategory => {
     return commandCategory.categoryName == false;
 })[0];
@@ -213,10 +213,10 @@ let commandsWithoutWithoutPrefixCommandCategory = COMMANDS.filter((commandCatego
     return commandCategory.categoryName != false;
 });
 
-// We merge commands from nonDuplicateCommands and commands wothout prefix into withoutPrefixCommandCategory commands
+// We merge commands from nonDuplicateCommands and commands without prefix into withoutPrefixCommandCategory commands
 withoutPrefixCommandCategory.commands = withoutPrefixCommandCategory.commands.concat(nonDuplicateCommands);
 
-// Now we push the without prefix category to the rest (that eas without without prefix category up until now)
+// Now we push the without prefix category to the rest (that was without without prefix category up until now)
 commandsWithoutWithoutPrefixCommandCategory.push(withoutPrefixCommandCategory);
 
 COMMANDS = commandsWithoutWithoutPrefixCommandCategory; // Now with without command prefix category™
@@ -224,7 +224,7 @@ COMMANDS = commandsWithoutWithoutPrefixCommandCategory; // Now with without comm
 module.exports = {
 
     /*
-        Desc: Returns COMMANDS from module's local var
+        Description: Returns COMMANDS from module's local variable
         Input: -
         Return value: Command object with all categories and merged commands from 1only category to no prefix cat
     */
