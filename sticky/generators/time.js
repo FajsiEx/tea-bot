@@ -3,7 +3,7 @@ const CONFIG = require("../../modules/config");
 module.exports = {
     generator: (generatorData)=>{
         return new Promise((resolve, reject)=>{
-            let guildId = messageCreationData.guildId;
+            let guildId = generatorData.guildId;
 
             if (!guildId) {
                 reject("False guildId");
@@ -16,7 +16,7 @@ module.exports = {
                     "description": `
                         Current server time: ${new Date().toString()}
                     `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                    "footer": CONFIG.EMBED.FOOTER()
                 }
             });
         });

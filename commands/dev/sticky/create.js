@@ -6,7 +6,9 @@ module.exports = {
         let msg = handleData.msg;
 
         stickyController.createStickyPost({
-
+            guildId: msg.guild.id,
+            type: "time",
+            channel: msg.channel
         }).then(()=>{
             console.log("[COMMAND:DEV:STICKYCREATE] Resolved");
         }).catch((e)=>{

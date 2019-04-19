@@ -2,7 +2,7 @@
 const generators = require("./generatorData").generators;
 
 module.exports = {
-    createStickyPost: (creationData)=>{
+    createStickyPost: function(creationData){
         return new Promise((resolve, reject)=>{
             let guildId = creationData.guildId;
             let type = creationData.type;
@@ -20,7 +20,7 @@ module.exports = {
         });
     },
 
-    generateMessageData: (messageCreationData)=>{
+    generateMessageData: function(messageCreationData) {
         return new Promise((resolve, reject)=>{
             let guildId = messageCreationData.guildId;
             let type = messageCreationData.type;

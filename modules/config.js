@@ -16,10 +16,11 @@ const COLORS = {
     STICKY:     65491
 };
 const FOOTER = (handleData)=>{
-    if (handleDataCheck(handleData)) {
+    if (handleDataCheck(handleData, true)) {
         console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
         return {
-            text: `Failed to get footer. Reason: handleData check failed.`
+            "icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
+            "text": `Build ${BUILD_STRING} | by FajsiEx`
         };
     }
     return {
