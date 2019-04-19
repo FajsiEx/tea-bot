@@ -192,16 +192,16 @@ console.log("[MODULE:COMMAND_DATA] DEBUG init dump of command name dups".debug);
 console.log(duplicateCommandNames);
 
 let nonDuplicateCommands = allCommands.filter((command) => {
-    let hasDuplicateKayword = false;
+    let hasDuplicateKeyword = false;
     if (command.cannotBeUsedWithoutCommandCategory) {
         return false;
     }
     command.keywords.forEach((keyword) => {
         if (duplicateCommandNames.indexOf(keyword) > -1) {
-            hasDuplicateKayword = true;
+            hasDuplicateKeyword = true;
         }
     });
-    return !hasDuplicateKayword;
+    return !hasDuplicateKeyword;
 });
 console.log("[MODULE:COMMAND_DATA] DEBUG init non duped commands".debug);
 console.log(nonDuplicateCommands);
