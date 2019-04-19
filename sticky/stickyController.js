@@ -6,14 +6,15 @@ module.exports = {
         return new Promise((resolve, reject)=>{
             let guildId = creationData.guildId;
             let type = creationData.type;
+            let channel = creationData.channel;
 
-            if (!guildId || !type) {
-                reject("False guildId or false type");
+            if (!guildId || !type || !channel) {
+                reject("False guildId or false type or false channel");
             }
 
             this.generateMessageData(creationData).then((messageData)=>{
                 console.log(messageData);
-                resolve(true); // Temp
+
             }).catch((e)=>{
                 reject("GenerateMessageData has rejected it's promise: " + e);
             });
