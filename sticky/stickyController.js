@@ -12,8 +12,15 @@ module.exports = {
                 reject("False guildId or false type or false channel");
             }
 
+            let stickyMsgId;
+
             this.generateMessageData(creationData).then((messageData)=>{
                 console.log(messageData);
+                channel.send(messageData).then((stickyMsg)=>{
+                    stickyMsgId = stickyMsg.id;
+                }).catch((e)=>{
+                    reject("Failed to send a message: " + e);
+                });
 
             }).catch((e)=>{
                 reject("GenerateMessageData has rejected it's promise: " + e);
