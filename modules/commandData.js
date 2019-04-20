@@ -159,12 +159,7 @@ let COMMANDS = [
 
 // Beware. Bellow this line lies madness.
 
-// Move all command that don't have a name in >1 category to cat without prefix
-let noprefixCommandCategory = COMMANDS.filter(commandCategory => {
-    return commandCategory.categoryName == false;
-})[0];
-
-// Now we merge all commands into one array
+// We merge all commands into one array
 let allCommands = [];
 let allCommandNames = [];
 COMMANDS.forEach((commandCategory) => {
