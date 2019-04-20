@@ -23,8 +23,7 @@ module.exports = {
             }).then((botMsg)=>{botMsg.delete(10000);});
             return false;
         }
-
-        let command = msg.content.split(" ")[0];
+        
         let type = msg.content.split(" ")[1];
         let arg = parseInt(msg.content.split(" ")[2]);
 
