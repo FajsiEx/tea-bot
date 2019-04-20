@@ -74,7 +74,7 @@ module.exports = {
         return crypto.createHash('md5').update(JSON.stringify(messageData)).digest("hex");
     },
 
-    updateStickyDocs: function() {
+    updateStickyDocs: function(dClient) {
         return new Promise((resolve, reject)=>{
             dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
                 console.log(expiredDocs);
@@ -88,6 +88,24 @@ module.exports = {
                         type: doc.type
                     }).then((messageData)=>{
                         console.log(messageData);
+                        let oldHash = doc.hash;
+                        let newHash = this.hashMsgData(messageData);
+
+                        if (oldHash == newHash) { // Data is the same
+                            dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000)});
+                        }else{
+                            let channel = dClient.channels.get(doc.c_id);
+                            channel.startTyping();
+                            channel.fetchMessage(doc.m_id).then((msg)=>{
+                                msg.edit(messageData);
+                                dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000), hash:newHash}).then(()=>{
+                                    channel.stopTyping();
+                                }).catch((e)=>{
+                                    console.log("Failed to save updated data to db. e: " + e);
+                                    channel.stopTyping();
+                                });
+                            });
+                        }
                     });
                 });
             }).catch((e)=>{

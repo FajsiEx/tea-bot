@@ -130,5 +130,24 @@ module.exports = {
                 });
             });
         });
+    },
+
+    updateStickyDoc: function(m_id, stickyDocUpdateData) {
+        return new Promise((resolve, reject)=>{
+            console.log(`[DB:USD] WORKING Update sticky doc with m_id [${m_id}]`.working);
+
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").updateOne({m_id: m_id}, {$set:stickyDocUpdateData}, (err, res)=> { // Update doc with the m_id (message id of the sticky message)
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:USD] DONE Update sticky doc with m_id [${m_id}]`.success);
+
+                    resolve(true);
+                });
+            });
+        });
     }
 };
