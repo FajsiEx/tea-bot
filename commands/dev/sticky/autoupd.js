@@ -1,4 +1,4 @@
-const CONFIG = require("../../../modules/config");
+
 const stickyController = require("../../../sticky/stickyController");
 
 module.exports = {
