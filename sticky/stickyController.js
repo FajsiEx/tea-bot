@@ -79,6 +79,7 @@ module.exports = {
         return new Promise((resolve, reject)=>{
             dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
                 console.log(expiredDocs);
+                resolve(); // Temp
             }).catch((e)=>{
                 reject("Failed to get expired docs: " + e);
             });
