@@ -139,7 +139,7 @@ module.exports = {
                 if (err) reject("Connection error " + err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").updateOne({m_id: m_id}, {$set:stickyDocUpdateData}, (err, res)=> { // Update doc with the m_id (message id of the sticky message)
+                db.collection("sticky").updateOne({m_id: m_id}, {$set:stickyDocUpdateData}, (err)=> { // Update doc with the m_id (message id of the sticky message)
                     if (err) reject("Connection error " + err); // If there's a problem, return.
 
                     console.log(`[DB:USD] DONE Update sticky doc with m_id [${m_id}]`.success);
