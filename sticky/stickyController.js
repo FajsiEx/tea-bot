@@ -79,7 +79,9 @@ module.exports = {
         return new Promise((resolve, reject)=>{
             dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
                 console.log(expiredDocs);
-                resolve(); // Temp
+                if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know
+                    reject("expiredDocs is false");
+                }
             }).catch((e)=>{
                 reject("Failed to get expired docs: " + e);
             });
