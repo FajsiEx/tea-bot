@@ -7,7 +7,6 @@
 */
 
 let startTimestamp = new Date().getTime();
-const colors = require('colors');
 require("./inits/consoleColors").init();
 
 console.log("[BOOT] WORKING Importing modules".working);
