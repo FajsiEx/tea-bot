@@ -123,7 +123,7 @@ module.exports = {
                 if (err) reject("Connection error " + err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").find({expiry: {$gte: new Date().getTime()}}).toArray((err, docs)=> { // 
+                db.collection("sticky").find({expiry: {$lte: new Date().getTime()}}).toArray((err, docs)=> { // 
                     if (err) reject("Connection error " + err); // If there's a problem, return.
                     console.log(`[DB:GESD] DONE Get expired sticky documents`.success);
                     resolve(docs);
