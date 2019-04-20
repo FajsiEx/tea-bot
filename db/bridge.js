@@ -60,7 +60,7 @@ module.exports = {
                 if (err) return console.error(err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").deleteOne({guildId: guildId}, (err, res)=> { // Delete doc with guildId to the guilds collection
+                db.collection("guilds").deleteOne({guildId: guildId}, (err)=> { // Delete doc with guildId to the guilds collection
                     if (err) return console.error(err); // If there's a problem, return.
 
                     console.log(`[DB:CGD] DONE Delete guild doc for [${guildId}]`.success);
@@ -85,7 +85,7 @@ module.exports = {
                 if (err) return console.error(err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").updateOne({guildId: guildId}, {$set:guildDoc}, (err, res)=> { // Update doc with guildId
+                db.collection("guilds").updateOne({guildId: guildId}, {$set:guildDoc}, (err)=> { // Update doc with guildId
                     if (err) return console.error(err); // If there's a problem, return.
 
                     console.log(`[DB:WGD] DONE Write guild doc for [${guildId}]`.success);
