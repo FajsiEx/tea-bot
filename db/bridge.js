@@ -1,6 +1,5 @@
 const DB_URI = require("../modules/config").SECRETS.DATABASE.URI;
 const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectID;
 
 const cache = require("./cache");
 
