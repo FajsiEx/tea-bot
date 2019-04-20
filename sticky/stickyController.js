@@ -31,6 +31,10 @@ module.exports = {
                         m_id: stickyMsgId, // Message id
                         expiry: new Date().getTime() + (1*60*1000), // Timestamp when the data needs to be regenerated. Used in the interval db query, TODO: Make this a const somewhere
                         type: type // Type for generator purposes 
+                    }).then(()=>{
+                        resolve();
+                    }).catch((e)=>{
+                        reject("Failed to store data in db: " + e);
                     });
 
                 }).catch((e)=>{
@@ -72,6 +76,12 @@ module.exports = {
     },
 
     updateStickyDocs: function() {
-        
+        return new Promise((resolve, reject)=>{
+            dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
+                console.log(expiredDocs);
+            }).catch((e)=>{
+                reject("Failed to get expired docs: " + e);
+            });
+        });
     }
 };
