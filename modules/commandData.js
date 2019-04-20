@@ -40,6 +40,14 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["stickyautoupd"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/autoupd").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["dbggd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
