@@ -31,7 +31,7 @@ module.exports = {
             return false;
         }
 
-        dbBridge.deleteGuildDocument(guildId).then((doc)=>{
+        dbBridge.deleteGuildDocument(guildId).then(()=>{
             msg.channel.send({
                 "embed": {
                     "title": "Delete guild document",
