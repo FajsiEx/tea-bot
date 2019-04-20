@@ -60,7 +60,6 @@ module.exports = {
                 generators[type].generator({
                     guildId: guildId
                 }).then((messageData)=>{
-                    console.log(messageData);
                     resolve(messageData);
                 }).catch((e)=>{
                     reject(`Generator of type [${type}] has rejected it's promise: ${e}`);
