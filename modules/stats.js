@@ -10,8 +10,8 @@ module.exports = {
         return new Promise((resolve)=>{
             let guildsCount = dClient.guilds.size;
             let usersCount = dClient.users.size;
-            let msgsCount;
-            let commandsCount;
+            //let msgsCount;
+            //let commandsCount;
 
             resolve({
                 guilds: guildsCount,
