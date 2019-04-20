@@ -114,5 +114,21 @@ module.exports = {
                 });
             });
         });
+    },
+
+    getExpiredStickyDocs: function() {
+        return new Promise((resolve, reject)=>{
+            console.log(`[DB:GESD] WORKING Get expired sticky documents`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").find({expiry: {$gte: new Date().getTime()}}).toArray((err, docs)=> { // 
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+                    console.log(`[DB:GESD] DONE Get expired sticky documents`.success);
+                    resolve(docs);
+                });
+            });
+        });
     }
 };

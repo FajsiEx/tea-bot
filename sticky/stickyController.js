@@ -69,5 +69,9 @@ module.exports = {
 
     hashMsgData: function(messageData) {
         return crypto.createHash('md5').update(JSON.stringify(messageData)).digest("hex");
+    },
+
+    updateStickyDocs: function() {
+        
     }
 };
