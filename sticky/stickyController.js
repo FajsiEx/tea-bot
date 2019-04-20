@@ -82,6 +82,15 @@ module.exports = {
                 if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know
                     reject("expiredDocs is false");
                 }
+                expiredDocs.forEach(doc => {
+                    // TODO: Add external check for stickyDoc plz
+                    this.generateMessageData({
+                        guildId: doc.g_id,
+                        type: doc.type
+                    }).then((messageData)=>{
+                        console.log(messageData);
+                    });
+                });
             }).catch((e)=>{
                 reject("Failed to get expired docs: " + e);
             });
