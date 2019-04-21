@@ -31,15 +31,15 @@ module.exports = {
 
             console.log(`[HANDLER:MSG] Incrementing msgcount for [${guildId}:${handleData.msg.author.id}] to ${doc.messageCount[handleData.msg.author.id]}`.debug);
 
-            dbInt.setGuildDoc(guildId, doc);
+            dbInt.setGuildDoc(guildId, doc).then(()=>{
+                let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
+                if (commandPrefix) {
+                    console.log("[HANDLER:MSG] Passing off to COMMAND handler");
+                    commandHandler(handleData, commandPrefix);
+                    return true;
+                }
+            });
         });
-
-        let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
-        if (commandPrefix) {
-            console.log("[HANDLER:MSG] Passing off to COMMAND handler");
-            commandHandler(handleData, commandPrefix);
-            return true;
-        }
     },
 
     stringStartsWithPrefix: function(stringToBeChecked) {
