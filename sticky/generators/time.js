@@ -14,11 +14,21 @@ module.exports = {
                     "title": "Time sticky post",
                     "color": CONFIG.EMBED.COLORS.STICKY,
                     "description": `
-                        Current server time: ${new Date().toString()}
+                        Test
                     `,
                     "footer": CONFIG.EMBED.FOOTER()
                 }
             });
+            /* resolve({
+                "embed": {
+                    "title": "Time sticky post",
+                    "color": CONFIG.EMBED.COLORS.STICKY,
+                    "description": `
+                        Current server time: ${new Date().toString()}
+                    `,
+                    "footer": CONFIG.EMBED.FOOTER()
+                }
+            }); */
         });
     }
 };
