@@ -98,7 +98,9 @@ module.exports = {
                             channel.startTyping();
                             channel.fetchMessage(doc.m_id).then((msg)=>{
                                 msg.edit(messageData).catch((e)=>{
-                                    console.error("Promise rejection @ edit: " + e);
+                                    console.warn(`Promise rejection @ edit - deleting the sticky doc for [${m_id}]: ${e}`);
+                                    dbBridge.deleteStickyDoc(m_id);
+                                    channel.stopTyping();
                                 });
 
                                 dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000), hash:newHash}).then(()=>{
@@ -108,7 +110,8 @@ module.exports = {
                                     channel.stopTyping();
                                 });
                             }).catch((e)=>{
-                                console.error("Promise rejection @ fetch: " + e);
+                                console.warn(`Promise rejection @ edit - deleting the sticky doc for [${m_id}]: ${e}`);
+                                dbBridge.deleteStickyDoc(m_id);
                                 channel.stopTyping();
                             });
                         }
