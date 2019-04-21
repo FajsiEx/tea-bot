@@ -97,13 +97,19 @@ module.exports = {
                             let channel = dClient.channels.get(doc.c_id);
                             channel.startTyping();
                             channel.fetchMessage(doc.m_id).then((msg)=>{
-                                msg.edit(messageData);
+                                msg.edit(messageData).catch((e)=>{
+                                    console.error("Promise rejection @ edit: " + e);
+                                });
+
                                 dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000), hash:newHash}).then(()=>{
                                     channel.stopTyping();
                                 }).catch((e)=>{
                                     console.log("Failed to save updated data to db. e: " + e);
                                     channel.stopTyping();
                                 });
+                            }).catch((e)=>{
+                                console.error("Promise rejection @ fetch: " + e);
+                                channel.stopTyping();
                             });
                         }
                     });
