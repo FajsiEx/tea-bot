@@ -99,7 +99,7 @@ module.exports = {
                             channel.fetchMessage(doc.m_id).then((msg)=>{
                                 msg.edit(messageData).catch((e)=>{
                                     console.warn(`Promise rejection @ edit - deleting the sticky doc for [${m_id}]: ${e}`);
-                                    dbBridge.deleteStickyDoc(m_id);
+                                    dbBridge.deleteStickyDoc(doc.m_id);
                                     channel.stopTyping();
                                 });
 
@@ -111,7 +111,7 @@ module.exports = {
                                 });
                             }).catch((e)=>{
                                 console.warn(`Promise rejection @ edit - deleting the sticky doc for [${m_id}]: ${e}`);
-                                dbBridge.deleteStickyDoc(m_id);
+                                dbBridge.deleteStickyDoc(doc.m_id);
                                 channel.stopTyping();
                             });
                         }
