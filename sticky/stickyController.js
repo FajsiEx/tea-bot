@@ -98,7 +98,7 @@ module.exports = {
                             channel.startTyping();
                             channel.fetchMessage(doc.m_id).then((msg)=>{
                                 msg.edit(messageData).catch((e)=>{
-                                    console.warn(`Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
+                                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
                                     dbBridge.deleteStickyDoc(doc.m_id);
                                     channel.stopTyping();
                                 });
@@ -106,11 +106,11 @@ module.exports = {
                                 dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000), hash:newHash}).then(()=>{
                                     channel.stopTyping();
                                 }).catch((e)=>{
-                                    console.log("Failed to save updated data to db. e: " + e);
+                                    console.log("[STICKYCTRL:UPDSTICKYDOCS] Failed to save updated data to db. e: " + e);
                                     channel.stopTyping();
                                 });
                             }).catch((e)=>{
-                                console.warn(`Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
+                                console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
                                 dbBridge.deleteStickyDoc(doc.m_id);
                                 channel.stopTyping();
                             });
