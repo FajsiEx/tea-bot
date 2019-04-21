@@ -167,5 +167,24 @@ module.exports = {
                 });
             });
         });
+    },
+
+    deleteAllStickyDocsFromChannel: function(c_id) {
+        return new Promise((resolve)=>{
+            // TODO: Add check if c_id is a number
+            console.log(`[DB:DELETEASD] WORKING Delete all sticky docs with c_id [${c_id}]`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").deleteMany({c_id: c_id}, (err)=> { // Delete sticky doc based on m_id
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:DELETEASD] DONE Delete all sticky docs with c_id [${c_id}]`.success);
+
+                    resolve(true); // Return with success
+                });
+            });
+        });
     }
 };

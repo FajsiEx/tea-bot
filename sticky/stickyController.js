@@ -121,5 +121,15 @@ module.exports = {
                 reject("Failed to get expired docs: " + e);
             });
         });
+    },
+
+    deleteAllStickyMessagesFromChannel: function(c_id) {
+        return new Promise((resolve, reject)=>{
+            dbBridge.deleteAllStickyDocsFromChannel(c_id).then(()=>{
+                resolve();
+            }).catch((e)=>{
+                reject("Failed to delete data in db: " + e);
+            });
+        });
     }
 };

@@ -48,6 +48,14 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["stickydelall"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/deleteall").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["dbggd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
