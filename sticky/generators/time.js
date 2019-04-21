@@ -9,7 +9,7 @@ module.exports = {
                 reject("False guildId");
             }
 
-            resolve({
+            /* resolve({
                 "embed": {
                     "title": "Time sticky post",
                     "color": CONFIG.EMBED.COLORS.STICKY,
@@ -18,8 +18,9 @@ module.exports = {
                     `,
                     "footer": CONFIG.EMBED.FOOTER()
                 }
-            });
-            /* resolve({
+            }); */
+            
+            resolve({
                 "embed": {
                     "title": "Time sticky post",
                     "color": CONFIG.EMBED.COLORS.STICKY,
@@ -28,7 +29,7 @@ module.exports = {
                     `,
                     "footer": CONFIG.EMBED.FOOTER()
                 }
-            }); */
+            });
         });
     }
 };
