@@ -22,7 +22,8 @@
     "nyc": "^14.0.0"
   },
   "scripts": {
-    "test": "nyc --reporter=text mocha",
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "cov": "nyc --reporter html --reporter text npm test",
     "start": "node server.js"
   },
   "repository": {
