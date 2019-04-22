@@ -18,10 +18,11 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "nyc": "^14.0.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
+    "test": "nyc --reporter=text mocha",
     "start": "node server.js"
   },
   "repository": {
