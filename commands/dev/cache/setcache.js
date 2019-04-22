@@ -18,7 +18,7 @@ module.exports = {
             guildId = commandArg_guildId;
         }
 
-        if (!guildId) { // If the msg isn't in a guild (to get id from) and trhe user hasn't specified an id in the params, please fuck off
+        if (!guildId) { // If the msg isn't in a guild (to get id from) and the user hasn't specified an id in the params, please fuck off
             msg.channel.send({
                 "embed": {
                     "title": "Set guild doc cache",
@@ -28,8 +28,11 @@ module.exports = {
                     `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
+            }).then(()=>{
+                resolve(1);
+            }).catch((e)=>{
+                reject("Failed to send invalid parameter message: " + e);
             });
-            return false;
         }
 
         dbBridge.getGuildDocument(guildId).then((doc) => {
@@ -46,6 +49,10 @@ module.exports = {
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
+                }).then(()=>{
+                    resolve(0);
+                }).catch((e)=>{
+                    reject("Failed to send success message: " + e);
                 });
             });
         });
