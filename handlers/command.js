@@ -63,7 +63,7 @@ module.exports = {
             if (!requestedCommandCategory) { // If the command category for the requested command isn't found
                 console.log(`[HANDLE:COMMAND] WARN Command category [${requestedCommandCategoryName}] does not exist.`.warn);
 
-                let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid ccat
+                let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
                     return commandCategory.categoryName == "invalid";
                 })[0];
                 let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:category "command" from it
@@ -82,7 +82,7 @@ module.exports = {
             if (!requestedCommand) { // If no command was found in it's category
                 console.log(`[HANDLE:COMMAND] WARN Command [${requestedCommandName}] does not exist.`.warn);
 
-                let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid ccat
+                let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
                     return commandCategory.categoryName == "invalid";
                 })[0];
                 let invalidCommandCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:command "command" from it
