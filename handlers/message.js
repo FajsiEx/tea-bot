@@ -41,6 +41,8 @@ module.exports = {
                         }).catch((e)=>{
                             reject("commandHandler rejected it's promise: " + e);
                         });
+                    }else{
+                        resolve(0); // 0 = handled message without command
                     }
                 });
             });
