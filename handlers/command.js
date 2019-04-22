@@ -5,7 +5,7 @@
     Licensed under MIT license - see LICENSE.md for the full license text
 
     Module: command (handler)
-    Desc: handles incomming msg which msgHandler judged to be a command and passes the control over to the specific command module - if found.
+    Desc: handles incoming msg which msgHandler judged to be a command and passes the control over to the specific command module - if found.
 
 */
 
