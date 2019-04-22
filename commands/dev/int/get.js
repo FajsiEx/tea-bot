@@ -17,7 +17,7 @@ module.exports = {
             guildId = commandArg_guildId;
         }
 
-        if (!guildId) { // If the msg isn't in a guild (to get id from) and trhe user hasn't specified an id in the params, please fuck off
+        if (!guildId) { // If the msg isn't in a guild (to get id from) and true user hasn't specified an id in the params, please fuck off
             msg.channel.send({
                 "embed": {
                     "title": "Get guild doc cache",
