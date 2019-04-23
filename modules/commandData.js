@@ -72,7 +72,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["intread"],
+                keywords: ["intget"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/int/get").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -80,7 +80,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["intwrite"],
+                keywords: ["intset"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/int/set").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -88,7 +88,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["testread"],
+                keywords: ["testget"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testread").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -96,7 +96,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["testwrite"],
+                keywords: ["testset"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testwrite").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -104,7 +104,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["cacheread"],
+                keywords: ["cacheget"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/getcache").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -112,7 +112,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["cachewrite"],
+                keywords: ["cacheset"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/setcache").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
