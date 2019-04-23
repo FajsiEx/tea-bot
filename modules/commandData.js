@@ -56,7 +56,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["dbggd"],
+                keywords: ["getgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -88,7 +88,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["testget"],
+                keywords: ["dbget"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testread").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -96,7 +96,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["testset"],
+                keywords: ["dbset"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testwrite").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
