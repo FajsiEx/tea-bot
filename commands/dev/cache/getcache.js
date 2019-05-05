@@ -52,7 +52,7 @@ module.exports = {
                 }).then(()=>{
                     return resolve(0);
                 }).catch((e)=>{
-                    return reject("Failed to send success message");
+                    return reject("Failed to send success message: " + e);
                 });
             });
         });

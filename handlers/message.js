@@ -20,6 +20,7 @@ module.exports = {
             if (commandPrefix) {
                 console.log("[HANDLER:MSG] Passing off to COMMAND handler");
                 commandHandler(handleData, commandPrefix).then((status) => {
+                    console.log("[HANDLER:MSG] Command handler returned status " + status);
                     module.exports.incrementMessageCount(handleData).then(()=>{
                         return resolve(1); // 1 = handled command
                     }).catch((e)=>{
