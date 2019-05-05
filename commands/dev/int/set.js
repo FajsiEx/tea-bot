@@ -23,9 +23,9 @@ module.exports = {
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then(()=>{
-                    resolve(1);
+                    return resolve(1);
                 }).catch(()=>{
-                    reject("Failed to send a fail message: " + e);
+                    return reject("Failed to send a fail message: " + e);
                 });
             }
 
@@ -54,9 +54,9 @@ module.exports = {
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then(()=>{
-                        resolve(0);
+                        return resolve(0);
                     }).catch(()=>{
-                        reject("Failed to send a success message: " + e);
+                        return reject("Failed to send a success message: " + e);
                     });
                 }); // and write the doc
             });

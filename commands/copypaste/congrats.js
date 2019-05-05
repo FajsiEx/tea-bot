@@ -5,7 +5,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             let msg = handleData.msg;
             if (!msg) {
-                reject("Message is false");
+                return reject("Message is false");
             }
             msg.channel.send({
                 "embed": {
@@ -17,9 +17,9 @@ module.exports = {
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             }).then(()=>{
-                resolve(0);
+                return resolve(0);
             }).catch((e)=>{
-                reject("Failed to send a message: " + e);
+                return reject("Failed to send a message: " + e);
             });
         });
     }

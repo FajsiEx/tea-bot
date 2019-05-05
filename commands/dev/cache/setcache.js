@@ -30,9 +30,9 @@ module.exports = {
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then(() => {
-                    resolve(1);
+                    return resolve(1);
                 }).catch((e) => {
-                    reject("Failed to send invalid parameter message: " + e);
+                    return reject("Failed to send invalid parameter message: " + e);
                 });
             }
 
@@ -51,9 +51,9 @@ module.exports = {
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then(() => {
-                        resolve(0);
+                        return resolve(0);
                     }).catch((e) => {
-                        reject("Failed to send success message: " + e);
+                        return reject("Failed to send success message: " + e);
                     });
                 });
             });
