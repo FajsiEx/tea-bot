@@ -49,6 +49,9 @@ module.exports = {
 
     incrementMessageCount: function (handleData) {
         return new Promise((resolve, reject) => {
+            if (msg.channel.type != "text") {
+                resolve(1); // Because DMs don't have the guild.id property we need to resolve here
+            }
             
             guildId = handleData.msg.guild.id;
 
