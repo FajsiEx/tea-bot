@@ -48,6 +48,10 @@ dClient.on("message", (msg)=> {
         msg:msg,
         dClient:dClient,
         footer: false
+    }).then((code)=>{
+        console.log(`[EVENT:MESSAGE] Message handled. With resolve code [${code}]`.event);
+    }).catch((e)=>{
+        console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error)
     });
 });
 

@@ -49,6 +49,7 @@ module.exports = {
 
     incrementMessageCount: function (handleData) {
         return new Promise((resolve, reject) => {
+            
             guildId = handleData.msg.guild.id;
 
             console.log("[COMMAND:DEV:MESSAGEINCREMENT] DEBUG Called".debug);
