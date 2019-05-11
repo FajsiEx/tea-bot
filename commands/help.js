@@ -20,9 +20,9 @@ module.exports = {
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             }).then(()=>{
-                resolve(0);
+                return resolve(0);
             }).catch((e)=>{
-                reject("Error sending help message: " + e);
+                return reject("Error sending help message: " + e);
             });
         });
     }
