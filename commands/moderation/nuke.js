@@ -111,9 +111,66 @@ module.exports = {
 
             } else if (type == "from") {
 
+                if (!parseInt(arg)) {
+                    msg.channel.send({
+                        "embed": {
+                            "title": "Can't do that",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                You must specify starting message by it's snowflake id
+                                For example: \`!nuke from 575607273645277214\`
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    }).then((botMsg) => {
+                        botMsg.delete(10000);
+                        return resolve(6);
+                    }).catch((e)=>{
+                        return reject("Failed to send 'no messages' fail message: " + e);
+                    });
+                    return;
+                }
+
                 msg.channel.fetchMessages({
                     after: arg
                 }).then((messages) => {
+                    if (messages.size < 1) {
+                        msg.channel.send({
+                            "embed": {
+                                "title": "Can't do that",
+                                "color": CONFIG.EMBED.COLORS.FAIL,
+                                "description": `
+                                    Have not found a single message
+                                `,
+                                "footer": CONFIG.EMBED.FOOTER(handleData)
+                            }
+                        }).then((botMsg) => {
+                            botMsg.delete(10000);
+                            return resolve(4);
+                        }).catch((e)=>{
+                            return reject("Failed to send 'no messages' fail message: " + e);
+                        });
+                        return;
+                    }
+                    if (messages.size > 99) {
+                        msg.channel.send({
+                            "embed": {
+                                "title": "Can't do that",
+                                "color": CONFIG.EMBED.COLORS.FAIL,
+                                "description": `
+                                    Too many messages (max 99)
+                                `,
+                                "footer": CONFIG.EMBED.FOOTER(handleData)
+                            }
+                        }).then((botMsg) => {
+                            botMsg.delete(10000);
+                            return resolve(5);
+                        }).catch((e)=>{
+                            return reject("Failed to send limit fail message: " + e);
+                        });
+                        return;
+                    }
+
                     msg.channel.bulkDelete(messages).then(() => {
                         msg.channel.send({
                             "embed": {
