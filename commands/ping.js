@@ -16,7 +16,7 @@ module.exports = {
             }).then(()=>{
                 return resolve(0);
             }).catch((e)=>{
-                return reject("Failed sending message: " + e)''
+                return reject("Failed sending message: " + e);
             });
         });
     }
