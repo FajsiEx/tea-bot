@@ -15,7 +15,7 @@ describe('Sticky', () => {
                     "footer": CONFIG.EMBED.FOOTER()
                 }
             }
-            expect(stickyCtrl.hashMsgData(testMessageData)).to.equal('eb9149fab66e6ad35dd0024c79f13709');
+            expect(stickyCtrl.hashMsgData(testMessageData)).to.equal('b43892a52c1f318cf0ac2190e02f769c');
         });
     });
 });
