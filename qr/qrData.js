@@ -9,6 +9,7 @@
 module.exports = [
     {
         keywords: ["oof"],
-        response: "Off haha"
+        type: "singleReply",
+        data: "Oof haha"
     }
 ];
