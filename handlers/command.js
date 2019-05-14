@@ -131,10 +131,15 @@ module.exports = {
                 }
             }
 
+            // Add usedCommand to handleData
+            console.log("[HANDLE:COMMAND] DEBUG usedCommand: " + requestedCommandName);
+            handleData.usedCommand = requestedCommandName;
+
+            // Call the command
             console.log(`[HANDLE:COMMAND] INFO Command [${requestedCommandName}]`.info);
             requestedCommand.handler(handleData).then(()=>{
                 resolve(0); // 0 = command executed successfully
-            });
+            }); // TODO: Add handler here
         });
     }
 };

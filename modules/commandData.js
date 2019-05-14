@@ -10,6 +10,8 @@
 */
 
 const DEFAULT_COMMANDS_PATH = "../commands/";
+const qrHandler = require("../qr/qrHandler");
+const qrData = require("../qr/qrData");
 
 // Just add command™
 let COMMANDS = [
@@ -166,6 +168,24 @@ let COMMANDS = [
 ];
 
 // Beware. Bellow this line lies madness.
+
+// Merge quick responses (QRs) to commands without prefix
+
+let qrCategory = {
+    categoryName: "qr",
+    commands: []
+};
+
+qrData.forEach((qr)=>{
+    qrCategory.commands.push({
+        keywords: qr.keywords,
+        handler: qrHandler.handler
+    });
+});
+
+COMMANDS.push(qrCategory); // Push the resulted category in the commands - they will be processed later ;)
+
+
 
 // We merge all commands into one array
 let allCommands = [];

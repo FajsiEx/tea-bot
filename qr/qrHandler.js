@@ -2,9 +2,14 @@
 const qrData = require("./qrData");
 
 module.exports = {
-    handler: (handleData, usedCommand)=>{
+    handler: (handleData)=>{
         return new Promise((resolve, reject) => {
-            console.log("[QR:HANDLER] Called " + usedCommand);
+            // Additional check for non-standard property
+            if (!handleData.usedCommand) {
+                return reject("Handle data does not have usedCommand");
+            }
+
+            console.log("[QR:HANDLER] Called " + handleData.usedCommand);
             resolve(0);
         });
     }
