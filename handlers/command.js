@@ -139,7 +139,9 @@ module.exports = {
             console.log(`[HANDLE:COMMAND] INFO Command [${requestedCommandName}]`.info);
             requestedCommand.handler(handleData).then(()=>{
                 resolve(0); // 0 = command executed successfully
-            }); // TODO: Add handler here
-        });
-    }
+            }).catch((e)=>{
+                return reject(`Command [${requestedCommandName}] rejected: ${e}`);
+            });
+        }); // End of promise
+    } // End of handler
 };
