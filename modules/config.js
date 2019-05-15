@@ -3,8 +3,8 @@ console.log("[MODULE:CONFIG] WORKING Init config.".working);
 
 const handleDataCheck = require("../checks/handleData").check;
 
-const BUILD = "19.pre-alpha";
-const BUILD_STRING = `${BUILD} - Stay calm while I iron out all the bugs ;)`;
+const BUILD = "19.alpha";
+const BUILD_STRING = `${BUILD}`;
 const COMMAND_PREFIXES = ["!", "tea!"];
 const COLORS = {
     FAIL:       16720418,
