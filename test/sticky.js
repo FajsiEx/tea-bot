@@ -11,11 +11,10 @@ describe('Sticky', () => {
                     "color": CONFIG.EMBED.COLORS.STICKY,
                     "description": `
                         Test data
-                    `,
-                    "footer": CONFIG.EMBED.FOOTER()
+                    `
                 }
             }
-            expect(stickyCtrl.hashMsgData(testMessageData)).to.equal('b43892a52c1f318cf0ac2190e02f769c');
+            expect(stickyCtrl.hashMsgData(testMessageData)).to.equal('aafcda27704dcad375fa05b8131c0927');
         });
     });
 });
