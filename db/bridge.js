@@ -1,6 +1,5 @@
 const DB_URI = require("../modules/config").SECRETS.DATABASE.URI;
 const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectID;
 
 const cache = require("./cache");
 
@@ -61,7 +60,7 @@ module.exports = {
                 if (err) return console.error(err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").deleteOne({guildId: guildId}, (err, res)=> { // Delete doc with guildId to the guilds collection
+                db.collection("guilds").deleteOne({guildId: guildId}, (err)=> { // Delete doc with guildId to the guilds collection
                     if (err) return console.error(err); // If there's a problem, return.
 
                     console.log(`[DB:CGD] DONE Delete guild doc for [${guildId}]`.success);
@@ -86,12 +85,104 @@ module.exports = {
                 if (err) return console.error(err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").updateOne({guildId: guildId}, {$set:guildDoc}, (err, res)=> { // Update doc with guildId
+                db.collection("guilds").updateOne({guildId: guildId}, {$set:guildDoc}, (err)=> { // Update doc with guildId
                     if (err) return console.error(err); // If there's a problem, return.
 
                     console.log(`[DB:WGD] DONE Write guild doc for [${guildId}]`.success);
 
                     resolve(true);
+                });
+            });
+        });
+    },
+
+    createStickyMsgDocument: function(documentData) {
+        return new Promise((resolve, reject)=>{
+            // TODO: add checks plz
+            console.log(`[DB:CSMSGD] WORKING Create sticky msg doc`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").insertOne(documentData, (err, res)=> { // Insert doc with the data of the sticky message to "sticky" collection
+                    if (err) reject("Insert error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:CSMSGD] DONE Create sticky msg doc`.success);
+
+                    resolve(res.ops[0]); // Return the new sticky msg doc
+                });
+            });
+        });
+    },
+
+    getExpiredStickyDocs: function() {
+        return new Promise((resolve, reject)=>{
+            console.log(`[DB:GESD] WORKING Get expired sticky documents`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").find({expiry: {$lte: new Date().getTime()}}).toArray((err, docs)=> { // 
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+                    console.log(`[DB:GESD] DONE Get expired sticky documents`.success);
+                    resolve(docs);
+                });
+            });
+        });
+    },
+
+    updateStickyDoc: function(m_id, stickyDocUpdateData) {
+        return new Promise((resolve, reject)=>{
+            console.log(`[DB:USD] WORKING Update sticky doc with m_id [${m_id}]`.working);
+
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").updateOne({m_id: m_id}, {$set:stickyDocUpdateData}, (err)=> { // Update doc with the m_id (message id of the sticky message)
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:USD] DONE Update sticky doc with m_id [${m_id}]`.success);
+
+                    resolve(true);
+                });
+            });
+        });
+    },
+
+    deleteStickyDoc: function(m_id) {
+        return new Promise((resolve)=>{
+            // TODO: Add check if m_id is a number
+            console.log(`[DB:DELETESD] WORKING Delete sticky doc with m_id [${m_id}]`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").deleteOne({m_id: m_id}, (err)=> { // Delete sticky doc based on m_id
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:DELETESD] DONE Delete sticky doc with m_id [${m_id}]`.success);
+
+                    resolve(true); // Return with success
+                });
+            });
+        });
+    },
+
+    deleteAllStickyDocsFromChannel: function(c_id) {
+        return new Promise((resolve)=>{
+            // TODO: Add check if c_id is a number
+            console.log(`[DB:DELETEASD] WORKING Delete all sticky docs with c_id [${c_id}]`.working);
+            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
+                if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                let db = client.db('tea-bot'); // Get tea-bot db
+                db.collection("sticky").deleteMany({c_id: c_id}, (err)=> { // Delete sticky doc based on m_id
+                    if (err) reject("Connection error " + err); // If there's a problem, return.
+
+                    console.log(`[DB:DELETEASD] DONE Delete all sticky docs with c_id [${c_id}]`.success);
+
+                    resolve(true); // Return with success
                 });
             });
         });

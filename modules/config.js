@@ -3,8 +3,8 @@ console.log("[MODULE:CONFIG] WORKING Init config.".working);
 
 const handleDataCheck = require("../checks/handleData").check;
 
-const BUILD = "19.4a";
-const BUILD_STRING = `${BUILD} InDev - not ready for deployment`;
+const BUILD = "19.pre-alpha";
+const BUILD_STRING = `${BUILD} - Stay calm while I iron out all the bugs ;)`;
 const COMMAND_PREFIXES = ["!", "tea!"];
 const COLORS = {
     FAIL:       16720418,
@@ -16,47 +16,31 @@ const COLORS = {
     STICKY:     65491
 };
 const FOOTER = (handleData)=>{
-    if (handleDataCheck(handleData)) {
+    if (handleDataCheck(handleData, true)) {
         console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
         return {
-            text: `Failed to get footer. Reason: handleData check failed.`
+            "icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
+            "text": `Build ${BUILD_STRING} | by FajsiEx`
         };
     }
     return {
-        //"icon_url": "https://cdn.discordapp.com/embed/avatars/0.png",
+        "icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
         "text": `Build ${BUILD_STRING} | by FajsiEx | Caller: ${handleData.msg.author.tag}`
     };
 };
 const BOT_LOGO_ASCII = `
-                                 .,***********,.                                  
-                       ******************************/***//*                      
-                  *****************************************/*///,                 
-               ***************************************    **/////                 
-            *****************************************      *////*                 
-          *******************************************      ***///                 
-        .************************,        ***********      ******                 
-       ********************          .***************      ******                 
-      ****************            *******************      ******                 
-      ************            ***********************      ******                 
-     **********            **************************      ******                 
-     *******           ,*****************************      ******                 
-    .*****          .********************     *******      ******                 
-    ,***          ***********************      ******      ******                 
-    .*         ,*************************      ******       .**                   
-             ****************************      ******                             
-           *******************    *******        **                               
-         **********  ,*******      ******                                         
-       **********      ******      ******                                         
-      ***********      ******      ******                                         
-    ,************      ******      ******                                         
-   ******* ******      ******      ******                                         
-  ******.  ******      ******      ******                                         
- ******    ******      ******      ******                                         
-.*****     ******       ****       ******                                         
-   ,,      ******                  ******                                         
-           ******                  ******                                         
-           ******                   ***,                                          
-             ,*                              
+                          @@@@@@@@@@@@@@@@@@           
+                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@         
+          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    @@@@       
+      @@@@@@@@@@@@@@@@@@        @@@@@@@@@@    @@@@       
+    @@@@@@@@@@          @@@@@@@@@@@@@@@@@@    @@@@       
+  @@@@@@          @@@@@@@@@@@@@@@@@@@@@@@@    @@@@       
+  @@        @@@@@@@@@@@@@@@@@@@@      @@@@    @@@@       
+        @@@@@@@@@@@@@@      @@@@      @@@@               
+    @@@@@@@@      @@@@      @@@@      @@@@               
+  @@@@  @@@@      @@@@      @@@@                         
+@@@@    @@@@      @@@@      @@@@                         
+        @@@@                @@@@                                               
 `;
 
 // Shove everything into an object

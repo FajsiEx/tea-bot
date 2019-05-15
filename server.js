@@ -7,7 +7,6 @@
 */
 
 let startTimestamp = new Date().getTime();
-const colors = require('colors');
 require("./inits/consoleColors").init();
 
 console.log("[BOOT] WORKING Importing modules".working);
@@ -49,6 +48,10 @@ dClient.on("message", (msg)=> {
         msg:msg,
         dClient:dClient,
         footer: false
+    }).then((code)=>{
+        console.log(`[EVENT:MESSAGE] Message handled. With resolve code [${code}]`.event);
+    }).catch((e)=>{
+        console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error)
     });
 });
 
