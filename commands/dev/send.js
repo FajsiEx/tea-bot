@@ -16,23 +16,34 @@ module.exports = {
             let channelId = msg.content.split(" ")[1];
             let sendMsg = msg.content.slice(command.length + channelId.length + 2);
 
-            msg.channel.send({
-                "embed": {
-                    "title": "Send",
-                    "color": CONFIG.EMBED.COLORS.SUCCESS,
-                    "description": `
-                    The following message will be sent to \`${channelId}\`
-                    \`\`\`${sendMsg}\`\`\`
-                `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
-                }
-            }).catch((e)=>{
-                return reject("Failed to send response: " + e);
-            });
-
             handleData.dClient.channels.get(channelId).send(sendMsg).then(()=>{
+                msg.channel.send({
+                    "embed": {
+                        "title": "Send",
+                        "color": CONFIG.EMBED.COLORS.SUCCESS,
+                        "description": `
+                            The following message was sent to \`${channelId}\`
+                            \`\`\`${sendMsg}\`\`\`
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                }).catch((e)=>{
+                    return reject("Failed to send response: " + e);
+                });
                 return resolve(0);
             }).catch((e)=>{
+                msg.channel.send({
+                    "embed": {
+                        "title": "Send",
+                        "color": CONFIG.EMBED.COLORS.SUCCESS,
+                        "description": `
+                            Failed to send the message.
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                }).catch((e)=>{
+                    return reject("Failed to send error response: " + e);
+                });
                 return reject("Failed to send message to the specified channel: " + e);
             });
         });
