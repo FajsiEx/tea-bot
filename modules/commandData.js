@@ -26,7 +26,7 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler,
             },
             {
-                keywords: ["shutdown"],
+                keywords: ["shutdown", "skapnadruhulomenohned"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/shutdown").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
