@@ -5,9 +5,9 @@ module.exports = {
         return new Promise((resolve, reject) => {
             let msg = handleData.msg;
 
-            let muteUser = msg.mentions.users.first();
+            let mentionedUsers = msg.mentions.users;
 
-            if (!muteUser) {
+            if (mentionedUsers.size < 1) {
                 msg.channel.send({
                     embed: {
                         "title": "Mute",
@@ -25,20 +25,21 @@ module.exports = {
                 return;
             }
 
-            msg.guild.channels.forEach(channel => {
-                channel.overwritePermissions(muteUser, {
-                    //SEND_MESSAGES: null, // For defaulting the perm
-                    SEND_MESSAGES: false,
+            mentionedUsers.forEach((mentionedUser)=>{
+                msg.guild.channels.forEach(channel => {
+                    channel.overwritePermissions(mentionedUser, {
+                        //SEND_MESSAGES: null, // For defaulting the perm
+                        SEND_MESSAGES: false,
+                    });
                 });
             });
-
 
             msg.channel.send({
                 embed: {
                     "title": "Mute",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
-                        User ${muteUser} was muted.
+                        User(s) were muted.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
