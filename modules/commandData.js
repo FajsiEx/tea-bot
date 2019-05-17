@@ -134,12 +134,16 @@ let COMMANDS = [
                 keywords: ["mute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
             },
+            {
+                keywords: ["unmute"],
+                handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
+            },
         ]
     },
 
     {
         categoryName: "cpp",
-        commands: [{
+        commands: [{ // TODO: move this to qr
             keywords: ["congrats", "congratulations"],
             handler: require(DEFAULT_COMMANDS_PATH + "copypaste/congrats").handler,
         }]
