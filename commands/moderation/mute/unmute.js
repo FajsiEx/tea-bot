@@ -5,9 +5,9 @@ module.exports = {
         return new Promise((resolve, reject) => {
             let msg = handleData.msg;
 
-            let muteUser = msg.mentions.users.first();
+            let mentionedUsers = msg.mentions.users;
 
-            if (!muteUser) {
+            if (mentionedUsers.size < 1) {
                 msg.channel.send({
                     embed: {
                         "title": "Unmute",
@@ -17,20 +17,22 @@ module.exports = {
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
-                }).then(()=>{
+                }).then(() => {
                     return resolve(1);
-                }).catch((e)=>{
+                }).catch((e) => {
                     return reject("Error sending 'no mentions' message: " + e);
                 });
                 return;
             }
 
-            msg.guild.channels.forEach(channel => {
-                try {
-                    channel.permissionOverwrites.get(muteUser.id).delete();
-                }catch(e){
-                    console.log(`[COMMAND:MUTE] Unable to unmute user [${muteUser.tag}] from channel [${channel.id}] due to: ${e}`.warn);
-                }
+            mentionedUsers.forEach((mentionedUser) => {
+                msg.guild.channels.forEach(channel => {
+                    try {
+                        channel.permissionOverwrites.get(mentionedUser.id).delete();
+                    } catch (e) {
+                        console.log(`[COMMAND:MUTE] Unable to unmute user [${mentionedUser.tag}] from channel [${channel.id}] due to: ${e}`.warn);
+                    }
+                });
             });
 
 
@@ -39,13 +41,13 @@ module.exports = {
                     "title": "Unmute",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
-                        User ${muteUser} was unmuted.
+                        User(s) was unmuted.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
-            }).then(()=>{
+            }).then(() => {
                 return resolve(0);
-            }).catch((e)=>{
+            }).catch((e) => {
                 return reject("Error sending result message: " + e);
             });
         });
