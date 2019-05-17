@@ -131,14 +131,23 @@ let COMMANDS = [
             {
                 keywords: ["nuke", "bulkdelete"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
+                requirements: {
+                    channelType: "text"
+                }
             },
             {
                 keywords: ["mute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
+                requirements: {
+                    channelType: "text"
+                }
             },
             {
                 keywords: ["unmute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
+                requirements: {
+                    channelType: "text"
+                }
             },
         ]
     },

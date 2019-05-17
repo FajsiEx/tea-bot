@@ -73,6 +73,7 @@ module.exports = {
                 invalidCommandCategoryCommand.handler(handleData); // Call it
 
                 resolve(2); // 2 = category not found
+                return;
             }
 
             let requestedCommand = requestedCommandCategory.commands.filter(command => { // Get command itself from the category by the command name entered.
@@ -92,6 +93,7 @@ module.exports = {
                 invalidCommandCommand.handler(handleData); // Call it
 
                 resolve(1); // 1 = command not found
+                return;
             }
 
             if (requestedCommand.rights) { // If the command has any rights
@@ -111,6 +113,7 @@ module.exports = {
                         });
 
                         resolve(3); // 3 = does not have admin rights
+                        return;
                     }
                 }
                 if (requestedCommand.rights.devOnly) { // If the command is dev only,
@@ -127,6 +130,29 @@ module.exports = {
                         invalidCommandCommand.handler(handleData);
 
                         resolve(4); // 4 = is not dev
+                        return;
+                    }
+                }
+            }
+
+            if (requestedCommand.requirements) {
+                if (requestedCommand.requirements.channelType) {
+                    if (msg.channel.type != requestedCommand.requirements.channelType) {
+                        msg.channel.send({
+                            "embed": {
+                                "title": "Nope",
+                                "color": CONFIG.EMBED.COLORS.FAIL,
+                                "description": `
+                                    That command works only in ${requestedCommand.requirements.channelType} channels. sry.
+                                `,
+                                "footer": CONFIG.EMBED.FOOTER(handleData)
+                            }
+                        }).then((botMsg) => {
+                            botMsg.delete(15000);
+                        });
+
+                        resolve(5);
+                        return;
                     }
                 }
             }
