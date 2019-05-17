@@ -6,6 +6,8 @@
 
 */
 
+
+// TODO: add embed type reply & move congrats here
 module.exports = [
     {
         keywords: ["oof"],
