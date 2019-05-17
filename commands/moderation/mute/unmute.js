@@ -13,7 +13,7 @@ module.exports = {
                         "title": "Unmute",
                         "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": `
-                            You must mention someone to be muted.
+                            You must mention someone to be unmuted.
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
