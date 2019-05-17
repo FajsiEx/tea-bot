@@ -17,7 +17,8 @@ const qrData = require("../qr/qrData");
 let COMMANDS = [
     {
         categoryName: "dev",
-        commands: [{
+        commands: [
+            {
                 keywords: ["ping"],
                 handler: require(DEFAULT_COMMANDS_PATH + "ping").handler,
             },
@@ -126,7 +127,8 @@ let COMMANDS = [
 
     {
         categoryName: "mod",
-        commands: [{
+        commands: [
+            {
                 keywords: ["nuke", "bulkdelete"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
             },
@@ -143,15 +145,18 @@ let COMMANDS = [
 
     {
         categoryName: "cpp",
-        commands: [{ // TODO: move this to qr
-            keywords: ["congrats", "congratulations"],
-            handler: require(DEFAULT_COMMANDS_PATH + "copypaste/congrats").handler,
-        }]
+        commands: [
+            { // TODO: move this to qr
+                keywords: ["congrats", "congratulations"],
+                handler: require(DEFAULT_COMMANDS_PATH + "copypaste/congrats").handler,
+            }
+        ]
     },
 
     {
         categoryName: "invalid", // Invalid command/category replies
-        commands: [{
+        commands: [
+            {
                 keywords: ["category"],
                 handler: require(DEFAULT_COMMANDS_PATH + "invalid/category").handler,
             },
@@ -164,7 +169,8 @@ let COMMANDS = [
 
     {
         categoryName: false, // Without prefix
-        commands: [{
+        commands: [
+            {
                 keywords: ["hi", "hello", "konichiwa"],
                 handler: require(DEFAULT_COMMANDS_PATH + "hi").handler,
             },
