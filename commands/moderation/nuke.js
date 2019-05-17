@@ -11,25 +11,6 @@ module.exports = {
         return new Promise((resolve, reject) => {
             let msg = handleData.msg;
 
-            if (msg.channel.type != "text") {
-                msg.channel.send({
-                    "embed": {
-                        "title": "Can't do that",
-                        "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
-                        Nuke works only in guild text channels. oof.
-                    `,
-                        "footer": CONFIG.EMBED.FOOTER(handleData)
-                    }
-                }).then((botMsg) => {
-                    botMsg.delete(10000);
-                    return resolve(10);
-                }).catch((e)=>{
-                    return reject("Failed to send 'not a text channel' fail message: " + e);
-                });
-                return;
-            }
-
             let type = msg.content.split(" ")[1];
             let arg = parseInt(msg.content.split(" ")[2]);
 
