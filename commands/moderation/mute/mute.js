@@ -36,7 +36,7 @@ module.exports = {
             msg.channel.send({
                 embed: {
                     "title": "Mute",
-                    "color": CONFIG.EMBED.COLORS.INFO,
+                    "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                         User ${muteUser} was muted.
                     `,
