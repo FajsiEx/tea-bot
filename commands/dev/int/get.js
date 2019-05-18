@@ -43,7 +43,10 @@ module.exports = {
                         "description": `
                         Done.
                         Guild ID: ${guildId}
-                        Guild doc: ${JSON.stringify(doc)}
+                        Guild doc: 
+                        \`\`\`json
+                            ${JSON.stringify(doc, null, 4)}
+                        \`\`\`
                     `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
