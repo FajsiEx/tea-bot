@@ -131,6 +131,9 @@ let COMMANDS = [
             {
                 keywords: ["nuke", "bulkdelete"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
+                rights: {
+                    adminOnly: true
+                },
                 requirements: {
                     channelType: "text"
                 }
@@ -138,6 +141,9 @@ let COMMANDS = [
             {
                 keywords: ["mute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
+                rights: {
+                    adminOnly: true
+                },
                 requirements: {
                     channelType: "text"
                 }
@@ -145,6 +151,19 @@ let COMMANDS = [
             {
                 keywords: ["unmute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
+                rights: {
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text"
+                }
+            },
+            {
+                keywords: ["restrict"],
+                handler: require(DEFAULT_COMMANDS_PATH + "moderation/restrict/restrict").handler,
+                rights: {
+                    adminOnly: true
+                },
                 requirements: {
                     channelType: "text"
                 }
