@@ -39,8 +39,14 @@ module.exports = {
                     restrictions.push(mentionedUser.id);
                 });
 
-                if (type == "admin") {
+                if (type == "devMode") {
+                    restrictions = "dev";
+                }
+                if (type == "adminMode") {
                     restrictions = "admin";
+                }
+                if (type == "clear") {
+                    restrictions = false;
                 }
 
                 doc.restrictions = restrictions;
