@@ -102,7 +102,8 @@ module.exports = {
 
             if (requestedCommand.rights) { // If the command has any rights
                 if (requestedCommand.rights.adminOnly) {
-                    if (!msg.member.hasPermission('MANAGE_GUILD') && !msg.member.hasPermission('ADMINISTRATOR')) {
+                    let isAdmin = await permChecker.admin(handleData);
+                    if (!isAdmin) {
                         msg.channel.send({
                             "embed": {
                                 "title": "Nope",
@@ -119,9 +120,9 @@ module.exports = {
                         resolve(3); // 3 = does not have admin rights
                         return;
                     }
-                }
-                if (requestedCommand.rights.devOnly) { // If the command is dev only,
-                    if (msg.author.id != 342227744513327107) { // and the caller is not me,
+                }else if (requestedCommand.rights.devOnly) { // If the command is dev only,
+                    let isDev = await permChecker.dev(handleData);
+                    if (!isDev) { // and the caller is not me,
                         // Basically fake invalid command so no one sees anything
 
                         let invalidCommandCategory = COMMANDS.filter(commandCategory => {
