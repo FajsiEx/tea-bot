@@ -25,6 +25,8 @@ console.log("(c) FajsiEx 2019 - under MIT license");
 console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`);
 console.log("==========================================================");
 
+// console.log = ()=>{};
+
 console.log("[BOOT] WORKING Initializing dClient".working);
 const dClient = new discordJS.Client(); // Construct a dicord client object
 console.log("[BOOT] DONE Initializing dClient".success);

@@ -11,6 +11,10 @@
 
 const CONFIG = require("../modules/config");
 
+const dbInt = require("../db/interface");
+const permChecker = require("../modules/permChecker");
+const restrictionChecker = require("../modules/restrictionChecker");
+
 const handleDataCheck = require("../checks/handleData").check;
 
 const COMMANDS = require("../modules/commandData").getCommands();
@@ -22,7 +26,7 @@ module.exports = {
         Output: bool[true=passed control over to the command module; false=any other action]
     */
     handler: (handleData, prefixUsed) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             console.log("[HANDLER:COMMAND] INFO Called.");
 
             if (handleDataCheck(handleData)) { // Check your data, kids
@@ -98,7 +102,7 @@ module.exports = {
 
             if (requestedCommand.rights) { // If the command has any rights
                 if (requestedCommand.rights.adminOnly) {
-                    if (!msg.member.hasPermission('MANAGE_GUILD') || !msg.member.hasPermission('ADMINISTRATOR')) {
+                    if (!msg.member.hasPermission('MANAGE_GUILD') && !msg.member.hasPermission('ADMINISTRATOR')) {
                         msg.channel.send({
                             "embed": {
                                 "title": "Nope",
@@ -162,10 +166,17 @@ module.exports = {
             handleData.usedCommand = requestedCommandName;
 
             // Call the command
-            console.log(`[HANDLE:COMMAND] INFO Command [${requestedCommandName}]`.info);
-            requestedCommand.handler(handleData).then(()=>{
+            console.log(`[HANDLE:COMMAND] INFO Command name [${requestedCommandName}]`.info);
+
+            let isPermitted = await restrictionChecker.checkRestrictions(handleData);
+
+            if (!isPermitted) {
+                return resolve(20);
+            }
+
+            requestedCommand.handler(handleData).then(() => {
                 resolve(0); // 0 = command executed successfully
-            }).catch((e)=>{
+            }).catch((e) => {
                 return reject(`Command [${requestedCommandName}] rejected: ${e}`);
             });
         }); // End of promise
