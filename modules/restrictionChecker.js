@@ -36,8 +36,8 @@ module.exports = {
                             }
                             break;
                         default:
-                            console.log(`[RESTRICTION_CHECKER] Restiction is unclear: ${doc.restrictions}`.warn);
-                            return reject(`Restiction is unclear: ${doc.restrictions}`);
+                            console.log(`[RESTRICTION_CHECKER] Restriction is unclear: ${doc.restrictions}`.warn);
+                            return reject(`Restriction is unclear: ${doc.restrictions}`);
                     }
                 }
             }
