@@ -169,7 +169,12 @@ module.exports = {
             // Call the command
             console.log(`[HANDLE:COMMAND] INFO Command name [${requestedCommandName}]`.info);
 
-            let isPermitted = await restrictionChecker.checkRestrictions(handleData);
+            try {
+                let isPermitted = await restrictionChecker.checkRestrictions(handleData);
+            }catch(e){
+                return reject("CheckRestriction rejected: " + e);
+            }
+            
 
             if (!isPermitted) {
                 return resolve(20);
