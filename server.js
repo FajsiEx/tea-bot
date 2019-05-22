@@ -44,17 +44,21 @@ dClient.on("ready", ()=>{
 let statusInterval = require("./intervals/setStatus").interval;
 setInterval(()=>{statusInterval(dClient);}, 15000);
 
-dClient.on("message", (msg)=> {
+dClient.on("message", async (msg)=> {
     console.log("[EVENT:MESSAGE] Message recieved.".event);
-    messageHandler({
-        msg:msg,
-        dClient:dClient,
-        footer: false
-    }).then((code)=>{
-        console.log(`[EVENT:MESSAGE] Message handled. With resolve code [${code}]`.event);
-    }).catch((e)=>{
-        console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error)
-    });
+    
+    let responseCode;
+    try {
+        await messageHandler({
+            msg:msg,
+            dClient:dClient,
+            footer: false
+        });
+    }catch(e){
+        console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error);
+        return;
+    }
+    console.log(`[EVENT:MESSAGE] Message handled. With resolve code [${code}]`.event);
 });
 
 dClient.on("error", (err)=> {
