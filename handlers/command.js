@@ -34,6 +34,7 @@ module.exports = {
                 reject("Failed handleData check");
             }
 
+            // TODO: move this somewhere
             let msg = handleData.msg; // Get msg from handle data
             console.log("[HANDLER:COMMAND] DEBUG Prefix used: " + prefixUsed);
             let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
@@ -169,8 +170,9 @@ module.exports = {
             // Call the command
             console.log(`[HANDLE:COMMAND] INFO Command name [${requestedCommandName}]`.info);
 
+            let isPermitted;
             try {
-                let isPermitted = await restrictionChecker.checkRestrictions(handleData);
+                isPermitted = await restrictionChecker.checkRestrictions(handleData);
             }catch(e){
                 return reject("CheckRestriction rejected: " + e);
             }
