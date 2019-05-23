@@ -1,3 +1,6 @@
 F:\Projects\tea-bot-withoutsln\obj\Debug\tea-bot.njsprojAssemblyReference.cache
 F:\Projects\tea-bot-withoutsln\obj\Debug\tea-bot.njsproj.CoreCompileInputs.cache
 F:\Projects\tea-bot-withoutsln\bin\Microsoft.NodejsTools.WebRole.dll
+F:\Projects\tea-bot\obj\Debug\tea-bot.njsprojAssemblyReference.cache
+F:\Projects\tea-bot\obj\Debug\tea-bot.njsproj.CoreCompileInputs.cache
+F:\Projects\tea-bot\bin\Microsoft.NodejsTools.WebRole.dll
