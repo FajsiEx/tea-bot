@@ -28,7 +28,7 @@ console.log("==========================================================");
 // console.log = ()=>{};
 
 console.log("[BOOT] WORKING Initializing dClient".working);
-const dClient = new discordJS.Client(); // Construct a dicord client object
+const dClient = new discordJS.Client(); // Construct a discord client object
 console.log("[BOOT] DONE Initializing dClient".success);
 
 console.log("[BOOT] WORKING Adding event listeners".working);
@@ -64,6 +64,7 @@ dClient.on("message", async (msg)=> {
 dClient.on("error", (err)=> {
     console.error(err);
 });
+
 console.log("[BOOT] DONE Adding event listeners".success);
 
 console.log("[BOOT] WORKING Init express server".working);
