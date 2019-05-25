@@ -5,11 +5,13 @@ const permChecker = require("./permChecker");
 module.exports = {
     checkRestrictions: (handleData)=> {
         return new Promise(async (resolve, reject)=>{
+            console.log("Restrict checker")
             let doc = await dbInt.getGuildDoc(handleData.msg.guild.id); // Awaits the doc from interface
 
             if (doc.restrictions) { // If there are any restrictions on that doc
                 if(Array.isArray(doc.restrictions)) { // check if it's an array (list of user ids that are restricted)
                     console.log("It's an array lol"); // TODO: temp
+                    return resolve(false);
                 }else{ // If it's something else (should be a restriction type)
                     let isPermitted;
 
@@ -40,6 +42,8 @@ module.exports = {
                             return reject(`Restriction is unclear: ${doc.restrictions}`);
                     }
                 }
+            }else{
+                return resolve(true);
             }
         });
     }
