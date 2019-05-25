@@ -11,7 +11,14 @@ module.exports = {
             if (doc.restrictions) { // If there are any restrictions on that doc
                 if(Array.isArray(doc.restrictions)) { // check if it's an array (list of user ids that are restricted)
                     console.log("It's an array lol"); // TODO: temp
-                    return resolve(false);
+
+                    if (doc.restrictions.includes(handleData.msg.author.id)) { // If the restrict array has author's id in it = author is restricted.
+                        console.log("Author is in restrict mode");
+                        return resolve(false);
+                    }else{
+                        console.log("Author not restricted");
+                        return resolve(true);
+                    }
                 }else{ // If it's something else (should be a restriction type)
                     let isPermitted;
 
