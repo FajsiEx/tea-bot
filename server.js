@@ -58,7 +58,7 @@ dClient.on("message", async (msg)=> {
         console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error);
         return;
     }
-    console.log(`[EVENT:MESSAGE] Message handled. With resolve code [${code}]`.event);
+    console.log(`[EVENT:MESSAGE] Message handled. With resolve code [${responseCode}]`.event);
 });
 
 dClient.on("error", (err)=> {
