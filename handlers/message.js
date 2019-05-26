@@ -16,7 +16,7 @@ module.exports = {
 
             let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
             if (commandPrefix) {
-                commandHandler(handleData, commandPrefix).then((status) => {
+                commandHandler(handleData, commandPrefix).then(() => { // Accepts command handler's status as a parameter (unused)
                     module.exports.incrementMessageCount(handleData).then(()=>{
                         return resolve(1); // 1 = handled command
                     }).catch((e)=>{
