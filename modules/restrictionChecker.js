@@ -35,7 +35,7 @@ module.exports = {
                             }
                             break;
                         case "dev": // Dev mode - only developers can use commands
-                            isPermitted = await permChecker.dev(handleData); // Await response from perm checker
+                            isPermitted = await permChecker.dev(handleData.msg.author.id); // Await response from perm checker
                             if (isPermitted) { // Same as above
                                 console.log("[RESTRICTION_CHECKER] Dev - success".success);
                                 return resolve(true);

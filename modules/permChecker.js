@@ -11,9 +11,9 @@ module.exports = {
         });
     },
 
-    dev: (handleData) => {
+    dev: (userID) => {
         return new Promise((resolve, reject) => {
-            if (handleData.msg.author.id == 342227744513327107) {
+            if (userID == 342227744513327107) {
                 resolve(true);
             } else {
                 resolve(false);

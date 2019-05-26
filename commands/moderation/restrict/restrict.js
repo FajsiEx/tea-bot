@@ -1,30 +1,42 @@
 const CONFIG = require("../../../modules/config");
 const dbInt = require("../../../db/interface");
 
+const permChecker = require("../../../modules/permChecker");
+
 module.exports = {
     handler: (handleData) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             let msg = handleData.msg;
 
             let mentionedUsers = msg.mentions.users;
 
             let type = msg.content.split(" ")[1];
 
-            dbInt.getGuildDoc(msg.guild.id).then((doc) => {
+            dbInt.getGuildDoc(msg.guild.id).then(async (doc) => {
                 let restrictions = doc.restrictions;
 
                 if (typeof(restrictions) != "object") {
                     restrictions = [];
                 }
 
-                mentionedUsers.forEach((mentionedUser)=>{
-                    restrictions.push(mentionedUser.id);
-                });
+                await (
+                    new Promise((resolve, reject)=> {
+                        mentionedUsers.forEach(async (mentionedUser)=>{
+                            if (await permChecker.dev(mentionedUser.id)) {
+                                console.log("Nope");
+                                
+                                return;
+                            }
+                            restrictions.push(mentionedUser.id);
+                        });
+                    })
+                );
+                
 
-                if (type == "devMode") {
+                if (type == "dev") {
                     restrictions = "dev";
                 }
-                if (type == "adminMode") {
+                if (type == "admin") {
                     restrictions = "admin";
                 }
                 if (type == "clear") {
@@ -54,7 +66,7 @@ module.exports = {
                 dbInt.setGuildDoc(msg.guild.id, doc).then(() => {
                     msg.channel.send({
                         embed: {
-                            "title": "Restrict command usage",
+                            "title": "Restrict",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
                             "description": `
                                 Done.

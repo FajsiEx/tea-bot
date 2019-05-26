@@ -122,7 +122,7 @@ module.exports = {
                         return;
                     }
                 }else if (requestedCommand.rights.devOnly) { // If the command is dev only,
-                    let isDev = await permChecker.dev(handleData);
+                    let isDev = await permChecker.dev(handleData.msg.author.id);
                     if (!isDev) { // and the caller is not me,
                         // Basically fake invalid command so no one sees anything
 
