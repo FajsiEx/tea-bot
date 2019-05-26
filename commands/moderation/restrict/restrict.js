@@ -24,7 +24,16 @@ module.exports = {
                         mentionedUsers.forEach(async (mentionedUser)=>{
                             if (await permChecker.dev(mentionedUser.id)) {
                                 console.log("Nope");
-                                
+                                msg.channel.send({
+                                    embed: {
+                                        "title": "Restrict",
+                                        "color": CONFIG.EMBED.COLORS.FAIL,
+                                        "description": `
+                                            You really thought you can restrict my master? Haha le funny joke!\n\`Do that one more time and I'll break your fucking knees.\`
+                                        `,
+                                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                                    }
+                                }).then((botMsg)=>{botMsg.delete(10000)});
                                 return;
                             }
                             restrictions.push(mentionedUser.id);
