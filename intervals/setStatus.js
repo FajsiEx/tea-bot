@@ -2,13 +2,9 @@ const CONFIG = require("../modules/config");
 
 module.exports = {
     interval: function(dClient) {
-        console.log("[INTERVAL:SET_STATUS] INTERVAL Set status".interval);
-
         let activityString = `with ${dClient.guilds.size} guilds | ${CONFIG.BOT.BUILD_INFO.BUILD_STRING} | ${module.exports.getTimeString()}`;
 
-        dClient.user.setActivity(activityString, { type: "PLAYING" }).then(()=>{
-            console.log(`[INTERVAL:SET_STATUS] DONE Set status to [${activityString}]`.success);
-        });
+        dClient.user.setActivity(activityString, { type: "PLAYING" });
     },
     
     getTimeString: function() {

@@ -246,9 +246,6 @@ COMMANDS.forEach((commandCategory) => {
         allCommandNames = allCommandNames.concat(command.keywords); // And it's keywords to allCommandNames array
     });
 });
-console.log("[MODULE:COMMAND_DATA] DEBUG init dump of all commands".debug);
-console.log(allCommands);
-console.log(allCommandNames);
 
 // Now we detect duplicates
 let duplicateCommandNames = [];
@@ -262,8 +259,6 @@ allCommandNames.forEach((commandName) => {
         c.push(commandName);
     }
 });
-console.log("[MODULE:COMMAND_DATA] DEBUG init dump of command name dups".debug);
-console.log(duplicateCommandNames);
 
 let nonDuplicateCommands = allCommands.filter((command) => {
     let hasDuplicateKeyword = false;
@@ -277,8 +272,6 @@ let nonDuplicateCommands = allCommands.filter((command) => {
     });
     return !hasDuplicateKeyword;
 });
-console.log("[MODULE:COMMAND_DATA] DEBUG init non duped commands".debug);
-console.log(nonDuplicateCommands);
 
 let withoutPrefixCommandCategory = COMMANDS.filter((commandCategory) => { // Get the "without prefix" category
     return commandCategory.categoryName == false;

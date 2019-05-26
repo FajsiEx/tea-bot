@@ -30,8 +30,6 @@ module.exports = {
             }
 
             dbBridge.getGuildDocument(guildId).then((doc) => {
-                console.log("[COMMAND:DEV:TESTWRITE] DEBUG Got guild doc".debug);
-
                 msg.channel.send({
                     "embed": {
                         "title": "Test write of guild document",

@@ -1,5 +1,8 @@
+/*
 
-console.log("[MODULE:CONFIG] WORKING Init config.".working);
+    Main configuration module.
+
+*/
 
 const handleDataCheck = require("../checks/handleData").check;
 
@@ -17,7 +20,6 @@ const COLORS = {
 };
 const FOOTER = (handleData)=>{
     if (handleDataCheck(handleData, true)) {
-        console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
         return {
             "icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
             "text": `Build ${BUILD_STRING} | by FajsiEx`
@@ -74,5 +76,3 @@ module.exports = {
         BOT_LOGO_ASCII: BOT_LOGO_ASCII
     }
 };
-
-console.log("[MODULE:CONFIG] DONE Init config".success);

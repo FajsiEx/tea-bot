@@ -18,11 +18,9 @@ module.exports = {
             let hash;
 
             this.generateMessageData(creationData).then((messageData)=>{
-                console.log(messageData);
                 channel.send(messageData).then((stickyMsg)=>{
                     stickyMsgId = stickyMsg.id;
                     hash = this.hashMsgData(messageData);
-                    console.log(hash);
 
                     dbBridge.createStickyMsgDocument({
                         hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
@@ -77,7 +75,6 @@ module.exports = {
     updateStickyDocs: function(dClient) {
         return new Promise((resolve, reject)=>{
             dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
-                console.log(expiredDocs);
                 if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know
                     reject("expiredDocs is false");
                 }
@@ -87,7 +84,6 @@ module.exports = {
                         guildId: doc.g_id,
                         type: doc.type
                     }).then((messageData)=>{
-                        console.log(messageData);
                         let oldHash = doc.hash;
                         let newHash = this.hashMsgData(messageData);
 

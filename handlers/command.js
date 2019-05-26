@@ -27,16 +27,13 @@ module.exports = {
     */
     handler: (handleData, prefixUsed) => {
         return new Promise(async (resolve, reject) => {
-            console.log("[HANDLER:COMMAND] INFO Called.");
 
             if (handleDataCheck(handleData)) { // Check your data, kids
-                console.log("[HANDLER:COMMAND] ERR handleData check failed. Returning false.");
                 reject("Failed handleData check");
             }
 
             // TODO: move this somewhere
             let msg = handleData.msg; // Get msg from handle data
-            console.log("[HANDLER:COMMAND] DEBUG Prefix used: " + prefixUsed);
             let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
 
             /* 
@@ -57,7 +54,7 @@ module.exports = {
                 requestedCommandName = requestedCommandArray[0]; // Just use the 1st (and only) element in the array
             } else { // No elements in the array ("t!"" will get an element in the array [""])
                 // Houston we have a problem.
-                console.log("[HANDLE:COMMAND] ERR No element in command array. Aborting.".error);
+                console.log("[HANDLE:COMMAND] No element in command array. Aborting. This should not happen. ever.".error);
                 reject("Empty requestedCommandArray");
             }
 
@@ -66,8 +63,6 @@ module.exports = {
             })[0];
 
             if (!requestedCommandCategory) { // If the command category for the requested command isn't found
-                console.log(`[HANDLE:COMMAND] WARN Command category [${requestedCommandCategoryName}] does not exist.`.warn);
-
                 let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
                     return commandCategory.categoryName == "invalid";
                 })[0];
@@ -86,8 +81,6 @@ module.exports = {
             })[0];
 
             if (!requestedCommand) { // If no command was found in it's category
-                console.log(`[HANDLE:COMMAND] WARN Command [${requestedCommandName}] does not exist.`.warn);
-
                 let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
                     return commandCategory.categoryName == "invalid";
                 })[0];
@@ -164,12 +157,9 @@ module.exports = {
             }
 
             // Add usedCommand to handleData
-            console.log("[HANDLE:COMMAND] DEBUG usedCommand: " + requestedCommandName);
             handleData.usedCommand = requestedCommandName;
 
-            // Call the command
-            console.log(`[HANDLE:COMMAND] INFO Command name [${requestedCommandName}]`.info);
-
+            // Check if the user has some restriction on him/her/it
             let isPermitted;
             try {
                 isPermitted = await restrictionChecker.checkRestrictions(handleData);
@@ -177,12 +167,13 @@ module.exports = {
                 return reject("CheckRestriction rejected: " + e);
             }
             
-
-            if (!isPermitted) {
+            // If yes (is not permitted)
+            if (!isPermitted) { // Delete the message and go away
                 msg.delete(); // We really don't care about the outcome of this
                 return resolve(20);
             }
 
+            // Call the command
             requestedCommand.handler(handleData).then(() => {
                 resolve(0); // 0 = command executed successfully
             }).catch((e) => {

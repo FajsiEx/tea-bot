@@ -30,8 +30,6 @@ module.exports = {
             }
 
             dbBridge.getGuildDocument(guildId).then((doc) => {
-                console.log("[COMMAND:DEV:TESTWRITE] DEBUG Got guild doc".debug);
-
                 doc.testValue = `
                     1273, down to Rockefeller Street
                     Life is marchin' on do you feel that

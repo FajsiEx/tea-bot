@@ -13,7 +13,6 @@ module.exports = {
                 guildId = msg.guild.id;
             }
 
-            console.log("[COMMAND:DEV:SETCACHE] DEBUG ARG1: " + msg.content.split(" ")[1]);
             let commandArg_guildId = parseInt(msg.content.split(" ")[1]);
             if (commandArg_guildId) {
                 guildId = commandArg_guildId;
@@ -38,7 +37,6 @@ module.exports = {
 
             dbBridge.getGuildDocument(guildId).then((doc) => {
                 cache.setCache(guildId, doc).then(() => {
-                    console.log("[COMMAND:DEV:SETCACHE] DEBUG Got guild doc from cache".debug);
 
                     msg.channel.send({
                         "embed": {

@@ -37,7 +37,6 @@ module.exports = {
 
                 mentionedUsers.forEach(async (mentionedUser) => {
                     if (await permChecker.dev(mentionedUser.id)) {
-                        console.log("Nope");
                         msg.channel.send({
                             embed: {
                                 "title": "Baka!",

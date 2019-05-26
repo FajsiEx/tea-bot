@@ -12,7 +12,6 @@ module.exports = {
                 guildId = msg.guild.id;
             }
 
-            console.log("[COMMAND:DEV:GETCACHE] DEBUG ARG1: " + msg.content.split(" ")[1]);
             let commandArg_guildId = parseInt(msg.content.split(" ")[1]);
             if (commandArg_guildId) {
                 guildId = commandArg_guildId;
@@ -36,8 +35,6 @@ module.exports = {
             }
 
             cache.getFromCache(guildId).then((doc) => {
-                console.log("[COMMAND:DEV:GETCACHE] DEBUG Got guild doc from cache".debug);
-
                 msg.channel.send({
                     "embed": {
                         "title": "Cache of guild document",

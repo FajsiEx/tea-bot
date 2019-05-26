@@ -7,14 +7,11 @@ module.exports = {
         dClient = dClientRef;
 
         app.get('/api/stats', (req, res) => {
-            console.log("[API:GET:STATS] Get stats".event);
             stats.get().then((stat)=>{
                 res.json(stat);
             });
         });
         app.post('/api/getTeaBotGuilds', (req, res) => {
-            console.log("[API:GET:GET_TB_GUILDS] Get tea bot guilds".event);
-            console.log(req.body);
             if (!req.body) {res.send("inv_arg_guilds");}
 
             let teaBotGuilds = [];

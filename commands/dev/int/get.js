@@ -12,7 +12,6 @@ module.exports = {
                 guildId = msg.guild.id;
             }
 
-            console.log("[COMMAND:DEV:GETINT] DEBUG ARG1: " + msg.content.split(" ")[1]);
             let commandArg_guildId = parseInt(msg.content.split(" ")[1]);
             if (commandArg_guildId) {
                 guildId = commandArg_guildId;

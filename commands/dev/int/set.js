@@ -30,11 +30,7 @@ module.exports = {
             }
 
             dbInt.getGuildDoc(guildId).then((doc) => {
-                console.log("[COMMAND:DEV:INTWRITE] DEBUG Got guild doc".debug);
-
-                doc.testValue = `
-            uraraka best girl. ${new Date().toString()}
-            `; // Just some random test value
+                doc.testValue = `tomoko best girl. ${new Date().toString()}`; // Just some random test value
 
                 if (!doc.testArray) {
                     doc.testArray = [];

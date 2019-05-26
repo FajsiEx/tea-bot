@@ -10,11 +10,9 @@ module.exports = {
                 type: "time",
                 channel: msg.channel
             }).then(() => {
-                console.log("[COMMAND:DEV:STICKYCREATE] Resolved");
-                msg.delete(1000).catch((e)=>{console.log("Failed to delete the req msg." + e);}); // Delete the request msg. Catch any errors along the way
+                msg.delete(1000).catch(()=>{}); // Delete the request msg. Catch any errors along the way
                 return resolve(0);
             }).catch((e) => {
-                console.log(`[COMMAND:DEV:STICKYCREATE] createStickyPost has rejected it's promise: ${e}`.error);
                 return reject(`createStickyPost has rejected it's promise: ${e}`);
             });
         }); // End of promise

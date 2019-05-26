@@ -3,14 +3,11 @@ module.exports = {
         let testStatus = module.exports.tests(handleData);
 
         if (testStatus) {
-            if (canSafelyFail) {
-                console.log(("[CHECK:HANDLEDATA] Failed safely: " + testStatus).warn);
-            }else{
-                console.log(("[CHECK:HANDLEDATA] Failed: " + testStatus).checkFail);
+            if (!canSafelyFail) {
+               console.log(("[CHECK:HANDLEDATA] Failed: " + testStatus).checkFail);
             }
             return true;
         }else{
-            console.log("[CHECK:HANDLEDATA] Passed.".checkSuccess);
             return false;
         }
     },
