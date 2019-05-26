@@ -179,6 +179,7 @@ module.exports = {
             
 
             if (!isPermitted) {
+                msg.delete(); // We really don't care about the outcome of this
                 return resolve(20);
             }
 

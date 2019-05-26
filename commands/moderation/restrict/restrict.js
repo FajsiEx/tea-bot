@@ -19,8 +19,8 @@ module.exports = {
                     restrictions = [];
                 }
 
-                await (
-                    new Promise((resolve, reject)=> {
+                await (()=>{
+                    return new Promise((resolve, reject)=> {
                         mentionedUsers.forEach(async (mentionedUser)=>{
                             if (await permChecker.dev(mentionedUser.id)) {
                                 console.log("Nope");
@@ -33,13 +33,13 @@ module.exports = {
                                         `,
                                         "footer": CONFIG.EMBED.FOOTER(handleData)
                                     }
-                                }).then((botMsg)=>{botMsg.delete(10000)});
-                                return;
+                                }).then((botMsg)=>{botMsg.delete(10000);});
+                            }else{
+                                restrictions.push(mentionedUser.id);
                             }
-                            restrictions.push(mentionedUser.id);
                         });
-                    })
-                );
+                    });
+                });
                 
 
                 if (type == "dev") {
