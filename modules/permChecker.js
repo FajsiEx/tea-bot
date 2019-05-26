@@ -1,6 +1,6 @@
 module.exports = {
     admin: (handleData) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             let msg = handleData.msg;
 
             if (msg.member.hasPermission('MANAGE_GUILD') || msg.member.hasPermission('ADMINISTRATOR')) {
@@ -12,7 +12,7 @@ module.exports = {
     },
 
     dev: (userID) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (userID == 342227744513327107) {
                 resolve(true);
             } else {
