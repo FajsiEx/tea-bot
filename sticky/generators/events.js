@@ -15,13 +15,15 @@ module.exports = {
             if (!guildId) {
                 reject("False guildId");
             }
+
+            let eventsArray = guildDoc.events;
             
             resolve({
                 "embed": {
                     "title": "Events",
                     "color": CONFIG.EMBED.COLORS.STICKY,
                     "description": `
-                        
+                        ${JSON.stringify(eventsArray)}
                     `,
                     "footer": CONFIG.EMBED.FOOTER()
                 }
