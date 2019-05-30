@@ -182,6 +182,16 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "sticky",
+        commands: [
+            { // TODO: move this to qr
+                keywords: ["create"],
+                handler: require(DEFAULT_COMMANDS_PATH + "sticky/create").handler,
+            }
+        ]
+    },
+
+    {
         categoryName: "invalid", // Invalid command/category replies
         commands: [
             {

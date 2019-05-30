@@ -6,8 +6,9 @@ module.exports = {
         return new Promise(async (resolve, reject)=>{
             let guildId = generatorData.guildId;
 
+            let guildDoc;
             try {
-                let guildDoc = await dbInt.getGuildDoc(guildId);
+                guildDoc = await dbInt.getGuildDoc(guildId);
             }catch(e){
                 return reject("Could not get guild doc");
             }
