@@ -192,6 +192,17 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "events",
+        commands: [
+            { // TODO: move this to qr
+                keywords: ["add", "create"],
+                handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+            }
+        ]
+    },
+
+    {
         categoryName: "invalid", // Invalid command/category replies
         commands: [
             {
