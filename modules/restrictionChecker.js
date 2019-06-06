@@ -5,8 +5,10 @@ const permChecker = require("./permChecker");
 module.exports = {
     checkRestrictions: (handleData)=> {
         return new Promise(async (resolve, reject)=>{
-            let doc = await dbInt.getGuildDoc(handleData.msg.guild.id); // Awaits the doc from interface
-
+            let doc;
+            try { doc = await dbInt.getGuildDoc(handleData.msg.guild.id); } // Awaits the doc from interface
+            catch(e) {reject("Could not get guildDoc: " + e); return;}
+            
             if (doc.restrictions) { // If there are any restrictions on that doc
                 if(Array.isArray(doc.restrictions)) { // check if it's an array (list of user ids that are restricted)
                     if (doc.restrictions.includes(handleData.msg.author.id)) { // If the restrict array has author's id in it = author is restricted.

@@ -1,4 +1,5 @@
 const CONFIG = require("../../modules/config");
+const dbInt = require("../../db/interface");
 
 module.exports = {
     handler: function (handleData) {
@@ -40,8 +41,20 @@ module.exports = {
             console.log(eventDate);
 
             let eventObject = {
-                content: eventContentString
+                content: eventContentString,
+                date: eventDate
             };
+
+            let guildDoc;
+            try { guildDoc = await dbInt.getGuildDoc(handleData.msg.guild.id); }
+            catch (e) {return reject("Couldn't get guildDoc: " + e);}
+
+            if (!Array.isArray(guildDoc.events)) { guildDoc.events = []; }
+
+            guildDoc.events.push(eventObject);
+
+            console.log(guildDoc);
+            
 
         });
     },
