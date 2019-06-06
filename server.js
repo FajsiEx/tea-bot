@@ -28,10 +28,12 @@ dClient.on("ready", ()=>{
     
     if (!ready) {
         console.log("==========================================================");
-        console.log(CONFIG.AESTHETICS.BOT_LOGO_ASCII);
-        console.log("Tea-bot project");
+        console.log("Re:Tea-bot project".special);
         console.log("(c) FajsiEx 2019 - under MIT license");
-        console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`);
+        console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}\n`);
+
+        console.log("Website: https://tea-bot.ml/");
+        console.log("Github:  https://github.com/FajsiEx/tea-bot");
         console.log("==========================================================");
 
         console.log(`Tea-bot ready. Delta start-ready: ${new Date().getTime() - startTimestamp}ms`.event);
