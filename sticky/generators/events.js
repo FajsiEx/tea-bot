@@ -21,7 +21,7 @@ module.exports = {
 
             let resultEventString = "";
             eventsArray.forEach((event)=>{
-                resultEventString += `**${event.date.getDate()}.${event.date.getMonth()}.${event.date.getFullYear()}** ${event.content} \n`;
+                resultEventString += `**\`${event.date.getDate()}.${event.date.getMonth()}.${event.date.getFullYear()}\`** ${event.content} \n`;
             });
             
             resolve({
