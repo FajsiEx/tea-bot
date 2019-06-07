@@ -21,20 +21,20 @@ console.log("[BOOT] Initialized Discord client".success);
 
 let ready = false;
 
-// Add evennt listeners
+// Add event listeners
 dClient.on("ready", ()=>{
     // Call intervals first time
     statusInterval(dClient);
     
     if (!ready) {
-        console.log("==========================================================");
-        console.log("Re:Tea-bot project".special);
-        console.log("(c) FajsiEx 2019 - under MIT license");
-        console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}\n`);
+        console.log("________________________________________________________\n");
+        console.log("Tea-bot Re:Write project".special);
+        console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`.warn);
+        console.log("(c) FajsiEx 2019 - under MIT license\n");
 
-        console.log("Website: https://tea-bot.ml/");
-        console.log("Github:  https://github.com/FajsiEx/tea-bot");
-        console.log("==========================================================");
+        console.log("Website: https://tea-bot.ml/".debug);
+        console.log("Github:  https://github.com/FajsiEx/tea-bot".debug);
+        console.log("________________________________________________________\n");
 
         console.log(`Tea-bot ready. Delta start-ready: ${new Date().getTime() - startTimestamp}ms`.event);
         ready = true;
