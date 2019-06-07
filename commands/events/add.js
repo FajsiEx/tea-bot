@@ -1,5 +1,6 @@
 const CONFIG = require("../../modules/config");
 const dbInt = require("../../db/interface");
+const stickyController = require("../../sticky/stickyController");
 
 module.exports = {
     handler: function (handleData) {
@@ -68,6 +69,8 @@ module.exports = {
                 return reject("Couldn't set guildDoc: " + e);
             }
 
+            try { stickyController.updateStickyDocs(handleData.dClient, handleData.msg.guild.id, true); }
+            catch (e) { return reject("Couldn't autoUpdate stickys: " + e); }
         });
     },
 
