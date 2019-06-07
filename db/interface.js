@@ -16,7 +16,7 @@ module.exports = {
                 }else{
                     dbBridge.getGuildDocument(guildId).then((guildDoc)=>{
                         resolve(guildDoc);
-                    }).catch((e)=>{return reject("Failed to get guildDoc from database: " + e);});;
+                    }).catch((e)=>{return reject("Failed to get guildDoc from database: " + e);});
                 }
             }).catch((e)=>{return reject("Failed to get guildDoc from cache: " + e);});
         });
