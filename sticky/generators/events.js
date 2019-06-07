@@ -18,13 +18,18 @@ module.exports = {
             }
 
             let eventsArray = guildDoc.events;
+
+            let resultEventString = "";
+            eventsArray.forEach((event)=>{
+                resultEventString += `**${event.date.getDate()}.${event.date.getMonth()}.${event.date.getFullYear()}** ${event.content} \n`;
+            });
             
             resolve({
                 "embed": {
                     "title": "Events",
                     "color": CONFIG.EMBED.COLORS.STICKY,
                     "description": `
-                        ${JSON.stringify(eventsArray)}
+                        ${resultEventString}
                         Last updated: ${new Date().toString()}
                     `,
                     "footer": CONFIG.EMBED.FOOTER()
