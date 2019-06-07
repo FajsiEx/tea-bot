@@ -4,35 +4,36 @@ const handleDataCheck = require("../checks/handleData").check;
 const dbInt = require("../db/interface");
 
 module.exports = {
-    handler: function (handleData) {
-        return new Promise((resolve, reject) => {
-            if (handleDataCheck(handleData)) {
-                return reject("Failed handleData check");
+    handler: async function (handleData) {
+        if (handleDataCheck(handleData)) {
+            throw("Failed handleData check");
+        }
+
+        if (handleData.msg.author.bot) {
+            return 2; // 2 = ignored bot message
+        }
+
+        let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
+        if (commandPrefix) {
+            try { await commandHandler(handleData, commandPrefix); } // This will return a status
+            catch (e) {
+                throw("commandHandler rejected it's promise: " + e);
             }
 
-            if (handleData.msg.author.bot) {
-                return resolve(2); // 2 = ignored bot message
+            try { await module.exports.incrementMessageCount(handleData); } // This will return a status
+            catch (e) {
+                throw("Increment message count failed: " + e);
             }
+            
+            return 1; // 1 = handled command
 
-            let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
-            if (commandPrefix) {
-                commandHandler(handleData, commandPrefix).then(() => { // Accepts command handler's status as a parameter (unused)
-                    module.exports.incrementMessageCount(handleData).then(()=>{
-                        return resolve(1); // 1 = handled command
-                    }).catch((e)=>{
-                        return reject("Increment message count failed: " + e);
-                    });                    
-                }).catch((e) => {
-                    return reject("commandHandler rejected it's promise: " + e);
-                });
-            } else {
-                module.exports.incrementMessageCount(handleData).then(()=>{
-                    return resolve(0); // 0 = handled msg without command
-                }).catch((e)=>{
-                    return reject("Increment message count failed: " + e);
-                });
-            }
-        });
+        } else {
+            module.exports.incrementMessageCount(handleData).then(() => {
+                return 0; // 0 = handled msg without command
+            }).catch((e) => {
+                throw("Increment message count failed: " + e);
+            });
+        }
     },
 
     stringStartsWithPrefix: function (stringToBeChecked) {
@@ -43,33 +44,31 @@ module.exports = {
         return containsPrefix;
     },
 
-    incrementMessageCount: function (handleData) {
-        return new Promise((resolve, reject) => {
-            if (handleData.msg.channel.type != "text") {
-                resolve(1); // Because DMs don't have the guild.id property we need to resolve here
+    incrementMessageCount: async function (handleData) {
+        if (handleData.msg.channel.type != "text") {
+            return 1; // Because DMs don't have the guild.id property we need to resolve here
+        }
+
+        guildId = handleData.msg.guild.id;
+
+        dbInt.getGuildDoc(guildId).then((doc) => {
+            if (typeof (doc.messageCount) != 'object') {
+                doc.messageCount = {};
             }
 
-            guildId = handleData.msg.guild.id;
+            if (typeof (doc.messageCount[handleData.msg.author.id]) != 'number') {
+                doc.messageCount[handleData.msg.author.id] = 0;
+            }
 
-            dbInt.getGuildDoc(guildId).then((doc) => {
-                if (typeof (doc.messageCount) != 'object') {
-                    doc.messageCount = {};
-                }
+            doc.messageCount[handleData.msg.author.id]++;
 
-                if (typeof (doc.messageCount[handleData.msg.author.id]) != 'number') {
-                    doc.messageCount[handleData.msg.author.id] = 0;
-                }
-
-                doc.messageCount[handleData.msg.author.id]++;
-
-                dbInt.setGuildDoc(guildId, doc).then(() => {
-                    return resolve(0);
-                }).catch((e)=>{
-                    return reject("Failed to setGuildDoc on increment: " + e);
-                });
-            }).catch((e)=>{
-                return reject("Failed to getGuildDoc on increment: " + e);
+            dbInt.setGuildDoc(guildId, doc).then(() => {
+                return 0;
+            }).catch((e) => {
+                throw ("Failed to setGuildDoc on increment: " + e);
             });
+        }).catch((e) => {
+            throw ("Failed to getGuildDoc on increment: " + e);
         });
     }
 };

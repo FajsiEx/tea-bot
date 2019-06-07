@@ -48,11 +48,11 @@ setInterval(()=>{statusInterval(dClient);}, 15000);
 dClient.on("message", async (msg)=> {
     let responseCode;
     try {
-        await messageHandler({
+        console.log(await messageHandler({
             msg:msg,
             dClient:dClient,
             footer: false
-        });
+        }));
     }catch(e){
         console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error);
         return;

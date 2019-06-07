@@ -175,8 +175,7 @@ module.exports = {
 
             // Call the command
             requestedCommand.handler(handleData).then(() => {
-                msg.delete(); // Delete the req msg
-                resolve(0); // 0 = command executed successfully
+                return resolve(0); // 0 = command executed successfully
             }).catch((e) => {
                 return reject(`Command [${requestedCommandName}] rejected: ${e}`);
             });
