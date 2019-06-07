@@ -46,7 +46,6 @@ let statusInterval = require("./intervals/setStatus").interval;
 setInterval(()=>{statusInterval(dClient);}, 15000);
 
 dClient.on("message", async (msg)=> {
-    let responseCode;
     try {
         await messageHandler({
             msg:msg,
