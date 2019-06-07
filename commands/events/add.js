@@ -16,12 +16,12 @@ module.exports = {
             console.log(eventContentString);
             console.log(eventDate);
 
-            let eventDay,eventMonth,eventYear;
+            let eventDay, eventMonth, eventYear;
 
             if (eventDayString) { // If event date string exists
-                eventDay   = parseInt(eventDayString.split(".")[0]);
+                eventDay = parseInt(eventDayString.split(".")[0]);
                 eventMonth = parseInt(eventDayString.split(".")[1]);
-                eventYear  = parseInt(eventDayString.split(".")[2]);
+                eventYear = parseInt(eventDayString.split(".")[2]);
             }
 
             if (!eventDay || !eventDayString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
@@ -35,8 +35,12 @@ module.exports = {
             }
 
             eventDate.setDate(eventDay);
-            if (eventMonth) { eventDate.setMonth(eventMonth - 1); } // We need -1 bc january = 0 in js
-            if (eventYear)  { eventDate.setYear(eventYear); }
+            if (eventMonth) {
+                eventDate.setMonth(eventMonth - 1);
+            } // We need -1 bc january = 0 in js
+            if (eventYear) {
+                eventDate.setYear(eventYear);
+            }
 
             console.log(eventDate);
 
@@ -46,15 +50,23 @@ module.exports = {
             };
 
             let guildDoc;
-            try { guildDoc = await dbInt.getGuildDoc(handleData.msg.guild.id); }
-            catch (e) {return reject("Couldn't get guildDoc: " + e);}
+            try {
+                guildDoc = await dbInt.getGuildDoc(handleData.msg.guild.id);
+            } catch (e) {
+                return reject("Couldn't get guildDoc: " + e);
+            }
 
-            if (!Array.isArray(guildDoc.events)) { guildDoc.events = []; }
+            if (!Array.isArray(guildDoc.events)) {
+                guildDoc.events = [];
+            }
 
             guildDoc.events.push(eventObject);
 
-            console.log(guildDoc);
-            
+            try {
+                await dbInt.setGuildDoc(handleData.msg.guild.id, guildDoc);
+            } catch (e) {
+                return reject("Couldn't set guildDoc: " + e);
+            }
 
         });
     },
