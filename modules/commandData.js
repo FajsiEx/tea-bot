@@ -194,10 +194,20 @@ let COMMANDS = [
     {
         categoryName: "events",
         commands: [
-            { // TODO: move this to qr
+            {
                 keywords: ["add", "create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
                 cannotBeUsedWithoutCommandCategory: true,
+            }
+        ]
+    },
+
+    {
+        categoryName: "info",
+        commands: [
+            {
+                keywords: ["about", "info"],
+                handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
             }
         ]
     },

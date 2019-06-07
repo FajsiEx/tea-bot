@@ -1,7 +1,7 @@
 /*
 
     Main configuration module.
-
+    TODO: Fucking rewrite this
 */
 
 const handleDataCheck = require("../checks/handleData").check;
