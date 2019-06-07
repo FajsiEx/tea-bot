@@ -72,9 +72,9 @@ module.exports = {
         return crypto.createHash('md5').update(JSON.stringify(messageData)).digest("hex");
     },
 
-    updateStickyDocs: function(dClient) {
+    updateStickyDocs: function(dClient, guildId) {
         return new Promise((resolve, reject)=>{
-            dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
+            dbBridge.getExpiredStickyDocs(guildId).then((expiredDocs)=>{
                 if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know
                     reject("expiredDocs is false");
                 }

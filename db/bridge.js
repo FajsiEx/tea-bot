@@ -96,13 +96,19 @@ module.exports = {
         });
     },
 
-    getExpiredStickyDocs: function() {
+    getExpiredStickyDocs: function(guildId) {
         return new Promise((resolve, reject)=>{
             MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
                 if (err) reject("Connection error " + err); // If there's a problem, return.
 
                 let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").find({expiry: {$lte: new Date().getTime()}}).toArray((err, docs)=> { // 
+                
+                let query = {expiry: {$lte: new Date().getTime()}}
+                if (guildId) { // If guildId was specified
+                    query = {expiry: {$lte: new Date().getTime()}, g_id: guildId}
+                }
+
+                db.collection("sticky").find(query).toArray((err, docs)=> { // 
                     if (err) reject("Connection error " + err); // If there's a problem, return.
                     resolve(docs);
                 });
