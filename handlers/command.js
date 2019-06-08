@@ -100,8 +100,8 @@ module.exports = {
                             "title": "Nope",
                             "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": `
-                                    You don't have the MANAGE_GUILD permission. Oops.
-                                `,
+                                You don't have the MANAGE_GUILD permission. Oops.
+                            `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then((botMsg) => {
@@ -137,8 +137,8 @@ module.exports = {
                             "title": "Nope",
                             "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": `
-                                    That command works only in ${requestedCommand.requirements.channelType} channels. sry.
-                                `,
+                                That command works only in ${requestedCommand.requirements.channelType} channels. sry.
+                            `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
                     }).then((botMsg) => {

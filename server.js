@@ -44,6 +44,7 @@ dClient.on("ready", ()=>{
 // TODO: Add checks if the dclient is ready
 let statusInterval = require("./intervals/setStatus").interval;
 setInterval(()=>{statusInterval(dClient);}, 15000);
+require('./intervals/autoUpdSticky').setup(dClient);
 
 dClient.on("message", async (msg)=> {
     try {
