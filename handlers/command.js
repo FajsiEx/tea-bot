@@ -185,7 +185,7 @@ module.exports = {
 
     responses: {
         internalError: function(handleData, e) {
-            msg.channel.send({
+            handleData.msg.channel.send({
                 "embed": {
                     "title": "Error | Internal reject",
                     "color": CONFIG.EMBED.COLORS.FAIL,
