@@ -177,8 +177,28 @@ module.exports = {
             requestedCommand.handler(handleData).then(() => {
                 return resolve(0); // 0 = command executed successfully
             }).catch((e) => {
+                module.exports.responses.internalError(handleData, e);
                 return reject(`Command [${requestedCommandName}] rejected: ${e}`);
             });
         }); // End of promise
-    } // End of handler
+    }, // End of handler
+
+    responses: {
+        internalError: function(handleData, e) {
+            msg.channel.send({
+                "embed": {
+                    "title": "Error | Internal reject",
+                    "color": CONFIG.EMBED.COLORS.FAIL,
+                    "description": `
+                        Tea-bot has handled an internal reject. This error has been reported.
+
+                        **Technical details:**
+                        Command handler has received a reject from command module.
+                        Reject trace: *${e}*
+                    `,
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                }
+            });
+        }
+    }
 };
