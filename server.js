@@ -28,7 +28,7 @@ dClient.on("ready", ()=>{
     
     if (!ready) {
         console.log("________________________________________________________\n");
-        console.log("Tea-bot Re:Write project".special);
+        console.log("「 Tea-bot Re:Write 」 Project".special);
         console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`.warn);
         console.log("(c) FajsiEx 2019 - under MIT license\n");
 
