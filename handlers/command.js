@@ -25,166 +25,159 @@ module.exports = {
         Input: handleData - handle data passed from msgHandler created from main on("msg") handler
         Output: bool[true=passed control over to the command module; false=any other action]
     */
-    handler: (handleData, prefixUsed) => {
-        return new Promise(async (resolve, reject) => {
+    handler: async function (handleData, prefixUsed) {
 
-            if (handleDataCheck(handleData)) { // Check your data, kids
-                reject("Failed handleData check");
-            }
+        if (handleDataCheck(handleData)) { // Check your data, kids
+            throw ("Failed handleData check");
+        }
 
-            // TODO: move this somewhere
-            let msg = handleData.msg; // Get msg from handle data
-            let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
+        // TODO: move this somewhere
+        let msg = handleData.msg; // Get msg from handle data
+        let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
 
-            /* 
-                Splits command category and command itself to an array as follows:
-                dev:ping => ["dev", "ping"] ([category, command]);
-                hello => ["hello"] ([command])
-            */
-            let requestedCommandArray = requestedCommandString.split(":");
+        /* 
+            Splits command category and command itself to an array as follows:
+            dev:ping => ["dev", "ping"] ([category, command]);
+            hello => ["hello"] ([command])
+        */
+        let requestedCommandArray = requestedCommandString.split(":");
 
-            let requestedCommandCategoryName = false; // string (if command category exists) / bool (false if the category wasn't specified)
-            let requestedCommandName; // string (command name itself)
+        let requestedCommandCategoryName = false; // string (if command category exists) / bool (false if the category wasn't specified)
+        let requestedCommandName; // string (command name itself)
 
-            // If the command array has a category and a command name (length:>=2) NOTE: We don't really care about elements other than the first 2.
-            if (requestedCommandArray.length > 1) {
-                requestedCommandCategoryName = requestedCommandArray[0]; // The first element in the array is the category name
-                requestedCommandName = requestedCommandArray[1]; // and the second one is the command
-            } else if (requestedCommandArray.length == 1) { // If the array has 1 element (command only)
-                requestedCommandName = requestedCommandArray[0]; // Just use the 1st (and only) element in the array
-            } else { // No elements in the array ("t!"" will get an element in the array [""])
-                // Houston we have a problem.
-                console.log("[HANDLE:COMMAND] No element in command array. Aborting. This should not happen. ever.".error);
-                reject("Empty requestedCommandArray");
-            }
+        // If the command array has a category and a command name (length:>=2) NOTE: We don't really care about elements other than the first 2.
+        if (requestedCommandArray.length > 1) {
+            requestedCommandCategoryName = requestedCommandArray[0]; // The first element in the array is the category name
+            requestedCommandName = requestedCommandArray[1]; // and the second one is the command
+        } else if (requestedCommandArray.length == 1) { // If the array has 1 element (command only)
+            requestedCommandName = requestedCommandArray[0]; // Just use the 1st (and only) element in the array
+        } else { // No elements in the array ("t!"" will get an element in the array [""])
+            // Houston we have a problem.
+            console.log("[HANDLE:COMMAND] No element in command array. Aborting. This should not happen. ever.".error);
+            throw ("Empty requestedCommandArray");
+        }
 
-            let requestedCommandCategory = COMMANDS.filter(commandCategory => { // Now we get the command category from the category name (or the false category if none was defined)
-                return commandCategory.categoryName == requestedCommandCategoryName;
+        let requestedCommandCategory = COMMANDS.filter(commandCategory => { // Now we get the command category from the category name (or the false category if none was defined)
+            return commandCategory.categoryName == requestedCommandCategoryName;
+        })[0];
+
+        if (!requestedCommandCategory) { // If the command category for the requested command isn't found
+            let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
+                return commandCategory.categoryName == "invalid";
+            })[0];
+            let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:category "command" from it
+                return command.keywords.indexOf("category") > -1;
             })[0];
 
-            if (!requestedCommandCategory) { // If the command category for the requested command isn't found
-                let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
-                    return commandCategory.categoryName == "invalid";
-                })[0];
-                let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:category "command" from it
-                    return command.keywords.indexOf("category") > -1;
-                })[0];
+            invalidCommandCategoryCommand.handler(handleData); // Call it
 
-                invalidCommandCategoryCommand.handler(handleData); // Call it
+            return 2; // 2 = category not found
+        }
 
-                resolve(2); // 2 = category not found
-                return;
-            }
+        let requestedCommand = requestedCommandCategory.commands.filter(command => { // Get command itself from the category by the command name entered.
+            return command.keywords.indexOf(requestedCommandName) > -1;
+        })[0];
 
-            let requestedCommand = requestedCommandCategory.commands.filter(command => { // Get command itself from the category by the command name entered.
-                return command.keywords.indexOf(requestedCommandName) > -1;
+        if (!requestedCommand) { // If no command was found in it's category
+            let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
+                return commandCategory.categoryName == "invalid";
+            })[0];
+            let invalidCommandCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:command "command" from it
+                return command.keywords.indexOf("command") > -1;
             })[0];
 
-            if (!requestedCommand) { // If no command was found in it's category
-                let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
-                    return commandCategory.categoryName == "invalid";
-                })[0];
-                let invalidCommandCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:command "command" from it
-                    return command.keywords.indexOf("command") > -1;
-                })[0];
+            invalidCommandCommand.handler(handleData); // Call it
 
-                invalidCommandCommand.handler(handleData); // Call it
+            return 1; // 1 = command not found
+        }
 
-                resolve(1); // 1 = command not found
-                return;
-            }
-
-            if (requestedCommand.rights) { // If the command has any rights
-                if (requestedCommand.rights.adminOnly) {
-                    let isAdmin = await permChecker.admin(handleData);
-                    if (!isAdmin) {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "Nope",
-                                "color": CONFIG.EMBED.COLORS.FAIL,
-                                "description": `
+        if (requestedCommand.rights) { // If the command has any rights
+            if (requestedCommand.rights.adminOnly) {
+                let isAdmin = await permChecker.admin(handleData);
+                if (!isAdmin) {
+                    msg.channel.send({
+                        "embed": {
+                            "title": "Nope",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
                                     You don't have the MANAGE_GUILD permission. Oops.
                                 `,
-                                "footer": CONFIG.EMBED.FOOTER(handleData)
-                            }
-                        }).then((botMsg) => {
-                            botMsg.delete(15000);
-                        });
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    }).then((botMsg) => {
+                        botMsg.delete(15000);
+                    });
 
-                        resolve(3); // 3 = does not have admin rights
-                        return;
-                    }
-                }else if (requestedCommand.rights.devOnly) { // If the command is dev only,
-                    let isDev = await permChecker.dev(handleData.msg.author.id);
-                    if (!isDev) { // and the caller is not me,
-                        // Basically fake invalid command so no one sees anything
+                    return 3; // 3 = does not have admin rights
+                }
+            } else if (requestedCommand.rights.devOnly) { // If the command is dev only,
+                let isDev = await permChecker.dev(handleData.msg.author.id);
+                if (!isDev) { // and the caller is not me,
+                    // Basically fake invalid command so no one sees anything
 
-                        let invalidCommandCategory = COMMANDS.filter(commandCategory => {
-                            return commandCategory.categoryName == "invalid";
-                        })[0];
-                        let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
-                            return command.keywords.indexOf("command") > -1;
-                        })[0];
+                    let invalidCommandCategory = COMMANDS.filter(commandCategory => {
+                        return commandCategory.categoryName == "invalid";
+                    })[0];
+                    let invalidCommandCommand = invalidCommandCategory.commands.filter(command => {
+                        return command.keywords.indexOf("command") > -1;
+                    })[0];
 
-                        invalidCommandCommand.handler(handleData);
+                    invalidCommandCommand.handler(handleData);
 
-                        resolve(4); // 4 = is not dev
-                        return;
-                    }
+                    return 4; // 4 = is not dev
                 }
             }
+        }
 
-            if (requestedCommand.requirements) {
-                if (requestedCommand.requirements.channelType) {
-                    if (msg.channel.type != requestedCommand.requirements.channelType) {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "Nope",
-                                "color": CONFIG.EMBED.COLORS.FAIL,
-                                "description": `
+        if (requestedCommand.requirements) {
+            if (requestedCommand.requirements.channelType) {
+                if (msg.channel.type != requestedCommand.requirements.channelType) {
+                    msg.channel.send({
+                        "embed": {
+                            "title": "Nope",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
                                     That command works only in ${requestedCommand.requirements.channelType} channels. sry.
                                 `,
-                                "footer": CONFIG.EMBED.FOOTER(handleData)
-                            }
-                        }).then((botMsg) => {
-                            botMsg.delete(15000);
-                        });
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    }).then((botMsg) => {
+                        botMsg.delete(15000);
+                    });
 
-                        resolve(5);
-                        return;
-                    }
+                    return 5; // Command which requires text channel used in non-text channel
                 }
             }
+        }
 
-            // Add usedCommand to handleData
-            handleData.usedCommand = requestedCommandName;
+        // Add usedCommand to handleData
+        handleData.usedCommand = requestedCommandName;
 
-            // Check if the user has some restriction on him/her/it
-            let isPermitted;
-            try {
-                isPermitted = await restrictionChecker.checkRestrictions(handleData);
-            }catch(e){
-                return reject("CheckRestriction rejected: " + e);
-            }
-            
-            // If yes (is not permitted)
-            if (!isPermitted) { // Delete the message and go away
-                msg.delete(); // We really don't care about the outcome of this
-                return resolve(20);
-            }
+        // Check if the user has some restriction on him/her/it
+        let isPermitted;
+        try {
+            isPermitted = await restrictionChecker.checkRestrictions(handleData);
+        } catch (e) {
+            throw ("CheckRestriction rejected: " + e);
+        }
 
-            // Call the command
-            requestedCommand.handler(handleData).then(() => {
-                return resolve(0); // 0 = command executed successfully
-            }).catch((e) => {
-                module.exports.responses.internalError(handleData, e);
-                return reject(`Command [${requestedCommandName}] rejected: ${e}`);
-            });
-        }); // End of promise
+        // If yes (is not permitted)
+        if (!isPermitted) { // Delete the message and go away
+            msg.delete(); // We really don't care about the outcome of this
+            return 20;
+        }
+
+        // Call the command
+        requestedCommand.handler(handleData).then(() => {
+            return 0; // 0 = command executed successfully
+        }).catch((e) => {
+            module.exports.responses.internalError(handleData, e);
+            throw (`Command [${requestedCommandName}] rejected: ${e}`);
+        });
     }, // End of handler
 
     responses: {
-        internalError: function(handleData, e) {
+        internalError: function (handleData, e) {
             handleData.msg.channel.send({
                 "embed": {
                     "title": "Error | Internal reject",
