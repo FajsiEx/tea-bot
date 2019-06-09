@@ -18,6 +18,9 @@ module.exports = {
             }
 
             let eventsArray = guildDoc.events;
+            if (!Array.isArray(eventsArray)) { // If the thing does not exist, simulate it.
+                eventsArray = [];
+            }
 
             let resultEventString = "";
             eventsArray.forEach((event)=>{
