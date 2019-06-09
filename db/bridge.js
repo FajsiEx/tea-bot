@@ -4,40 +4,50 @@ const MongoClient = require('mongodb').MongoClient;
 const cache = require("./cache");
 
 module.exports = {
-// Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
-getGuildDocument: async function (guildId) {
-    let client;
-    try {
-        client = await MongoClient.connect(DB_URI);
-    } // Connect to Wanilla mongoDB
-    catch (e) {
-        throw ("Failed to connect to db: " + e);
-    }
+    // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
+    getGuildDocument: async function (guildId) {
+        let client;
+        try {
+            client = await MongoClient.connect(DB_URI);
+        } // Connect to Wanilla mongoDB
+        catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-    let db = client.db('tea-bot'); // Get tea-bot db
-    let docs;
-    try { docs = await db.collection("guilds").find({guildId: guildId}).toArray(); } // Find document in the guild collection by guildId and convert that to an array
-    catch (e) { throw ("Could not get docs from collection: " + e); }
+        let db = client.db('tea-bot'); // Get tea-bot db
+        let docs;
+        try {
+            docs = await db.collection("guilds").find({ // Find document in the guild collection by guildId and convert that to an array
+                guildId: guildId
+            }).toArray();
+        } 
+        catch (e) {
+            throw ("Could not get docs from collection: " + e);
+        }
 
-    if (docs.length < 1) { // If the array length is less than one (0) - the doc doesn't exist
-        let doc;
-        try { doc = await this.createGuildDocument(guildId); }
-        catch (e) { throw ("Could not create guildDoc " + e); }
+        if (docs.length < 1) { // If the array length is less than one (0) - the doc doesn't exist
+            let doc;
+            try {
+                doc = await this.createGuildDocument(guildId);
+            } catch (e) {
+                throw ("Could not create guildDoc " + e);
+            }
 
-        cache.setCache(guildId, doc); // store the doc in cache
-        
-        client.close();
-        return doc; // and return that newly created doc.
-    } else { // If the guild doc exists
-        cache.setCache(guildId, docs[0]); // store the doc in cache
+            cache.setCache(guildId, doc); // store the doc in cache
 
-        client.close();
-        return docs[0]; // and return that.
-    }
-},
+            client.close();
+            return doc; // and return that newly created doc.
+            
+        } else { // If the guild doc exists
+            cache.setCache(guildId, docs[0]); // store the doc in cache
 
-// Creates a doc in the guilds collection based on guildId
-createGuildDocument: function (guildId) {
+            client.close();
+            return docs[0]; // and return that.
+        }
+    },
+
+    // Creates a doc in the guilds collection based on guildId
+    createGuildDocument: function (guildId) {
         return new Promise((resolve) => {
             MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
                 if (err) return console.error(err); // If there's a problem, return.
