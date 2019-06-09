@@ -19,6 +19,7 @@ module.exports = {
 
             let eventsArray = guildDoc.events;
             if (!Array.isArray(eventsArray)) { // If the thing does not exist, simulate it.
+                console.log(`False events array in guildDoc [${guildDoc.guildId}] . Simulating empty array for you ;)`.warn);
                 eventsArray = [];
             }
 

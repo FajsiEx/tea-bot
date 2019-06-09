@@ -54,7 +54,8 @@ module.exports = {
 
                 let db = client.db('tea-bot'); // Get tea-bot db
                 db.collection("guilds").insertOne({
-                    guildId: guildId
+                    guildId: guildId,
+                    events: []
                 }, (err, res) => { // Insert doc with guildId to the guilds collection
                     if (err) return console.error(err); // If there's a problem, return.
 
