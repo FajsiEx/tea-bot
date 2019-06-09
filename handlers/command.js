@@ -167,11 +167,14 @@ module.exports = {
             return 20;
         }
 
+        msg.channel.startTyping();
         // Call the command
         requestedCommand.handler(handleData).then(() => {
+            msg.channel.stopTyping();
             return 0; // 0 = command executed successfully
         }).catch((e) => {
             module.exports.responses.internalError(handleData, e);
+            msg.channel.stopTyping();
             throw (`Command [${requestedCommandName}] rejected: ${e}`);
         });
     }, // End of handler
