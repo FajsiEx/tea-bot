@@ -36,7 +36,6 @@ module.exports = {
                     "color": CONFIG.EMBED.COLORS.STICKY,
                     "description": `
                         ${resultEventString}
-                        Last updated: ${new Date().toString()}
                     `,
                     "footer": CONFIG.EMBED.FOOTER()
                 }
