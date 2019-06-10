@@ -90,7 +90,7 @@ module.exports = {
                     return;
                 });
 
-            } else if (type == "from") {
+            } else if (type == "after") {
 
                 if (!parseInt(arg)) {
                     msg.channel.send({
@@ -99,7 +99,7 @@ module.exports = {
                             "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": `
                                 You must specify starting message by it's snowflake id
-                                For example: \`!nuke from 575607273645277214\`
+                                For example: \`!nuke after 575607273645277214\`
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
@@ -194,7 +194,7 @@ module.exports = {
                         "description": `
                             You must specify a type of nuke
                             \`nuke count 60\`
-                            \`nuke from (msgId)\`
+                            \`nuke after (msgId)\`
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
