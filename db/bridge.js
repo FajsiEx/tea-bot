@@ -7,9 +7,9 @@ module.exports = {
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
     getGuildDocument: async function (guildId) {
         let client;
-        try {
+        try { // To connect to Wanilla mongoDB
             client = await MongoClient.connect(DB_URI);
-        } // Connect to Wanilla mongoDB
+        }
         catch (e) {
             throw ("Failed to connect to db: " + e);
         }
@@ -30,7 +30,7 @@ module.exports = {
             try {
                 doc = await this.createGuildDocument(guildId);
             } catch (e) {
-                throw ("Could not create guildDoc " + e);
+                throw ("Could not create guildDoc: " + e);
             }
 
             cache.setCache(guildId, doc); // store the doc in cache
@@ -47,22 +47,29 @@ module.exports = {
     },
 
     // Creates a doc in the guilds collection based on guildId
-    createGuildDocument: function (guildId) {
-        return new Promise((resolve) => {
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+    createGuildDocument: async function (guildId) {
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        }
+        catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").insertOne({
-                    guildId: guildId,
-                    events: []
-                }, (err, res) => { // Insert doc with guildId to the guilds collection
-                    if (err) return console.error(err); // If there's a problem, return.
+        let db = client.db('tea-bot'); // Get tea-bot db
 
-                    resolve(res.ops[0]); // Return the new guild doc
-                });
+        let res;
+        try {
+            res = await db.collection("guilds").insertOne({ // Insert doc with guildId to the guilds collection
+                guildId: guildId,
+                events: []
             });
-        });
+        }
+        catch (e) {
+            throw ("Failed to insert the new guildDoc: " + e);
+        }
+
+        return res.ops[0]; // Return the created guild doc
     },
 
     // Creates a doc in the guilds collection based on guildId
