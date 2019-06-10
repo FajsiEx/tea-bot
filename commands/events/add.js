@@ -80,7 +80,7 @@ module.exports = {
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                             Done.
-                            Event \`${eventContentString}\` was added on \`${event.date.getDate()}.${event.date.getMonth()+1}.${event.date.getFullYear()}\`
+                            Event \`${eventContentString}\` was added on \`${eventObject.date.getDate()}.${eventObject.date.getMonth()+1}.${eventObject.date.getFullYear()}\`
                         `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
