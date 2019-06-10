@@ -3,75 +3,93 @@ const dbInt = require("../../db/interface");
 const stickyController = require("../../sticky/stickyController");
 
 module.exports = {
-    handler: function (handleData) {
-        return new Promise(async (resolve, reject) => {
-            let msg = handleData.msg;
-            let content = msg.content;
+    handler: async function (handleData) {
+        let msg = handleData.msg;
+        let content = msg.content;
 
-            let eventDayString = content.split(" ")[1];
-            let eventContentString = content.slice(content.indexOf(content.split(" ")[2]));
+        let eventDayString = content.split(" ")[1];
+        let eventContentString = content.slice(content.indexOf(content.split(" ")[2]));
 
-            let eventDate = handleData.msg.createdAt;
+        let eventDate = handleData.msg.createdAt;
 
-            console.log(eventDayString);
-            console.log(eventContentString);
-            console.log(eventDate);
+        console.log(eventDayString);
+        console.log(eventContentString);
+        console.log(eventDate);
 
-            let eventDay, eventMonth, eventYear;
+        let eventDay, eventMonth, eventYear;
 
-            if (eventDayString) { // If event date string exists
-                eventDay = parseInt(eventDayString.split(".")[0]);
-                eventMonth = parseInt(eventDayString.split(".")[1]);
-                eventYear = parseInt(eventDayString.split(".")[2]);
+        if (eventDayString) { // If event date string exists
+            eventDay = parseInt(eventDayString.split(".")[0]);
+            eventMonth = parseInt(eventDayString.split(".")[1]);
+            eventYear = parseInt(eventDayString.split(".")[2]);
+        }
+
+        if (!eventDay || !eventDayString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
+            try {
+                await module.exports.replyInvalidDate(handleData);
+                return 1;
+            } catch (e) {
+                throw ("Reply invalid date rejected: " + e);
             }
+        }
 
-            if (!eventDay || !eventDayString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
-                try {
-                    await module.exports.replyInvalidDate(handleData);
-                    resolve(1);
-                } catch (e) {
-                    reject("Reply invalid date rejected: " + e);
+        eventDate.setDate(eventDay);
+        if (eventMonth) {
+            eventDate.setMonth(eventMonth - 1);
+        } // We need -1 bc january = 0 in js
+        if (eventYear) {
+            eventDate.setYear(eventYear);
+        }
+
+        console.log(eventDate);
+
+        let eventObject = {
+            content: eventContentString,
+            date: eventDate
+        };
+
+        let guildDoc;
+        try {
+            guildDoc = await dbInt.getGuildDoc(handleData.msg.guild.id);
+        } catch (e) {
+            throw ("Couldn't get guildDoc: " + e);
+        }
+
+        if (!Array.isArray(guildDoc.events)) {
+            guildDoc.events = [];
+        }
+
+        guildDoc.events.push(eventObject);
+
+        try {
+            await dbInt.setGuildDoc(handleData.msg.guild.id, guildDoc);
+        } catch (e) {
+            throw ("Couldn't set guildDoc: " + e);
+        }
+
+        try {
+            await stickyController.updateStickyDocs(handleData.dClient, handleData.msg.guild.id, true);
+        } catch (e) {
+            throw ("Couldn't autoUpdate stickys: " + e);
+        }
+
+        try {
+            await handleData.msg.channel.send({
+                "embed": {
+                    "title": "Add event",
+                    "color": CONFIG.EMBED.COLORS.SUCCESS,
+                    "description": `
+                            Done.
+                            Event \`${eventContentString}\` was added on \`${event.date.getDate()}.${event.date.getMonth()+1}.${event.date.getFullYear()}\`
+                        `,
+                    "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
-                return;
-            }
+            });
+        } catch (e) {
+            throw ("Failed to send a success message: " + e);
+        }
 
-            eventDate.setDate(eventDay);
-            if (eventMonth) {
-                eventDate.setMonth(eventMonth - 1);
-            } // We need -1 bc january = 0 in js
-            if (eventYear) {
-                eventDate.setYear(eventYear);
-            }
-
-            console.log(eventDate);
-
-            let eventObject = {
-                content: eventContentString,
-                date: eventDate
-            };
-
-            let guildDoc;
-            try {
-                guildDoc = await dbInt.getGuildDoc(handleData.msg.guild.id);
-            } catch (e) {
-                return reject("Couldn't get guildDoc: " + e);
-            }
-
-            if (!Array.isArray(guildDoc.events)) {
-                guildDoc.events = [];
-            }
-
-            guildDoc.events.push(eventObject);
-
-            try {
-                await dbInt.setGuildDoc(handleData.msg.guild.id, guildDoc);
-            } catch (e) {
-                return reject("Couldn't set guildDoc: " + e);
-            }
-
-            try { stickyController.updateStickyDocs(handleData.dClient, handleData.msg.guild.id, true); }
-            catch (e) { return reject("Couldn't autoUpdate stickys: " + e); }
-        });
+        return 0;
     },
 
     replyInvalidDate: function (handleData) {
@@ -90,7 +108,7 @@ module.exports = {
                 });
                 resolve(0);
             } catch (e) {
-                reject("Failed to send a message: " + e);
+                reject("Failed to send a fail message: " + e);
             }
             return;
         });
