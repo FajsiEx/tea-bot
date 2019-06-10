@@ -22,6 +22,7 @@ module.exports = {
             }).toArray();
         } 
         catch (e) {
+            client.close();
             throw ("Could not get docs from collection: " + e);
         }
 
@@ -30,6 +31,7 @@ module.exports = {
             try {
                 doc = await this.createGuildDocument(guildId);
             } catch (e) {
+                client.close();
                 throw ("Could not create guildDoc: " + e);
             }
 
