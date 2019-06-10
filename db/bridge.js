@@ -66,9 +66,11 @@ module.exports = {
             });
         }
         catch (e) {
+            client.close();
             throw ("Failed to insert the new guildDoc: " + e);
         }
 
+        client.close();
         return res.ops[0]; // Return the created guild doc
     },
 
