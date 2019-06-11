@@ -9,8 +9,7 @@ module.exports = {
         let client;
         try { // To connect to Wanilla mongoDB
             client = await MongoClient.connect(DB_URI);
-        }
-        catch (e) {
+        } catch (e) {
             throw ("Failed to connect to db: " + e);
         }
 
@@ -20,8 +19,7 @@ module.exports = {
             docs = await db.collection("guilds").find({ // Find document in the guild collection by guildId and convert that to an array
                 guildId: guildId
             }).toArray();
-        } 
-        catch (e) {
+        } catch (e) {
             client.close();
             throw ("Could not get docs from collection: " + e);
         }
@@ -39,7 +37,7 @@ module.exports = {
 
             client.close();
             return doc; // and return that newly created doc.
-            
+
         } else { // If the guild doc exists
             cache.setCache(guildId, docs[0]); // store the doc in cache
 
@@ -53,8 +51,7 @@ module.exports = {
         let client;
         try { // To connect to Wanilla mongoDB
             client = await MongoClient.connect(DB_URI);
-        }
-        catch (e) {
+        } catch (e) {
             throw ("Failed to connect to db: " + e);
         }
 
@@ -66,8 +63,7 @@ module.exports = {
                 guildId: guildId,
                 events: []
             });
-        }
-        catch (e) {
+        } catch (e) {
             client.close();
             throw ("Failed to insert the new guildDoc: " + e);
         }
@@ -77,25 +73,36 @@ module.exports = {
     },
 
     // Creates a doc in the guilds collection based on guildId
-    deleteGuildDocument: function (guildId) {
-        return new Promise((resolve) => {
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+    deleteGuildDocument: async function (guildId) {
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").deleteOne({
-                    guildId: guildId
-                }, (err) => { // Delete doc with guildId to the guilds collection
-                    if (err) return console.error(err); // If there's a problem, return.
+        let db = client.db('tea-bot'); // Get tea-bot db
 
-                    console.log(`[DB:DELETEGD] WARNING Deleted guild document [${guildId}]!`.warn);
-
-                    cache.setCache(guildId, false); // Delete guild doc from cache kthx
-
-                    resolve(true); // Return with success
-                });
+        try {
+            db.collection("guilds").deleteOne({ // Delete doc with guildId to the guilds collection
+                guildId: guildId
             });
-        });
+        } catch (e) {
+            client.close();
+            throw ("Could not delete guild document: " + e);
+        }
+        if (err) return console.error(err); // If there's a problem, return.
+
+        console.log(`[DB:DELETEGD] WARNING Deleted guild document [${guildId}]!`.warn);
+
+        try {
+            cache.setCache(guildId, false); // Delete guild doc from cache kthx
+        } catch (e) {
+            console.log("Guild doc was deleted, but the cache failed to update it: " + e);
+        }
+
+        client.close();
+        return true; // Return with success
     },
 
     writeGuildDocument: function (guildId, guildDoc) {
