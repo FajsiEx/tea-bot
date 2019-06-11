@@ -105,24 +105,34 @@ module.exports = {
         return true; // Return with success
     },
 
-    writeGuildDocument: function (guildId, guildDoc) {
-        return new Promise((resolve) => {
+    writeGuildDocument: async function (guildId, guildDoc) {
+        try {
             cache.setCache(guildId, guildDoc); // store the doc in cache
+        } catch (e) {
+            console.log("Guild doc will be written, but cache refused to store the updated guildDoc:" + e);
+        }
 
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").updateOne({
-                    guildId: guildId
-                }, {
-                    $set: guildDoc
-                }, (err) => { // Update doc with guildId
-                    if (err) return console.error(err); // If there's a problem, return.
-                    resolve(true);
-                });
+        let db = client.db('tea-bot'); // Get tea-bot db
+        try {
+            await db.collection("guilds").updateOne({ // Update doc
+                guildId: guildId // with guildId
+            }, {
+                $set: guildDoc // with the new updated doc
             });
-        });
+        } catch (e) {
+            client.close();
+            throw ("Could not update guildDoc: " + e);
+        }
+
+        client.close();
+        return true;
     },
 
     createStickyMsgDocument: function (documentData) {
