@@ -134,54 +134,65 @@ module.exports = {
         return true;
     },
 
-    createStickyMsgDocument: function (documentData) {
-        return new Promise((resolve, reject) => {
-            // TODO: add checks plz
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    createStickyMsgDocument: async function (documentData) {
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").insertOne(documentData, (err, res) => { // Insert doc with the data of the sticky message to "sticky" collection
-                    if (err) reject("Insert error " + err); // If there's a problem, return.
+        let db = client.db('tea-bot'); // Get tea-bot db
 
-                    resolve(res.ops[0]); // Return the new sticky msg doc
-                });
-            });
-        });
+        let res;
+        try {
+            res = await db.collection("sticky").insertOne(documentData); // Insert doc with the data of the sticky message to "sticky" collection
+        } catch (e) {
+            throw ("Failed to insert stickyMessageDocument");
+        }
+
+        return res.ops[0]; // Return the new sticky msg doc
     },
 
-    getExpiredStickyDocs: function (guildId, forceUpdate) {
-        return new Promise((resolve, reject) => {
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    getExpiredStickyDocs: async function (guildId, forceUpdate) {
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
+        let db = client.db('tea-bot'); // Get tea-bot db
 
-                let eventExpiryDeadline = new Date().getTime();
-                if (forceUpdate) {
-                    eventExpiryDeadline = Infinity;
-                }
+        let eventExpiryDeadline = new Date().getTime();
+        if (forceUpdate) {
+            eventExpiryDeadline = Infinity;
+        }
 
-                let query = {
-                    expiry: {
-                        $lte: eventExpiryDeadline
-                    }
-                };
-                if (guildId) { // If guildId was specified
-                    query = {
-                        expiry: {
-                            $lte: eventExpiryDeadline
-                        },
-                        g_id: guildId
-                    };
-                }
+        let query = {
+            expiry: {
+                $lte: eventExpiryDeadline
+            }
+        };
+        if (guildId) { // If guildId was specified
+            query = {
+                expiry: {
+                    $lte: eventExpiryDeadline
+                },
+                g_id: guildId
+            };
+        }
 
-                db.collection("sticky").find(query).toArray((err, docs) => { // 
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
-                    resolve(docs);
-                });
-            });
-        });
+        let docs;
+        try {
+            docs = db.collection("sticky").find(query).toArray();
+        } catch (e) {
+            client.close();
+            throw ("Failed to get sticky posts: " + e);
+        }
+
+        client.close();
+        return docs;
     },
 
     updateStickyDoc: function (m_id, stickyDocUpdateData) {
