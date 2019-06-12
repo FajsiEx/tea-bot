@@ -91,7 +91,6 @@ module.exports = {
             client.close();
             throw ("Could not delete guild document: " + e);
         }
-        if (err) return console.error(err); // If there's a problem, return.
 
         console.log(`[DB:DELETEGD] WARNING Deleted guild document [${guildId}]!`.warn);
 
