@@ -195,39 +195,53 @@ module.exports = {
         return docs;
     },
 
-    updateStickyDoc: function (m_id, stickyDocUpdateData) {
-        return new Promise((resolve, reject) => {
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    updateStickyDoc: async function (m_id, stickyDocUpdateData) {
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").updateOne({
-                    m_id: m_id
-                }, {
-                    $set: stickyDocUpdateData
-                }, (err) => { // Update doc with the m_id (message id of the sticky message)
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
-                    resolve(true);
-                });
+        let db = client.db('tea-bot'); // Get tea-bot db
+
+        try {
+            await db.collection("sticky").updateOne({
+                m_id: m_id
+            }, {
+                $set: stickyDocUpdateData
             });
-        });
+        } catch (e) {
+            client.close();
+            throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+        }
+
+        client.close();
+        return true; // Return with success
     },
 
-    deleteStickyDoc: function (m_id) {
-        return new Promise((resolve) => {
-            // TODO: Add check if m_id is a number
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    deleteStickyDoc: async function (m_id) {
+        // TODO: Add check if m_id is a number
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").deleteOne({
-                    m_id: m_id
-                }, (err) => { // Delete sticky doc based on m_id
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
-                    resolve(true); // Return with success
-                });
+        let db = client.db('tea-bot'); // Get tea-bot db
+
+        try {
+            db.collection("sticky").deleteOne({ // Delete sticky doc based on m_id
+                m_id: m_id
             });
-        });
+        } catch (e) {
+            client.close();
+            throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+        }
+
+        client.close();
+        return true; // Return with success
     },
 
     deleteAllStickyDocsFromChannel: function (c_id) {
