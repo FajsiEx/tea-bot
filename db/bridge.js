@@ -188,7 +188,7 @@ module.exports = {
             docs = db.collection("sticky").find(query).toArray();
         } catch (e) {
             client.close();
-            throw ("Failed to get sticky posts: " + e);
+            throw ("Failed to get expired sticky posts: " + e);
         }
 
         client.close();

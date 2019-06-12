@@ -77,7 +77,7 @@ module.exports = {
         try {
             expiredDocs = await dbBridge.getExpiredStickyDocs(guildId, forceUpdate);
         } catch (e) {
-            throw ("Failed to getExpiredStickyDocs");
+            throw ("Failed to getExpiredStickyDocs: " + e);
         }
 
         if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know ;)
