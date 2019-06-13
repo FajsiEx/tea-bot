@@ -213,6 +213,16 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "edupica",
+        commands: [
+            {
+                keywords: ["sukfest"],
+                handler: require(DEFAULT_COMMANDS_PATH + "edu/supl").handler
+            }
+        ]
+    },
+
+    {
         categoryName: "invalid", // Invalid command/category replies
         commands: [
             {

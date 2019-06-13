@@ -13,6 +13,7 @@
     "hoek": "^4.2.1",
     "mathjs": "^5.9.0",
     "mongodb": "^3.2.3",
+    "node-fetch": "^2.6.0",
     "outdent": "^0.7.0",
     "request": "^2.88.0",
     "string-similarity": "^3.0.0"
