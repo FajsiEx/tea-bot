@@ -244,20 +244,27 @@ module.exports = {
         return true; // Return with success
     },
 
-    deleteAllStickyDocsFromChannel: function (c_id) {
-        return new Promise((resolve) => {
-            // TODO: Add check if c_id is a number
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    deleteAllStickyDocsFromChannel: async function (c_id) {
+        // TODO: Add check if c_id is a number
+        let client;
+        try { // To connect to Wanilla mongoDB
+            client = await MongoClient.connect(DB_URI);
+        } catch (e) {
+            throw ("Failed to connect to db: " + e);
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").deleteMany({
-                    c_id: c_id
-                }, (err) => { // Delete sticky doc based on m_id
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
-                    resolve(true); // Return with success
-                });
+        let db = client.db('tea-bot'); // Get tea-bot db
+
+        try {
+            await db.collection("sticky").deleteMany({
+                c_id: c_id
             });
-        });
+        } catch (e) {
+            client.close();
+            throw(`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
+        }
+
+        client.close();
+        return true;
     }
 };
