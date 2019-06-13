@@ -3,45 +3,49 @@ const crypto = require("crypto");
 const dbBridge = require("../db/bridge");
 
 module.exports = {
-    createStickyPost: function (creationData) {
-        return new Promise((resolve, reject) => {
-            let guildId = creationData.guildId;
-            let type = creationData.type;
-            let channel = creationData.channel;
+    createStickyPost: async function (creationData) {
+        let guildId = creationData.guildId;
+        let type = creationData.type;
+        let channel = creationData.channel;
 
-            if (!guildId || !type || !channel) {
-                reject("False guildId or false type or false channel");
-            }
+        if (!guildId || !type || !channel) {
+            throw("False guildId or false type or false channel");
+        }
 
-            let stickyMsgId;
-            let hash;
+        let stickyMsgId;
+        let hash;
 
-            this.generateMessageData(creationData).then((messageData) => {
-                channel.send(messageData).then((stickyMsg) => {
-                    stickyMsgId = stickyMsg.id;
-                    hash = this.hashMsgData(messageData);
+        let messageData;
+        try {
+            messageData = await this.generateMessageData(creationData);
+        } catch (e) {
+            throw("GenerateMessageData has rejected it's promise: " + e);
+        }
 
-                    dbBridge.createStickyMsgDocument({
-                        hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
-                        g_id: guildId, // Guild id
-                        c_id: channel.id, // Channel id
-                        m_id: stickyMsgId, // Message id
-                        expiry: new Date().getTime() + (1 * 60 * 1000), // Timestamp when the data needs to be regenerated. Used in the interval db query, TODO: Make this a const somewhere
-                        type: type // Type for generator purposes 
-                    }).then(() => {
-                        resolve();
-                    }).catch((e) => {
-                        reject("Failed to store data in db: " + e);
-                    });
+        let stickyMsg;
+        try {
+            stickyMsg = await channel.send(messageData);
+        } catch (e) {
+            throw("Failed to send a message: " + e);
+        }
 
-                }).catch((e) => {
-                    reject("Failed to send a message: " + e);
-                });
+        stickyMsgId = stickyMsg.id;
+        hash = this.hashMsgData(messageData);
 
-            }).catch((e) => {
-                reject("GenerateMessageData has rejected it's promise: " + e);
+        try {
+            await dbBridge.createStickyMsgDocument({
+                hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
+                g_id: guildId, // Guild id
+                c_id: channel.id, // Channel id
+                m_id: stickyMsgId, // Message id
+                expiry: new Date().getTime() + (1 * 60 * 1000), // Timestamp when the data needs to be regenerated. Used in the interval db query, TODO: Make this a const somewhere
+                type: type // Type for generator purposes 
             });
-        });
+        } catch (e) {
+            throw ("Failed to store data in db: " + e);
+        }
+        return true;
+
     },
 
     generateMessageData: function (messageCreationData) {
@@ -105,30 +109,42 @@ module.exports = {
                         expiry: new Date().getTime() + (1 * 60 * 1000)
                     });
                 } catch (e) {
-                    throw ("UpdateStickyDoc rejected: " + e);
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ updateStickyDoc (expiry) for [${doc.m_id}] : ${e}`.warn);
+                    continue;
                 }
             } else {
                 let channel = dClient.channels.get(doc.c_id);
+
+                // START OF TYPING
                 channel.startTyping();
 
                 let msg;
                 try {
                     msg = await channel.fetchMessage(doc.m_id);
                 } catch (e) {
-                    throw ("Failed to fetch message from a channel: " + e);
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ fetchMessage - deleting sticky doc for [${doc.m_id}] : ${e}`.warn);
+                    try {
+                        await dbBridge.deleteStickyDoc(doc.m_id);
+                    } catch (e) {
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                    }
+
+                    channel.stopTyping();
+                    continue;
                 }
 
                 try {
                     await msg.edit(messageData);
                 } catch (e) {
-                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}] : ${e}`.warn);
                     try {
-                        dbBridge.deleteStickyDoc(doc.m_id);
+                        await dbBridge.deleteStickyDoc(doc.m_id);
                     } catch (e) {
-                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}]: ${e}`.warn);
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
                     }
 
                     channel.stopTyping();
+                    continue;
                 }
 
                 try {
@@ -139,6 +155,7 @@ module.exports = {
                 } catch (e) {
                     console.log("[STICKYCTRL:UPDSTICKYDOCS] Failed to save updated data to db. e: " + e);
                     channel.stopTyping();
+                    continue;
                 }
                 channel.stopTyping();
             }
