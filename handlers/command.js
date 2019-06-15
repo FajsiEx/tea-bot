@@ -153,18 +153,20 @@ module.exports = {
         // Add usedCommand to handleData
         handleData.usedCommand = requestedCommandName;
 
-        // Check if the user has some restriction on him/her/it
-        let isPermitted;
-        try {
-            isPermitted = await restrictionChecker.checkRestrictions(handleData);
-        } catch (e) {
-            throw ("CheckRestriction rejected: " + e);
-        }
+        if (msg.channel.type == "text") { // If the request was made in a guild text channel only (no DMs cause they don't have guildId to check the restrict against)
+            // Check if the user has some restriction on him/her/it
+            let isPermitted;
+            try {
+                isPermitted = await restrictionChecker.checkRestrictions(handleData);
+            } catch (e) {
+                throw ("CheckRestriction rejected: " + e);
+            }
 
-        // If yes (is not permitted)
-        if (!isPermitted) { // Delete the message and go away
-            msg.delete(); // We really don't care about the outcome of this
-            return 20;
+            // If yes (is not permitted)
+            if (!isPermitted) { // Delete the message and go away
+                msg.delete(); // We really don't care about the outcome of this
+                return 20;
+            }
         }
 
         console.log("startTyping");
@@ -172,16 +174,16 @@ module.exports = {
         // Call the command
         try {
             await requestedCommand.handler(handleData);
-        }catch(e){
+        } catch (e) {
             try {
                 module.exports.responses.internalError(handleData, e);
-            }catch(e){
+            } catch (e) {
                 console.log(`Failed to send internal reject error message: ${e}`);
             }
             msg.channel.stopTyping();
             throw (`Command [${requestedCommandName}] rejected: ${e}`);
         }
-        
+
         msg.channel.stopTyping();
         console.log("Resolved!");
         return 0; // 0 = command executed successfully
