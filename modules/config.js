@@ -69,6 +69,9 @@ module.exports = {
         },
         DATABASE: {
             URI: process.env.T_DURI
+        },
+        SENTRY: {
+            DSN: process.env.T_SDSN
         }
     },
 

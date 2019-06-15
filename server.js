@@ -16,6 +16,9 @@ const messageHandler = require("./handlers/message").handler;
 
 console.log("[BOOT] Modules loaded".success);
 
+require("./sentry/init").init();
+console.log("[BOOT] Sentry initialized".success);
+
 const dClient = new discordJS.Client(); // Construct a discord client object
 console.log("[BOOT] Initialized Discord client".success);
 
