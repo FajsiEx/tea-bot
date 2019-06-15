@@ -3,7 +3,6 @@ const outdent = require("outdent");
 
 module.exports = {
     handler: handleData => {
-        dsd();
         return new Promise((resolve, reject) => {
             let msg = handleData.msg;
             msg.channel.send({

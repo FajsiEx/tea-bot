@@ -10,7 +10,7 @@ const Sentry = require('@sentry/node');
 
 module.exports = {
     init: function() {
-        if (CONFIG.SECRETS.SENTRY.DSN) {
+        if (!CONFIG.SECRETS.SENTRY.DSN) {
             console.log("/!\\ WARNING /!\\".warn);
             console.log("Sentry DSN url not provided - SENTRY ERROR TRACKING IS DISABLED!".warn);
             console.log("If you're testing locally, you can ignore this error.".warn);
@@ -18,5 +18,6 @@ module.exports = {
             return false;
         }
         Sentry.init({ dsn: CONFIG.SECRETS.SENTRY.DSN });
+        return "Fuck";
     }
 };

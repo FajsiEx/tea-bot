@@ -77,5 +77,8 @@ module.exports = {
 
     AESTHETICS: {
         BOT_LOGO_ASCII: BOT_LOGO_ASCII
+    },
+    SENTRY: {
+
     }
 };

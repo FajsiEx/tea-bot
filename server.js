@@ -10,13 +10,15 @@ let startTimestamp = new Date().getTime();
 require("./inits/consoleColors").init();
 
 const discordJS = require('discord.js'); // Lib for interacting with the discord API
-const CONFIG = require("./modules/config");
+let CONFIG = require("./modules/config");
 
 const messageHandler = require("./handlers/message").handler;
 
 console.log("[BOOT] Modules loaded".success);
 
-require("./sentry/init").init();
+const Sentry = require('@sentry/node');
+CONFIG.SENTRY.IS = require("./sentry/init").init();
+
 console.log("[BOOT] Sentry initialized".success);
 
 const dClient = new discordJS.Client(); // Construct a discord client object
@@ -58,6 +60,7 @@ dClient.on("message", async (msg)=> {
         });
     }catch(e){
         console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error);
+        if(CONFIG.SENTRY.IS) Sentry.captureException(e);
         return;
     }
 });

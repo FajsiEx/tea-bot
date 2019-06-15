@@ -59,6 +59,14 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["throwup"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/throwup").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["getgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
