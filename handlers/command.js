@@ -208,6 +208,7 @@ module.exports = {
                             **Technical details:**
                             Command handler has received a reject from the command module.
 
+                            *Handle id:* **${handleData.id}**
                             *Reject trace:* ${e}
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)

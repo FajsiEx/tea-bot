@@ -53,14 +53,14 @@ setInterval(()=>{statusInterval(dClient);}, 15000); // TODO: convert this
 require('./intervals/autoUpdSticky').setup(dClient);
 
 dClient.on("message", async (msg)=> {
-    try {
-        let handleData = {
-            msg:msg,
-            dClient:dClient,
-            footer: false,
-            id: undefined
-        };
+    let handleData = {
+        msg:msg,
+        dClient:dClient,
+        footer: false,
+        id: undefined
+    };
 
+    try {
         try {
             handleData.id = await handleId.generate(handleData);
         }catch(e){
@@ -69,8 +69,8 @@ dClient.on("message", async (msg)=> {
         
         await messageHandler(handleData);
     }catch(e){
-        console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error);
-        if(CONFIG.SENTRY.IS) Sentry.captureException(e);
+        console.log(`[EVENT:MESSAGE] [${handleData.id}] Got a reject: ${e}`.error);
+        if(CONFIG.SENTRY.IS) Sentry.captureException(new Error(e));
         return;
     }
 });
