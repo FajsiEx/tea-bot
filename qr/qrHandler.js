@@ -24,8 +24,8 @@ module.exports = {
                 case "plain":
                     responseHandler = module.exports.responseHandlers.plain;
                     break;
-                case "attach":
-                    responseHandler = module.exports.responseHandlers.attach;
+                case "file":
+                    responseHandler = module.exports.responseHandlers.file;
                     break;
                 default:
                     return reject("Invalid type of qr. Idk what to do with it. Programmer drunk lol.");
@@ -45,6 +45,14 @@ module.exports = {
                 await handleData.msg.channel.send(qr.data);
             }catch(e){
                 throw("Failed to send plain QR response: " + e);
+            }
+            return 0;
+        },
+        file: async function (handleData, qr) {
+            try {
+                await handleData.msg.channel.send({files:[qr.data]});
+            }catch(e){
+                throw("Failed to send attach QR response: " + e);
             }
             return 0;
         }
