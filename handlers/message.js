@@ -6,7 +6,7 @@ const dbInt = require("../db/interface");
 module.exports = {
     handler: async function (handleData) {
         if (handleDataCheck(handleData)) {
-            throw("Failed handleData check");
+            throw ("Failed handleData check");
         }
 
         if (handleData.msg.author.bot) {
@@ -17,21 +17,21 @@ module.exports = {
         if (commandPrefix) {
             try { await commandHandler(handleData, commandPrefix); } // This will return a status
             catch (e) {
-                throw("commandHandler rejected it's promise: " + e);
+                throw ("commandHandler rejected it's promise: " + e);
             }
 
-            try { await module.exports.incrementMessageCount(handleData); } // This will return a status
+            try { await module.exports.incrementMessageCount(handleData); }
             catch (e) {
-                throw("Increment message count failed: " + e);
+                throw ("Increment message count failed: " + e);
             }
-            
+
             return 1; // 1 = handled command
 
         } else {
             module.exports.incrementMessageCount(handleData).then(() => {
                 return 0; // 0 = handled msg without command
             }).catch((e) => {
-                throw("Increment message count failed: " + e);
+                throw ("Increment message count failed: " + e);
             });
         }
     },

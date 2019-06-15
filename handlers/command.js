@@ -167,21 +167,29 @@ module.exports = {
             return 20;
         }
 
+        console.log("startTyping");
         msg.channel.startTyping();
         // Call the command
-        requestedCommand.handler(handleData).then(() => {
-            msg.channel.stopTyping();
-            return 0; // 0 = command executed successfully
-        }).catch((e) => {
-            module.exports.responses.internalError(handleData, e);
+        try {
+            await requestedCommand.handler(handleData);
+        }catch(e){
+            try {
+                module.exports.responses.internalError(handleData, e);
+            }catch(e){
+                console.log(`Failed to send internal reject error message: ${e}`);
+            }
             msg.channel.stopTyping();
             throw (`Command [${requestedCommandName}] rejected: ${e}`);
-        });
+        }
+        
+        msg.channel.stopTyping();
+        console.log("Resolved!");
+        return 0; // 0 = command executed successfully
     }, // End of handler
 
     responses: {
-        internalError: function (handleData, e) {
-            handleData.msg.channel.send({
+        internalError: async function (handleData, e) {
+            handleData.msg.channel.send({ // TODO: Handle rejections
                 "embed": {
                     "title": "Error | Internal reject",
                     "color": CONFIG.EMBED.COLORS.FAIL,
