@@ -40,14 +40,13 @@ module.exports = {
     }, // End of handler
 
     responseHandlers: {
-        plain: (handleData, qr) => {
-            return new Promise((resolve, reject) => {
-                handleData.msg.channel.send(qr.data).then(() => {
-                    return resolve(0);
-                }).catch((e) => {
-                    return reject("Failed to send QR response: " + e);
-                });
-            });
+        plain: async function (handleData, qr) {
+            try {
+                await handleData.msg.channel.send(qr.data);
+            }catch(e){
+                throw("Failed to send plain QR response: " + e);
+            }
+            return 0;
         }
     }
 };
