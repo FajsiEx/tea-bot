@@ -13,6 +13,7 @@ const discordJS = require('discord.js'); // Lib for interacting with the discord
 let CONFIG = require("./modules/config");
 
 const messageHandler = require("./handlers/message").handler;
+const handleId = require("./modules/handleId");
 
 console.log("[BOOT] Modules loaded".success);
 
@@ -48,16 +49,25 @@ dClient.on("ready", ()=>{
 
 // TODO: Add checks if the dclient is ready
 let statusInterval = require("./intervals/setStatus").interval;
-setInterval(()=>{statusInterval(dClient);}, 15000);
+setInterval(()=>{statusInterval(dClient);}, 15000); // TODO: convert this
 require('./intervals/autoUpdSticky').setup(dClient);
 
 dClient.on("message", async (msg)=> {
     try {
-        await messageHandler({
+        let handleData = {
             msg:msg,
             dClient:dClient,
-            footer: false
-        });
+            footer: false,
+            id: undefined
+        };
+
+        try {
+            handleData.id = await handleId.generate(handleData);
+        }catch(e){
+            console.log(`Failed to generate handleId for handleData: ${e}`.warn);
+        }
+        
+        await messageHandler(handleData);
     }catch(e){
         console.log(`[EVENT:MESSAGE] Got a reject: ${e}`.error);
         if(CONFIG.SENTRY.IS) Sentry.captureException(e);

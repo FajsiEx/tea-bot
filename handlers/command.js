@@ -169,7 +169,6 @@ module.exports = {
             }
         }
 
-        console.log("startTyping");
         msg.channel.startTyping();
         // Call the command
         try {
@@ -185,7 +184,7 @@ module.exports = {
         }
 
         msg.channel.stopTyping();
-        console.log("Resolved!");
+        console.log(`[${handleData.id}] Resolved!`);
         return 0; // 0 = command executed successfully
     }, // End of handler
 
