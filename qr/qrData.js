@@ -11,7 +11,12 @@
 module.exports = [
     {
         keywords: ["oof"],
-        type: "singleReply",
+        type: "plain",
         data: "Oof haha"
+    },
+    {
+        keywords: ["explosion"],
+        type: "attach",
+        data: "https://media.giphy.com/media/XUFPGrX5Zis6Y/giphy.gif"
     }
 ];

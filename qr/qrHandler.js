@@ -21,8 +21,11 @@ module.exports = {
             let responseHandler;
 
             switch(requestedResponse.type) {
-                case "singleReply":
-                    responseHandler = module.exports.responseHandlers.singleReply;
+                case "plain":
+                    responseHandler = module.exports.responseHandlers.plain;
+                    break;
+                case "attach":
+                    responseHandler = module.exports.responseHandlers.attach;
                     break;
                 default:
                     return reject("Invalid type of qr. Idk what to do with it. Programmer drunk lol.");
@@ -37,7 +40,7 @@ module.exports = {
     }, // End of handler
 
     responseHandlers: {
-        singleReply: (handleData, qr) => {
+        plain: (handleData, qr) => {
             return new Promise((resolve, reject) => {
                 handleData.msg.channel.send(qr.data).then(() => {
                     return resolve(0);
