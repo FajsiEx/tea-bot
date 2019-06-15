@@ -176,7 +176,7 @@ module.exports = {
             await requestedCommand.handler(handleData);
         } catch (e) {
             try {
-                module.exports.responses.internalError(handleData, e);
+                module.exports.responses.internalError(handleData, e, requestedCommandCategoryName, requestedCommandName);
             } catch (e) {
                 console.log(`Failed to send internal reject error message: ${e}`);
             }
@@ -190,21 +190,33 @@ module.exports = {
     }, // End of handler
 
     responses: {
-        internalError: async function (handleData, e) {
-            handleData.msg.channel.send({ // TODO: Handle rejections
-                "embed": {
-                    "title": "Error | Internal reject",
-                    "color": CONFIG.EMBED.COLORS.FAIL,
-                    "description": `
-                        Tea-bot has handled an internal reject. This error has been reported.
-
-                        **Technical details:**
-                        Command handler has received a reject from command module.
-                        Reject trace: *${e}*
-                    `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+        internalError: async function (handleData, e, requestedCommandCategoryName, requestedCommandName) {
+            try {
+                if (!requestedCommandCategoryName) {
+                    requestedCommandCategoryName = ""; // If requestedCommandCategoryName is undefined, we set it to empty string so it doesn't look weird.
+                }else{
+                    requestedCommandCategoryName+=":"; // If it does exist, add : to it so it looks nice in the message
                 }
-            });
+                await handleData.msg.channel.send({
+                    "embed": {
+                        "title": "Error | Command error",
+                        "color": CONFIG.EMBED.COLORS.FAIL,
+                        "description": `
+                            While processing the \`!${requestedCommandCategoryName}${requestedCommandName}\` command an error has occurred.
+                            Don't worry, this error will be reported to Sentry in a couple of seconds.
+                            If you feel like it, you should report this bug [here](https://github.com/FajsiEx/tea-bot/issues/new) with as much info as possible.
+
+                            **Technical details:**
+                            Command handler has received a reject from the command module.
+
+                            *Reject trace:* ${e}
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed to send internal reject error message: " + e);
+            }
         }
     }
 };
