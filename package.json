@@ -17,6 +17,7 @@
     "node-fetch": "^2.6.0",
     "outdent": "^0.7.0",
     "request": "^2.88.0",
+    "sexy-require": "^1.1.2",
     "string-similarity": "^3.0.0"
   },
   "devDependencies": {

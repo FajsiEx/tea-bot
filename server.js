@@ -10,6 +10,9 @@ let startTimestamp = new Date().getTime();
 require("./inits/consoleColors").init();
 
 const discordJS = require('discord.js'); // Lib for interacting with the discord API
+
+require('sexy-require'); // For those nice absolute paths
+
 let CONFIG = require("./modules/config");
 
 const messageHandler = require("./handlers/message/messageHandler").handler;

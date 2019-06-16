@@ -1,4 +1,4 @@
-const CONFIG = require("../../modules/config");
+const CONFIG = require(__dirname + "/modules/config");
 const commandHandler = require("../command/commandHandler").handler;
 const handleDataCheck = require("../../checks/handleData").check;
 const dbInt = require("../../db/interface");
