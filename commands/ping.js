@@ -2,10 +2,10 @@ const CONFIG = require("../modules/config");
 const outdent = require("outdent");
 
 module.exports = {
-    handler: handleData => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
-            msg.channel.send({
+    handler: async function handleData(handleData) {
+        let msg = handleData.msg;
+        try {
+            await msg.channel.send({
                 embed: {
                     title: "Ping",
                     color: CONFIG.EMBED.COLORS.INFO,
@@ -14,11 +14,11 @@ module.exports = {
                     `,
                     footer: CONFIG.EMBED.FOOTER(handleData)
                 }
-            }).then(() => {
-                return resolve(0);
-            }).catch(e => {
-                return reject("Failed sending message: " + e);
             });
-        });
+        } catch (e) {
+            throw (`Failed to send response message: ${e}`);
+        }
+
+        return 0;
     }
 };
