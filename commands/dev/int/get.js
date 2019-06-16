@@ -32,6 +32,7 @@ module.exports = {
                 }).catch(()=>{
                     return reject("Failed to send a fail message: " + e);
                 });
+                return;
             }
 
             dbInt.getGuildDoc(guildId).then((doc) => {

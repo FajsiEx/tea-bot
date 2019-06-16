@@ -32,6 +32,7 @@ module.exports = {
                 }).catch((e)=>{
                     return reject("Failed to send invalid parameter message: " + e);
                 });
+                return;
             }
 
             dbBridge.deleteGuildDocument(guildId).then(() => {

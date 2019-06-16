@@ -32,6 +32,7 @@ module.exports = {
                 }).catch((e)=>{
                     return reject("Failed to send a message: " + e);
                 });
+                return;
             }
 
             dbBridge.getGuildDocument(guildId).then((doc) => {

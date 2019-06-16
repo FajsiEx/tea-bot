@@ -36,6 +36,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    channelType: "text"
                 }
             },
             {
@@ -52,6 +55,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    channelType: "text"
                 }
             },
             {
@@ -188,9 +194,15 @@ let COMMANDS = [
     {
         categoryName: "sticky",
         commands: [
-            { // TODO: move this to qr
+            {
                 keywords: ["create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "sticky/create").handler,
+                rights: {
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text"
+                }
             }
         ]
     },
@@ -202,6 +214,9 @@ let COMMANDS = [
                 keywords: ["add", "create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
                 cannotBeUsedWithoutCommandCategory: true,
+                requirements: {
+                    channelType: "text"
+                }
             }
         ]
     },
@@ -224,7 +239,7 @@ let COMMANDS = [
         ]
     },
 
-    {
+    { // TODO: do this seriously
         categoryName: "edupica",
         commands: [
             {
