@@ -19,10 +19,6 @@ let COMMANDS = [
         categoryName: "dev",
         commands: [
             {
-                keywords: ["ping"],
-                handler: require(DEFAULT_COMMANDS_PATH + "ping").handler,
-            },
-            {
                 keywords: ["send"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler,
             },
@@ -214,6 +210,14 @@ let COMMANDS = [
         categoryName: "info",
         commands: [
             {
+                keywords: ["help", "tasukete"],
+                handler: require(DEFAULT_COMMANDS_PATH + "info/help").handler,
+            },
+            {
+                keywords: ["ping"],
+                handler: require(DEFAULT_COMMANDS_PATH + "info/ping").handler,
+            },
+            {
                 keywords: ["about", "info"],
                 handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
             }
@@ -250,11 +254,7 @@ let COMMANDS = [
             {
                 keywords: ["hi", "hello", "konichiwa"],
                 handler: require(DEFAULT_COMMANDS_PATH + "hi").handler,
-            },
-            {
-                keywords: ["help", "tasukete"],
-                handler: require(DEFAULT_COMMANDS_PATH + "help").handler,
-            },
+            }
         ]
     },
 ];

@@ -1,4 +1,4 @@
-const CONFIG = require("../modules/config");
+const CONFIG = require("../../modules/config");
 const outdent = require("outdent");
 
 module.exports = {
