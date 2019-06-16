@@ -7,7 +7,7 @@
 */
 
 
-// TODO: add embed type reply & move congrats here
+// TODO: add embed type reply
 module.exports = [
     // PLAIN
     {
