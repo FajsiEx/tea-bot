@@ -1,29 +1,24 @@
 const CONFIG = require("../../modules/config");
+const outdent = require("outdent");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
+    handler: async function (handleData) {
             let msg = handleData.msg;
-            msg.channel.send({
+            try {
+            await msg.channel.send({
                 embed: {
                     "title": "Tea-bot | Help",
                     "color": CONFIG.EMBED.COLORS.INFO,
-                    "description": `
-                    Tea-bot Project
-                    by FajsiEx
-                    Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}
-                    Licensed under MIT license.
-
-                    [Website (tea-bot.ml)](https://tea-bot.ml)
-                    [GitHub (FajsiEx/tea-bot)](https://github.com/FajsiEx/tea-bot)
-                `,
+                    "description": outdent`
+                        [Website (tea-bot.ml)](https://tea-bot.ml)
+                        [GitHub (FajsiEx/tea-bot)](https://github.com/FajsiEx/tea-bot)
+                    `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
-            }).then(()=>{
-                return resolve(0);
-            }).catch((e)=>{
-                return reject("Error sending help message: " + e);
             });
-        });
+        }catch(e){
+            throw(`Failed to send response message ${e}`);
+        }
+        return 0;
     }
-}
+};
