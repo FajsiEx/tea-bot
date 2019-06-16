@@ -6,62 +6,41 @@
 
 const handleDataCheck = require("../checks/handleData").check;
 
-const BUILD = "19.alpha";
-const BUILD_STRING = `${BUILD}`;
-const COMMAND_PREFIXES = ["!", "tea!"];
-const COLORS = {
-    FAIL:       16720418,
-    WARN:       14540032,
-    INFO:       1616639,
-    DEFAULT:    this.INFO,
-    PROGRESS:   13041919,
-    SUCCESS:    4521796,
-    STICKY:     65491
-};
-const FOOTER = (handleData)=>{
-    if (handleDataCheck(handleData, true)) {
-        return {
-            //"icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
-            "text": `Build ${BUILD_STRING} | by FajsiEx`
-        };
-    }
-    return {
-        //"icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
-        "text": `Build ${BUILD_STRING} | by FajsiEx | Caller: ${handleData.msg.author.tag}`
-    };
-};
-const BOT_LOGO_ASCII = `
-                          @@@@@@@@@@@@@@@@@@           
-                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@         
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    @@@@       
-      @@@@@@@@@@@@@@@@@@        @@@@@@@@@@    @@@@       
-    @@@@@@@@@@          @@@@@@@@@@@@@@@@@@    @@@@       
-  @@@@@@          @@@@@@@@@@@@@@@@@@@@@@@@    @@@@       
-  @@        @@@@@@@@@@@@@@@@@@@@      @@@@    @@@@       
-        @@@@@@@@@@@@@@      @@@@      @@@@               
-    @@@@@@@@      @@@@      @@@@      @@@@               
-  @@@@  @@@@      @@@@      @@@@                         
-@@@@    @@@@      @@@@      @@@@                         
-        @@@@                @@@@                                               
-`;
-
-// Shove everything into an object
-module.exports = {
+const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: BUILD,
-            BUILD_STRING: BUILD_STRING
+            BUILD: "19.alpha",
+            BUILD_STRING: "local build",
         }
     },
 
     DISCORD: {
-        PREFIXES: COMMAND_PREFIXES
+        PREFIXES: ["tea!"]
     },
 
     EMBED: {
-        COLORS: COLORS,
-        FOOTER: FOOTER
-    },    
+        COLORS: {
+            DEFAULT:    1616639,
+            INFO:       1616639,
+            SUCCESS:    4521796,
+            PROGRESS:   13041919,
+            WARN:       14540032,
+            FAIL:       16720418,
+            STICKY:     65491
+        },
+        FOOTER: function(handleData){
+            if (handleDataCheck(handleData, true)) {
+                return {
+                    //"icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
+                    "text": `Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING} | by FajsiEx`
+                };
+            }
+            return {
+                //"icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
+                "text": `Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING} | by FajsiEx | Caller: ${handleData.msg.author.tag}`
+            };
+        }
+    },
 
     SECRETS: {
         DISCORD: {
@@ -76,9 +55,12 @@ module.exports = {
     },
 
     AESTHETICS: {
-        BOT_LOGO_ASCII: BOT_LOGO_ASCII
+        BOT_LOGO_ASCII: "[removed]"
     },
-    SENTRY: {
 
-    }
+    SENTRY: {}
 };
+
+CONFIG.BOT.BUILD_INFO.BUILD_STRING = `${CONFIG.BOT.BUILD_INFO.BUILD}`;
+
+module.exports = CONFIG;
