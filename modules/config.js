@@ -15,7 +15,7 @@ const CONFIG = {
     },
 
     DISCORD: {
-        PREFIXES: ["tea!"]
+        PREFIXES: ["tea!", "!"]
     },
 
     EMBED: {
