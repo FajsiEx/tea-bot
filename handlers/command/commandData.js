@@ -9,9 +9,9 @@
 
 */
 
-const DEFAULT_COMMANDS_PATH = "../commands/";
-const qrHandler = require("../qr/qrHandler");
-const qrData = require("../qr/qrData");
+const DEFAULT_COMMANDS_PATH = "/commands/";
+const qrHandler = require("/qr/qrHandler");
+const qrData = require("/qr/qrData");
 
 // Just add command™
 let COMMANDS = [

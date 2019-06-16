@@ -1,5 +1,5 @@
 let expect = require("chai").expect;
-let commandData = require("../modules/commandData");
+let commandData = require("../handlers/command/commandData");
 let generatorData = require("../sticky/generatorData");
 
 describe('Data tests', () => {

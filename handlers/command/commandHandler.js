@@ -17,7 +17,7 @@ const restrictionChecker = require("/modules/restrictionChecker");
 
 const handleDataCheck = require("/checks/handleData").check;
 
-const COMMANDS = require("/modules/commandData").getCommands();
+const COMMANDS = require("./commandData").getCommands();
 
 module.exports = {
     /*
