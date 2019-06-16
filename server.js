@@ -12,7 +12,7 @@ require("./inits/consoleColors").init();
 const discordJS = require('discord.js'); // Lib for interacting with the discord API
 let CONFIG = require("./modules/config");
 
-const messageHandler = require("./handlers/message").handler;
+const messageHandler = require("./handlers/message/messageHandler").handler;
 const handleId = require("./modules/handleId");
 
 console.log("[BOOT] Modules loaded".success);
