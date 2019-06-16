@@ -18,7 +18,12 @@ module.exports = [
     {
         keywords: ["aquaisfuckinguseless"],
         type: "plain",
-        data: "https://www.youtube.com/watch?v=cRsSDCY6Z58&list=WL&index=54&t=0s"
+        data: "https://www.youtube.com/watch?v=cRsSDCY6Z58"
+    },
+    {
+        keywords: ["congrats", "congratulations"],
+        type: "plain",
+        data: "🎉🎉🎉🎉🎉🎉🎉🎉🎉"
     },
 
     // FILE

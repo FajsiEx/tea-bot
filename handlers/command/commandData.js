@@ -182,16 +182,6 @@ let COMMANDS = [
     },
 
     {
-        categoryName: "cpp",
-        commands: [
-            { // TODO: move this to qr
-                keywords: ["congrats", "congratulations"],
-                handler: require(DEFAULT_COMMANDS_PATH + "copypaste/congrats").handler,
-            }
-        ]
-    },
-
-    {
         categoryName: "sticky",
         commands: [
             {
