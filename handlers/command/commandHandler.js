@@ -9,15 +9,15 @@
 
 */
 
-const CONFIG = require("../modules/config");
+const CONFIG = require("/modules/config");
 
-const dbInt = require("../db/interface");
-const permChecker = require("../modules/permChecker");
-const restrictionChecker = require("../modules/restrictionChecker");
+const dbInt = require("/db/interface");
+const permChecker = require("/modules/permChecker");
+const restrictionChecker = require("/modules/restrictionChecker");
 
-const handleDataCheck = require("../checks/handleData").check;
+const handleDataCheck = require("/checks/handleData").check;
 
-const COMMANDS = require("../modules/commandData").getCommands();
+const COMMANDS = require("/modules/commandData").getCommands();
 
 module.exports = {
     /*
