@@ -3,24 +3,68 @@ const MongoClient = require('mongodb').MongoClient;
 
 const cache = require("./cache");
 
+let client, db;
+
+// Status:
+// 0 - initial: no even attempted to connect yet
+// 1 - connected
+// 2 - failed to connect in the first place
+// 3 - got disconnected
+let dbConnStatus = 0;
+
 module.exports = {
+    initDB: async function() {
+        if(!client || !db) { throw("Database error. !DB!"); }
+
+        try { // To connect to Wanilla mongoDB
+            console.log("Connected.");
+            connectedClient = await MongoClient.connect(DB_URI, {
+                bufferMaxEntries: 0, // If there's an error, throw it instead of waiting on reconnect!
+                reconnectTries: Number.MAX_VALUE, // Reconnect as many times as you can! 1.79E+308 should be enough...
+                reconnectInterval: 1000, // Try to reconnect every second
+                autoReconnect: true,
+                useNewUrlParser: true
+            });
+            
+            client = connectedClient;
+            db = client.db('tea-bot');
+            
+            db.on('close', ()=>{
+                console.log("Connection closed for some reason. Will try to reconnect.".warn);
+                dbConnStatus = 3; // Got disconnected.
+            });
+            db.on('reconnect', ()=>{
+                console.log("Reconnected to db.".success);
+                dbConnStatus = 1; // Connected. again.
+            });
+
+
+            dbConnStatus = 1; // Connected.
+            return client;
+        } catch (e) {
+            dbConnStatus = 2; // Failed to connect.
+
+            client = false;
+            db = false;
+
+            console.error("Failed to connect to db! " + e);
+
+            setTimeout(this.initDB, 5000);
+            return;
+        }
+    },
+
+
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
     getGuildDocument: async function (guildId) {
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-        let db = client.db('tea-bot'); // Get tea-bot db
         let docs;
         try {
             docs = await db.collection("guilds").find({ // Find document in the guild collection by guildId and convert that to an array
                 guildId: guildId
             }).toArray();
         } catch (e) {
-            client.close();
             throw ("Could not get docs from collection: " + e);
         }
 
@@ -29,33 +73,21 @@ module.exports = {
             try {
                 doc = await this.createGuildDocument(guildId);
             } catch (e) {
-                client.close();
                 throw ("Could not create guildDoc: " + e);
             }
 
             cache.setCache(guildId, doc); // store the doc in cache
-
-            client.close();
             return doc; // and return that newly created doc.
 
         } else { // If the guild doc exists
             cache.setCache(guildId, docs[0]); // store the doc in cache
-
-            client.close();
             return docs[0]; // and return that.
         }
     },
 
     // Creates a doc in the guilds collection based on guildId
     createGuildDocument: async function (guildId) {
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         let res;
         try {
@@ -268,3 +300,5 @@ module.exports = {
         return true;
     }
 };
+
+module.exports.initDB();
