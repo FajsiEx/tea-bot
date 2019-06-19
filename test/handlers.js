@@ -1,5 +1,8 @@
+require('sexy-require'); // For those nice absolute paths
+
 let expect = require("chai").expect;
-let msgHandler = require("../handlers/message");
+let msgHandler = require("/handlers/message/messageHandler");
+
 
 describe('Handler tests', () => {
     describe('Message handler', () => {

@@ -1,4 +1,7 @@
+require('sexy-require'); // For those nice absolute paths
+
 let expect = require("chai").expect;
+
 
 describe("Dummy tests", ()=>{
     describe("Add", ()=>{
