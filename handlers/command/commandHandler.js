@@ -11,7 +11,7 @@
 
 const CONFIG = require("/modules/config");
 
-const dbInt = require("/db/interface");
+const dbBridge = require("/db/bridge");
 const permChecker = require("/modules/permChecker");
 const restrictionChecker = require("/modules/restrictionChecker");
 
@@ -130,6 +130,20 @@ module.exports = {
         }
 
         if (requestedCommand.requirements) {
+
+            if (requestedCommand.requirements.readyDatabase) { // If the command requires db to be ready
+
+                if (dbBridge.isDBReady() != 1) { // If db isn't ready
+                    try {
+                        module.exports.responses.dbNotReadyResponse(handleData);
+                    } catch (e) {
+                        console.log(`Failed to send db not ready message: ${e}`);
+                    }
+                    return 5;
+                }
+
+            }
+            
             if (requestedCommand.requirements.channelType) {
                 if (msg.channel.type != requestedCommand.requirements.channelType) {
                     msg.channel.send({
@@ -189,12 +203,29 @@ module.exports = {
     }, // End of handler
 
     responses: {
+        dbNotReadyResponse: async function (handleData) {
+            try {
+                await handleData.msg.channel.send({
+                    "embed": {
+                        "title": "This command is currently unavailable",
+                        "color": CONFIG.EMBED.COLORS.WARN,
+                        "description": `
+                            Due to temporary database outage, I cannot run this command. Please try again later.
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed to send db not ready message: " + e);
+            }
+        },
+
         internalError: async function (handleData, e, requestedCommandCategoryName, requestedCommandName) {
             try {
                 if (!requestedCommandCategoryName) {
                     requestedCommandCategoryName = ""; // If requestedCommandCategoryName is undefined, we set it to empty string so it doesn't look weird.
-                }else{
-                    requestedCommandCategoryName+=":"; // If it does exist, add : to it so it looks nice in the message
+                } else {
+                    requestedCommandCategoryName += ":"; // If it does exist, add : to it so it looks nice in the message
                 }
                 await handleData.msg.channel.send({
                     "embed": {

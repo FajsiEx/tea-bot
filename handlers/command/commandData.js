@@ -38,7 +38,8 @@ let COMMANDS = [
                     devOnly: true
                 },
                 requirements: {
-                    channelType: "text"
+                    channelType: "text",
+                    readyDatabase: true
                 }
             },
             {
@@ -47,6 +48,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -57,7 +61,8 @@ let COMMANDS = [
                     devOnly: true
                 },
                 requirements: {
-                    channelType: "text"
+                    channelType: "text",
+                    readyDatabase: true
                 }
             },
             {
@@ -74,6 +79,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -82,6 +90,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -90,6 +101,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -98,6 +112,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -106,6 +123,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -114,6 +134,9 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
@@ -175,7 +198,8 @@ let COMMANDS = [
                     adminOnly: true
                 },
                 requirements: {
-                    channelType: "text"
+                    channelType: "text",
+                    readyDatabase: true
                 }
             },
         ]
@@ -191,7 +215,8 @@ let COMMANDS = [
                     adminOnly: true
                 },
                 requirements: {
-                    channelType: "text"
+                    channelType: "text",
+                    readyDatabase: true
                 }
             }
         ]
@@ -205,7 +230,8 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 requirements: {
-                    channelType: "text"
+                    channelType: "text",
+                    readyDatabase: true
                 }
             }
         ]
