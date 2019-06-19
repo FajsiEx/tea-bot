@@ -5,13 +5,14 @@ module.exports = {
     interval: function (dClient) {
         let activityString = `with ${dClient.guilds.size} guilds | ${CONFIG.BOT.BUILD_INFO.BUILD_STRING} | ${module.exports.getTimeString()}`;
 
-        dClient.user.setActivity(activityString, { type: "PLAYING" });
-
         if (!dbBridge.isDBReady()) {
             dClient.user.setStatus("idle");
         } else {
             dClient.user.setStatus("online");
         }
+        
+        dClient.user.setActivity(activityString, { type: "PLAYING" });
+
     },
 
     getTimeString: function () {
