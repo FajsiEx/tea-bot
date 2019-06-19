@@ -16,6 +16,7 @@ require('sexy-require'); // For those nice absolute paths
 let CONFIG = require("./modules/config");
 
 const messageHandler = require("./handlers/message/messageHandler").handler;
+const discordClientErrorHandler = require("./handlers/clientError/errorHandler").handler;
 const handleId = require("./modules/handleId");
 
 console.log("[BOOT] Modules loaded".success);
@@ -78,9 +79,7 @@ dClient.on("message", async (msg)=> {
     }
 });
 
-dClient.on("error", (err)=> {
-    console.error(err);
-});
+dClient.on("error", discordClientErrorHandler);
 
 console.log("[BOOT] Created event listeners".success);
 

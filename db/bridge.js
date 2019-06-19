@@ -13,9 +13,9 @@ let client, db;
 let dbConnStatus = 0;
 
 module.exports = {
-    initDB: async function() {
-        if(!client || !db) { throw("Database error. !DB!"); }
+    // * Connection management methods
 
+    initDB: async function() {
         try { // To connect to Wanilla mongoDB
             console.log("Connected.");
             connectedClient = await MongoClient.connect(DB_URI, {
@@ -54,9 +54,29 @@ module.exports = {
         }
     },
 
+    isDBReady: function() {
+        switch (dbConnStatus) {
+            case 0:
+                console.log("[DBSTAT] Database connection not yet tried".warn);
+                return false;
+            case 1:
+                return true;
+            case 2:
+                console.log("[DBSTAT] Failed to connect to database. Retrying in the background.".warn);
+                return false;
+            case 3:
+                console.log("[DBSTAT] Got disconnected from the database. Retrying in the background.".warn);
+                return false;
+            default:
+                throw("Unknown dbConnStat:" + e);
+        }
+    },
+
+    // * Database interface methods
 
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
     getGuildDocument: async function (guildId) {
+        console.log(dbConnStatus);
         if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         let docs;
@@ -187,15 +207,6 @@ module.exports = {
     },
 
     getExpiredStickyDocs: async function (guildId, forceUpdate) {
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
-
         let eventExpiryDeadline = new Date().getTime();
         if (forceUpdate) {
             eventExpiryDeadline = Infinity;
@@ -219,11 +230,8 @@ module.exports = {
         try {
             docs = db.collection("sticky").find(query).toArray();
         } catch (e) {
-            client.close();
             throw ("Failed to get expired sticky posts: " + e);
         }
-
-        client.close();
         return docs;
     },
 
