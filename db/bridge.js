@@ -17,7 +17,7 @@ module.exports = {
 
     initDB: async function() {
         try { // To connect to Wanilla mongoDB
-            console.log("Connected.");
+            console.log("[DB] Trying to connect to db...".working);
             connectedClient = await MongoClient.connect(DB_URI, {
                 bufferMaxEntries: 0, // If there's an error, throw it instead of waiting on reconnect!
                 reconnectTries: Number.MAX_VALUE, // Reconnect as many times as you can! 1.79E+308 should be enough...
@@ -38,7 +38,7 @@ module.exports = {
                 dbConnStatus = 1; // Connected. again.
             });
 
-
+            console.log("[DB] Connected to the database".success);
             dbConnStatus = 1; // Connected.
             return client;
         } catch (e) {
