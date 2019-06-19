@@ -133,7 +133,7 @@ module.exports = {
 
             if (requestedCommand.requirements.readyDatabase) { // If the command requires db to be ready
 
-                if (dbBridge.isDBReady() != 1) { // If db isn't ready
+                if (!dbBridge.isDBReady()) { // If db isn't ready
                     try {
                         module.exports.responses.dbNotReadyResponse(handleData);
                     } catch (e) {
