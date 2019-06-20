@@ -178,7 +178,7 @@ module.exports = {
 
             // If yes (is not permitted)
             if (!isPermitted) { // Delete the message and go away
-                msg.delete(); // We really don't care about the outcome of this
+                msg.delete(); // TODO: Add check
                 return 20;
             }
         }
