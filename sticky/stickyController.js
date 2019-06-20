@@ -68,7 +68,7 @@ module.exports = {
         } catch (e) {
             throw (`Generator of type [${type}] has rejected it's promise: ${e}`);
         }
-        
+
         return messageData;
     },
 
@@ -164,13 +164,12 @@ module.exports = {
         return true;
     },
 
-    deleteAllStickyMessagesFromChannel: function (c_id) {
-        return new Promise((resolve, reject) => {
-            dbBridge.deleteAllStickyDocsFromChannel(c_id).then(() => {
-                resolve();
-            }).catch((e) => {
-                reject("Failed to delete data in db: " + e);
-            });
-        });
+    deleteAllStickyMessagesFromChannel: async function (c_id) {
+        try {
+            await dbBridge.deleteAllStickyDocsFromChannel(c_id);
+        }catch(e){
+            throw ("Failed to delete data in db: " + e);
+        }
+        return;
     }
 };
