@@ -39,8 +39,6 @@ module.exports = {
 
         let finalValue = r + x + y + z;
 
-        console.log(`x: ${x}; y:${y}; z:${z}; final:${finalValue}`);
-
         return finalValue;
     }
 }; 

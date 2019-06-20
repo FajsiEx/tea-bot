@@ -24,7 +24,6 @@ module.exports = {
 
         let resultEventString = "";
         eventsArray.forEach((event) => {
-            console.log(event.date)
             if (event.date.getTime() < new Date().getTime()) { return; } // If the event is expired, return
             resultEventString += `**\`${event.date.getDate()}.${event.date.getMonth() + 1}.${event.date.getFullYear()}\`** ${event.content} \n`;
         });

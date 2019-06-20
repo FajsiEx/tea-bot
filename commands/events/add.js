@@ -12,10 +12,6 @@ module.exports = {
 
         let eventDate = handleData.msg.createdAt;
 
-        console.log(eventDayString);
-        console.log(eventContentString);
-        console.log(eventDate);
-
         let eventDay, eventMonth, eventYear;
 
         if (eventDayString) { // If event date string exists
@@ -40,8 +36,6 @@ module.exports = {
         if (eventYear) {
             eventDate.setYear(eventYear);
         }
-
-        console.log(eventDate);
 
         let eventObject = {
             content: eventContentString,

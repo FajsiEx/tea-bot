@@ -191,14 +191,13 @@ module.exports = {
             try {
                 module.exports.responses.internalError(handleData, e, requestedCommandCategoryName, requestedCommandName);
             } catch (e) {
-                console.log(`Failed to send internal reject error message: ${e}`);
+                console.log(`Failed to send internal reject error message: ${e}`.error);
             }
             msg.channel.stopTyping();
             throw (`Command [${requestedCommandName}] rejected: ${e}`);
         }
 
         msg.channel.stopTyping();
-        console.log(`[${handleData.id}] Resolved!`);
         return 0; // 0 = command executed successfully
     }, // End of handler
 

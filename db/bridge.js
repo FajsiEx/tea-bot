@@ -76,7 +76,6 @@ module.exports = {
 
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
     getGuildDocument: async function (guildId) {
-        console.log(dbConnStatus);
         if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         let docs;
