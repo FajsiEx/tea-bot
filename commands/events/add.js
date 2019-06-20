@@ -15,7 +15,7 @@ module.exports = {
         let eventDay, eventMonth, eventYear;
 
         if (eventDayString) { // If event date string exists
-            eventDay = parseInt(eventDayString.split(".")[0]);
+            eventDay = parseInt(eventDayString.split(".")[0]); // TODO: do fancy stuff
             eventMonth = parseInt(eventDayString.split(".")[1]);
             eventYear = parseInt(eventDayString.split(".")[2]);
         }
