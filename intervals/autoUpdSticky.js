@@ -8,7 +8,6 @@ const stickyController = require("../sticky/stickyController");
 
 module.exports = {
     interval: async function (dClient) {
-        console.log("autoUpdSticky");
         try {
             await stickyController.updateStickyDocs(dClient);
         } catch (e) {
