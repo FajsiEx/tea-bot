@@ -31,7 +31,7 @@ module.exports = {
             throw ("Failed handleData check");
         }
 
-        // TODO: move this somewhere
+        // TODO: move this somewhere prob helper functions
         let msg = handleData.msg; // Get msg from handle data
         let requestedCommandString = msg.content.split(prefixUsed)[1].split(" ")[0].toLowerCase(); // t!dEv:PiNg => dev:ping
 
