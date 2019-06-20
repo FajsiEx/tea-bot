@@ -9,7 +9,7 @@ module.exports = {
         let channel = creationData.channel;
 
         if (!guildId || !type || !channel) {
-            throw("False guildId or false type or false channel");
+            throw ("False guildId or false type or false channel");
         }
 
         let stickyMsgId;
@@ -19,14 +19,14 @@ module.exports = {
         try {
             messageData = await this.generateMessageData(creationData);
         } catch (e) {
-            throw("GenerateMessageData has rejected it's promise: " + e);
+            throw ("GenerateMessageData has rejected it's promise: " + e);
         }
 
         let stickyMsg;
         try {
             stickyMsg = await channel.send(messageData);
         } catch (e) {
-            throw("Failed to send a message: " + e);
+            throw ("Failed to send a message: " + e);
         }
 
         stickyMsgId = stickyMsg.id;
@@ -48,27 +48,28 @@ module.exports = {
 
     },
 
-    generateMessageData: function (messageCreationData) {
-        return new Promise((resolve, reject) => {
-            let guildId = messageCreationData.guildId;
-            let type = messageCreationData.type;
+    generateMessageData: async function (messageCreationData) {
+        let guildId = messageCreationData.guildId;
+        let type = messageCreationData.type;
 
-            if (!guildId || !type) {
-                reject("False guildId or false type");
-            }
+        if (!guildId || !type) {
+            throw ("False guildId or false type");
+        }
 
-            if (generators[type]) {
-                generators[type].generator({
-                    guildId: guildId
-                }).then((messageData) => {
-                    resolve(messageData);
-                }).catch((e) => {
-                    reject(`Generator of type [${type}] has rejected it's promise: ${e}`);
-                });
-            } else {
-                reject(`Did not find generator with type [${type}]. Please check if you imported it correctly in /sticky/generatorData`);
-            }
-        });
+        if (!generators[type]) { // If a generator of this type is not found, throw an error
+            throw (`Did not find generator with type [${type}]. Please check if you imported it correctly in /sticky/generatorData`);
+        }
+
+        let messageData;
+        try {
+            messageData = await generators[type].generator({
+                guildId: guildId
+            });
+        } catch (e) {
+            throw (`Generator of type [${type}] has rejected it's promise: ${e}`);
+        }
+        
+        return messageData;
     },
 
     hashMsgData: function (messageData) {
@@ -160,8 +161,6 @@ module.exports = {
                 channel.stopTyping();
             }
         }
-
-        console.log("Done////");
         return true;
     },
 
