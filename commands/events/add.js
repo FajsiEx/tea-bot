@@ -16,6 +16,10 @@ module.exports = {
 
         if (eventDayString) { // If event date string exists
             [eventDay, eventMonth, eventYear] = eventDayString.split(".");
+
+            eventDay = parseInt(eventDay);
+            eventMonth = parseInt(eventMonth);
+            eventYear = parseInt(eventYear);
         }
 
         if (!eventDay || !eventDayString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
@@ -93,8 +97,11 @@ module.exports = {
                         "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": `
                             Invalid date of event.
-                            \`TODO: Add examples\`
-                        `, // TODO: Add examples
+                            
+                            \`!events:add 11 something\` - Adds something on 11.${new Date().getMonth()+1}.${new Date().getFullYear()}
+                            \`!events:add 11.12 something\` - Adds something on 11.12.${new Date().getFullYear()}
+                            \`!events:add 11.12.2022 something\` - Adds something on 11.12.2022
+                        `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 });
