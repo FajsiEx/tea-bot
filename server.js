@@ -29,7 +29,7 @@ console.log("[BOOT] Sentry initialized".success);
 const dClient = new discordJS.Client(); // Construct a discord client object
 console.log("[BOOT] Initialized Discord client".success);
 
-let ready = false;
+let ready = false; // Initial ready - won't trigger things made to run only once on ready
 
 // Add event listeners
 dClient.on("ready", ()=>{
@@ -46,7 +46,7 @@ dClient.on("ready", ()=>{
         console.log("Github:  https://github.com/FajsiEx/tea-bot".debug);
         console.log("________________________________________________________\n");
 
-        console.log(`Tea-bot ready. Delta start-ready: ${new Date().getTime() - startTimestamp}ms`.event);
+        console.log(`Tea-bot ready. Startup time: ${new Date().getTime() - startTimestamp}ms`.event);
         ready = true;
     }
 });
