@@ -5,7 +5,7 @@
 */
 
 module.exports = {
-    handler: async function(handleData) {
+    handler: async function() {
         throw(`Intentional reject. おまえは もう しんでいる`);
     }
 };
