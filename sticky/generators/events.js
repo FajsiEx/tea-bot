@@ -34,8 +34,8 @@ module.exports = {
                 "title": "Events",
                 "color": CONFIG.EMBED.COLORS.STICKY,
                 "description": `
-                        ${resultEventString}
-                    `,
+                    ${resultEventString}
+                `,
                 "footer": CONFIG.EMBED.FOOTER()
             }
         };
