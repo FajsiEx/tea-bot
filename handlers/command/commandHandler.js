@@ -178,7 +178,11 @@ module.exports = {
 
             // If yes (is not permitted)
             if (!isPermitted) { // Delete the message and go away
-                msg.delete(); // TODO: Add check
+                try {
+                    await msg.delete();
+                }catch(e){
+                    console.log(`Failed to delete restricted message: ${e}`.warn);
+                }
                 return 20;
             }
         }
