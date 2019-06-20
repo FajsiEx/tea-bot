@@ -260,7 +260,8 @@ module.exports = {
     },
 
     deleteStickyDoc: async function (m_id) {
-        // TODO: Add check if m_id is a number
+        if (!Number.isInteger(m_id)) { throw("m_id is not an integer"); }
+
         let client;
         try { // To connect to Wanilla mongoDB
             client = await MongoClient.connect(DB_URI);
@@ -284,7 +285,8 @@ module.exports = {
     },
 
     deleteAllStickyDocsFromChannel: async function (c_id) {
-        // TODO: Add check if c_id is a number
+        if (!Number.isInteger(c_id)) { throw("c_id is not an integer"); }
+
         let client;
         try { // To connect to Wanilla mongoDB
             client = await MongoClient.connect(DB_URI);
