@@ -87,9 +87,9 @@ module.exports = {
                     "title": "Send",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
-                            The following message was sent to \`${channelId}\`
-                            \`\`\`${sendMsg}\`\`\`
-                        `,
+                        The following message was sent to \`${channelId}\`
+                        \`\`\`${sendMsg}\`\`\`
+                    `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             });
