@@ -115,11 +115,9 @@ module.exports = {
                 events: []
             });
         } catch (e) {
-            client.close();
             throw ("Failed to insert the new guildDoc: " + e);
         }
 
-        client.close();
         return res.ops[0]; // Return the created guild doc
     },
 
@@ -132,7 +130,6 @@ module.exports = {
                 guildId: guildId
             });
         } catch (e) {
-            client.close();
             throw ("Could not delete guild document: " + e);
         }
 
@@ -144,7 +141,6 @@ module.exports = {
             console.log("Guild doc was deleted, but the cache failed to update it: " + e);
         }
 
-        client.close();
         return true; // Return with success
     },
 
@@ -164,11 +160,9 @@ module.exports = {
                 $set: guildDoc // with the new updated doc
             });
         } catch (e) {
-            client.close();
             throw ("Could not update guildDoc: " + e);
         }
 
-        client.close();
         return true;
     },
 
@@ -224,11 +218,9 @@ module.exports = {
                 $set: stickyDocUpdateData
             });
         } catch (e) {
-            client.close();
             throw (`Failed to update sticky doc [${m_id}] : ${e}`);
         }
 
-        client.close();
         return true; // Return with success
     },
 
@@ -242,11 +234,9 @@ module.exports = {
                 m_id: m_id
             });
         } catch (e) {
-            client.close();
             throw (`Failed to update sticky doc [${m_id}] : ${e}`);
         }
 
-        client.close();
         return true; // Return with success
     },
 
@@ -260,11 +250,9 @@ module.exports = {
                 c_id: c_id
             });
         } catch (e) {
-            client.close();
             throw(`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
         }
 
-        client.close();
         return true;
     }
 };
