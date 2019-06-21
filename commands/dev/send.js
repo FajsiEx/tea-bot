@@ -13,9 +13,9 @@ module.exports = {
 
         let command = msg.content.split(" ")[0];
         let channelId = msg.content.split(" ")[1];
-        let sendMsg = channelId ? msg.content.slice(command.length + channelId.length + 2) : false;
+        let sendMsg = parseInt(channelId) ? msg.content.slice(command.length + channelId.length + 2) : false;
 
-        if (!channelId || !sendMsg) {
+        if (!parseInt(channelId) || !sendMsg) {
             try {
                 msg.channel.send({
                     "embed": {
@@ -59,7 +59,7 @@ module.exports = {
         }
 
         try {
-            channel.send(sendMsg);
+            await channel.send(sendMsg);
         } catch (e) {
             try {
                 console.log(`Could not send the message: ${e}`.warn);
