@@ -38,6 +38,7 @@ let COMMANDS = [
                     devOnly: true
                 },
                 requirements: {
+                    channelType: "text",
                     readyDatabase: true
                 }
             },
