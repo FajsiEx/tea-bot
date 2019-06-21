@@ -125,14 +125,7 @@ module.exports = {
 
     // Creates a doc in the guilds collection based on guildId
     deleteGuildDocument: async function (guildId) {
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         try {
             db.collection("guilds").deleteOne({ // Delete doc with guildId to the guilds collection
@@ -162,14 +155,8 @@ module.exports = {
             console.log("Guild doc will be written, but cache refused to store the updated guildDoc:" + e);
         }
 
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-        let db = client.db('tea-bot'); // Get tea-bot db
         try {
             await db.collection("guilds").updateOne({ // Update doc
                 guildId: guildId // with guildId
@@ -186,14 +173,7 @@ module.exports = {
     },
 
     createStickyMsgDocument: async function (documentData) {
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         let res;
         try {
@@ -235,14 +215,7 @@ module.exports = {
     },
 
     updateStickyDoc: async function (m_id, stickyDocUpdateData) {
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         try {
             await db.collection("sticky").updateOne({
@@ -262,14 +235,7 @@ module.exports = {
     deleteStickyDoc: async function (m_id) {
         if (!Number.isInteger(m_id)) { throw("m_id is not an integer"); }
 
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         try {
             db.collection("sticky").deleteOne({ // Delete sticky doc based on m_id
@@ -287,14 +253,7 @@ module.exports = {
     deleteAllStickyDocsFromChannel: async function (c_id) {
         if (!Number.isInteger(c_id)) { throw("c_id is not an integer"); }
 
-        let client;
-        try { // To connect to Wanilla mongoDB
-            client = await MongoClient.connect(DB_URI);
-        } catch (e) {
-            throw ("Failed to connect to db: " + e);
-        }
-
-        let db = client.db('tea-bot'); // Get tea-bot db
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
         try {
             await db.collection("sticky").deleteMany({
