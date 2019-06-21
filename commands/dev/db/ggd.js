@@ -23,8 +23,8 @@ module.exports = {
                         "title": "Get guild document",
                         "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": `
-                        Could not get guild id from the message and no id was specified.
-                    `,
+                            Could not get guild id from the message and no id was specified.
+                        `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then(()=>{
