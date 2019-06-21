@@ -68,7 +68,7 @@ let COMMANDS = [
             {
                 keywords: ["throwup"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/throwup").handler,
-                //cannotBeUsedWithoutCommandCategory: true,
+                cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
                 }
