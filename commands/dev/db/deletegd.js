@@ -12,12 +12,12 @@ module.exports = {
                 guildId = msg.guild.id;
             }
 
-            let commandArg_guildId = parseInt(msg.content.split(" ")[1])
+            let commandArg_guildId = msg.content.split(" ")[1];
             if (commandArg_guildId) {
                 guildId = commandArg_guildId;
             }
 
-            if (!guildId) { // If the msg isn't in a guild (to get id from) and the user hasn't specified an id in the params, please fuck off
+            if (!parseInt(guildId)) { // If the msg isn't in a guild (to get id from) and the user hasn't specified an id in the params, please fuck off
                 msg.channel.send({
                     "embed": {
                         "title": "Delete guild document",
