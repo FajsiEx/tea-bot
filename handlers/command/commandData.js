@@ -30,18 +30,6 @@ let COMMANDS = [
                     devOnly: true
                 }
             },
-            { // TODO: remove - not needed
-                keywords: ["stickycreate"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/create").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                },
-                requirements: {
-                    channelType: "text",
-                    readyDatabase: true
-                }
-            },
             {
                 keywords: ["stickyautoupd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/autoupd").handler,
