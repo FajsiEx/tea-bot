@@ -9,7 +9,7 @@ const handleDataCheck = require("../checks/handleData").check;
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "19.alpha",
+            BUILD: "19.re.beta",
             BUILD_STRING: "local build",
         }
     },
