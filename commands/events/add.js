@@ -97,7 +97,7 @@ module.exports = {
         return 0;
     },
 
-    replyInvalidDate: function (handleData) {
+    replyInvalidFormat: function (handleData) {
         return new Promise(async (resolve, reject) => {
             try {
                 await handleData.msg.channel.send({
@@ -105,7 +105,7 @@ module.exports = {
                         "title": "Add event",
                         "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": `
-                            Invalid date of event.
+                            Invalid format of event.
                             
                             \`!events:add 11 something\` - Adds something on 11.${new Date().getMonth()+1}.${new Date().getFullYear()}
                             \`!events:add 11.12 something\` - Adds something on 11.12.${new Date().getFullYear()}
