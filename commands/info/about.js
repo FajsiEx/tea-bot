@@ -1,4 +1,5 @@
-const CONFIG = require("../../modules/config");
+const CONFIG = require("/modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     handler: (handleData) => {
@@ -8,12 +9,15 @@ module.exports = {
                 "embed": {
                     "title": "Tea-bot | About",
                     "color": CONFIG.EMBED.COLORS.INFO,
-                    "description": `
+                    "description": outdent`
                         「 Tea-bot Re:Write 」 Project
                         Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}
 
                         Server message latency: ${new Date().getTime() - msg.createdTimestamp} ms
                         Server time: ${new Date().toString()}
+
+                        [Website (tea-bot.ml)](https://tea-bot.ml)
+                        [GitHub (FajsiEx/tea-bot)](https://github.com/FajsiEx/tea-bot)
                     `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }

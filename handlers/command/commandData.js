@@ -170,15 +170,7 @@ let COMMANDS = [
         categoryName: "info",
         commands: [
             {
-                keywords: ["help", "tasukete"],
-                handler: require(DEFAULT_COMMANDS_PATH + "info/help").handler,
-            },
-            {
-                keywords: ["ping"],
-                handler: require(DEFAULT_COMMANDS_PATH + "info/ping").handler,
-            },
-            {
-                keywords: ["about", "info"],
+                keywords: ["about", "info", "help", "tasukete", "ping"],
                 handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
             }
         ]
