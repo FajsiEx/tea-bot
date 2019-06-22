@@ -28,7 +28,9 @@ module.exports = {
             mentionedUsers.forEach((mentionedUser) => {
                 msg.guild.channels.forEach(channel => {
                     try {
-                        channel.permissionOverwrites.get(mentionedUser.id).delete();
+                        channel.overwritePermissions(mentionedUser, {
+                            SEND_MESSAGES: null, // For defaulting the perm
+                        });
                     } catch (e) {
                         console.log(`[COMMAND:MUTE] Unable to unmute user [${mentionedUser.tag}] from channel [${channel.id}] due to: ${e}`.warn);
                     }
