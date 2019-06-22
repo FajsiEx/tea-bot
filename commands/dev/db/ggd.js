@@ -35,7 +35,7 @@ module.exports = {
                 return;
             }
 
-            dbInt.getGuildDocument(guildId).then((doc) => {
+            dbInt.getGuildDoc(guildId).then((doc) => {
                 msg.channel.send({
                     "embed": {
                         "title": "Get guild document",
