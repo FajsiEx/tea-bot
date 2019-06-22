@@ -63,7 +63,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["getgd"],
+                keywords: ["getgd", "ggd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -74,7 +74,7 @@ let COMMANDS = [
                 }
             },
             {
-                keywords: ["deletegd"],
+                keywords: ["deletegd", "delgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/deletegd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
