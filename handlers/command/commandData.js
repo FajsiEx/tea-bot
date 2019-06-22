@@ -84,66 +84,6 @@ let COMMANDS = [
                     readyDatabase: true
                 }
             },
-            {
-                keywords: ["intget"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/int/get").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                },
-                requirements: {
-                    readyDatabase: true
-                }
-            },
-            {
-                keywords: ["intset"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/int/set").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                },
-                requirements: {
-                    readyDatabase: true
-                }
-            },
-            {
-                keywords: ["dbget"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testread").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                },
-                requirements: {
-                    readyDatabase: true
-                }
-            },
-            {
-                keywords: ["dbset"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testwrite").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                },
-                requirements: {
-                    readyDatabase: true
-                }
-            },
-            {
-                keywords: ["cacheget"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/getcache").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                }
-            },
-            {
-                keywords: ["cacheset"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/setcache").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                }
-            }
         ]
     },
 

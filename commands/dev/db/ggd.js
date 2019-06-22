@@ -1,5 +1,5 @@
-const CONFIG = require("../../../modules/config");
-const dbBridge = require("../../../db/bridge");
+const CONFIG = require("/modules/config");
+const dbInt = require("/db/interface");
 
 module.exports = {
     handler: (handleData) => {
@@ -35,7 +35,7 @@ module.exports = {
                 return;
             }
 
-            dbBridge.getGuildDocument(guildId).then((doc) => {
+            dbInt.getGuildDocument(guildId).then((doc) => {
                 msg.channel.send({
                     "embed": {
                         "title": "Get guild document",
