@@ -20,13 +20,13 @@ const CONFIG = {
 
     EMBED: {
         COLORS: {
-            DEFAULT:    1616639,
-            INFO:       1616639,
-            SUCCESS:    4521796,
-            PROGRESS:   13041919,
-            WARN:       14540032,
-            FAIL:       16720418,
-            STICKY:     65491
+            DEFAULT:    0x0088ff,
+            INFO:       0x0088ff,
+            SUCCESS:    0x22ff00,
+            PROGRESS:   0x5500ff,
+            WARN:       0xffff00,
+            FAIL:       0xff2222,
+            STICKY:     0x00ffaa
         },
         FOOTER: function(handleData){
             if (handleDataCheck(handleData, true)) {
