@@ -8,18 +8,27 @@ module.exports = {
         let content = msg.content;
 
         let eventDayString = content.split(" ")[1];
-        let eventContentString = content.slice(content.indexOf(content.split(" ")[2]));
+        let eventContentString = content.split(" ")[2] ? content.slice(content.indexOf(content.split(" ")[2])) : false; // If there is !events:add 25 [content] (3 thing split by spaces) slice safely, otherwise mission abort!
 
         let eventDate = handleData.msg.createdAt;
 
         let eventDay, eventMonth, eventYear;
 
-        if (eventDayString) { // If event date string exists
+        if (eventContentString) { // If event date string exists
             [eventDay, eventMonth, eventYear] = eventDayString.split(".");
 
             eventDay = parseInt(eventDay);
             eventMonth = parseInt(eventMonth);
             eventYear = parseInt(eventYear);
+        }
+
+        if (!eventDay || !eventContentString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
+            try {
+                await module.exports.replyInvalidFormat(handleData);
+                return 1;
+            } catch (e) {
+                throw ("Reply invalid format rejected: " + e);
+            }
         }
 
         if (!eventDay || !eventDayString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
