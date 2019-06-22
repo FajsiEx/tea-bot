@@ -13,6 +13,7 @@ module.exports = {
         let type = msg.content.split(" ")[1];
         let arg = parseInt(msg.content.split(" ")[2]);
 
+        //* count nuke type
         if (type == "count") {
             if (!arg) {
                 try {
@@ -47,7 +48,8 @@ module.exports = {
             }
             return 0;
 
-        } else if (type == "after") {
+            //* after nuke type
+        } else if (type == "after") { 
             if (!parseInt(arg)) { // If arg is not a number
                 try {
                     await module.exports.responses.error.idIntError(handleData);
