@@ -225,7 +225,7 @@ module.exports = {
     },
 
     deleteStickyDoc: async function (m_id) {
-        if (!Number.isInteger(m_id)) { throw("m_id is not an integer"); }
+        if (!parseInt(m_id)) { throw("m_id is not a snowflake"); }
 
         if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
@@ -241,7 +241,7 @@ module.exports = {
     },
 
     deleteAllStickyDocsFromChannel: async function (c_id) {
-        if (!Number.isInteger(c_id)) { throw("c_id is not an integer"); }
+        if (!parseInt(c_id)) { throw("c_id is not a snowflake"); }
 
         if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
