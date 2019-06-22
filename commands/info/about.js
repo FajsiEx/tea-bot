@@ -10,12 +10,11 @@ module.exports = {
                     "title": "Tea-bot | About",
                     "color": CONFIG.EMBED.COLORS.INFO,
                     "description": outdent`
-                        「 Tea-bot Re:Write 」
-                        *Starting code in a better way from zero*
-                        Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}
-
-                        Server message latency: ${new Date().getTime() - msg.createdTimestamp} ms
-                        Server time: ${new Date().toString()}
+                        **「 Tea-bot Re:Write 」** *Starting code in a better way from zero*
+                        
+                        Build **${CONFIG.BOT.BUILD_INFO.BUILD_STRING}**
+                        Server message latency: **${new Date().getTime() - msg.createdTimestamp} ms**
+                        Server time: **${new Date().toString()}**
 
                         [Website (tea-bot.ml)](https://tea-bot.ml)
                         [GitHub (FajsiEx/tea-bot)](https://github.com/FajsiEx/tea-bot)
