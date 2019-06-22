@@ -44,8 +44,8 @@ module.exports = {
                                 Invalid or missing sticky type.
                                 For valid sticky types, visit docs.
 
-                                \'!sticky:create time\'
-                                \'!sticky:create events\'
+                                \`!sticky:create time\`
+                                \`!sticky:create events\`
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
