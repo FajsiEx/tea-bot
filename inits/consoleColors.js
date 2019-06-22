@@ -4,10 +4,13 @@ module.exports = {
     init: function() {
         colors.setTheme({
             debug: 'grey',
+            info: 'blue',
             working: 'blue',
             success: 'green',
+            special: ['bgBlue', 'black'],
             warn: ['bgYellow', 'black'],
             error: 'red',
+            critError: ['bgRed', 'black'],
 
             interval: 'magenta',
             event: 'cyan',

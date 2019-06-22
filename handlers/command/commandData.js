@@ -9,33 +9,22 @@
 
 */
 
-const DEFAULT_COMMANDS_PATH = "../commands/";
-const qrHandler = require("../qr/qrHandler");
-const qrData = require("../qr/qrData");
+const DEFAULT_COMMANDS_PATH = "/commands/";
+const qrHandler = require("/qr/qrHandler");
+const qrData = require("/qr/qrData");
 
 // Just add command™
 let COMMANDS = [
     {
         categoryName: "dev",
-        commands: [{
-                keywords: ["ping"],
-                handler: require(DEFAULT_COMMANDS_PATH + "ping").handler,
-            },
+        commands: [
             {
                 keywords: ["send"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler,
             },
             {
-                keywords: ["shutdown"],
+                keywords: ["shutdown", "skapnadruhulomenohned"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/shutdown").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                }
-            },
-            {
-                keywords: ["stickycreate"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/create").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -47,6 +36,10 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
                 }
             },
             {
@@ -55,94 +48,156 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
                 }
             },
             {
-                keywords: ["getgd"],
+                keywords: ["throwup"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/throwup").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
+                keywords: ["getgd", "ggd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
                 }
             },
             {
-                keywords: ["deletegd"],
+                keywords: ["deletegd", "delgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/deletegd").handler,
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
+                }
+            },
+        ]
+    },
+
+    {
+        categoryName: "mod",
+        commands: [
+            {
+                keywords: ["nuke", "bulkdelete"],
+                handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
+                rights: {
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text"
                 }
             },
             {
-                keywords: ["intget"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/int/get").handler,
-                cannotBeUsedWithoutCommandCategory: true,
+                keywords: ["mute"],
+                handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
                 rights: {
-                    devOnly: true
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text"
                 }
             },
             {
-                keywords: ["intset"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/int/set").handler,
-                cannotBeUsedWithoutCommandCategory: true,
+                keywords: ["unmute"],
+                handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
                 rights: {
-                    devOnly: true
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text"
                 }
             },
             {
-                keywords: ["dbget"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testread").handler,
-                cannotBeUsedWithoutCommandCategory: true,
+                keywords: ["restrict"],
+                handler: require(DEFAULT_COMMANDS_PATH + "moderation/restrict/restrict").handler,
                 rights: {
-                    devOnly: true
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
                 }
             },
+        ]
+    },
+
+    {
+        categoryName: "sticky",
+        commands: [
             {
-                keywords: ["dbset"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/testwrite").handler,
-                cannotBeUsedWithoutCommandCategory: true,
+                keywords: ["create"],
+                handler: require(DEFAULT_COMMANDS_PATH + "sticky/create").handler,
                 rights: {
-                    devOnly: true
-                }
-            },
-            {
-                keywords: ["cacheget"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/getcache").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                }
-            },
-            {
-                keywords: ["cacheset"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/cache/setcache").handler,
-                cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
                 }
             }
         ]
     },
 
     {
-        categoryName: "mod",
-        commands: [{
-            keywords: ["nuke", "bulkdelete"],
-            handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
-        }]
+        categoryName: "events",
+        commands: [
+            {
+                keywords: ["add", "create"],
+                handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
+                }
+            }
+        ]
     },
 
     {
-        categoryName: "cpp",
-        commands: [{
-            keywords: ["congrats", "congratulations"],
-            handler: require(DEFAULT_COMMANDS_PATH + "copypaste/congrats").handler,
-        }]
+        categoryName: "info",
+        commands: [
+            {
+                keywords: ["help", "tasukete"],
+                handler: require(DEFAULT_COMMANDS_PATH + "info/help").handler,
+            },
+            {
+                keywords: ["ping"],
+                handler: require(DEFAULT_COMMANDS_PATH + "info/ping").handler,
+            },
+            {
+                keywords: ["about", "info"],
+                handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
+            }
+        ]
+    },
+
+    { // TODO: do this seriously
+        categoryName: "edupica",
+        commands: [
+            {
+                keywords: ["sukfest"],
+                handler: require(DEFAULT_COMMANDS_PATH + "edu/supl").handler
+            }
+        ]
     },
 
     {
         categoryName: "invalid", // Invalid command/category replies
-        commands: [{
+        commands: [
+            {
                 keywords: ["category"],
                 handler: require(DEFAULT_COMMANDS_PATH + "invalid/category").handler,
             },
@@ -155,14 +210,11 @@ let COMMANDS = [
 
     {
         categoryName: false, // Without prefix
-        commands: [{
+        commands: [
+            {
                 keywords: ["hi", "hello", "konichiwa"],
                 handler: require(DEFAULT_COMMANDS_PATH + "hi").handler,
-            },
-            {
-                keywords: ["help", "tasukete"],
-                handler: require(DEFAULT_COMMANDS_PATH + "help").handler,
-            },
+            }
         ]
     },
 ];
@@ -203,9 +255,6 @@ COMMANDS.forEach((commandCategory) => {
         allCommandNames = allCommandNames.concat(command.keywords); // And it's keywords to allCommandNames array
     });
 });
-console.log("[MODULE:COMMAND_DATA] DEBUG init dump of all commands".debug);
-console.log(allCommands);
-console.log(allCommandNames);
 
 // Now we detect duplicates
 let duplicateCommandNames = [];
@@ -219,8 +268,6 @@ allCommandNames.forEach((commandName) => {
         c.push(commandName);
     }
 });
-console.log("[MODULE:COMMAND_DATA] DEBUG init dump of command name dups".debug);
-console.log(duplicateCommandNames);
 
 let nonDuplicateCommands = allCommands.filter((command) => {
     let hasDuplicateKeyword = false;
@@ -234,8 +281,6 @@ let nonDuplicateCommands = allCommands.filter((command) => {
     });
     return !hasDuplicateKeyword;
 });
-console.log("[MODULE:COMMAND_DATA] DEBUG init non duped commands".debug);
-console.log(nonDuplicateCommands);
 
 let withoutPrefixCommandCategory = COMMANDS.filter((commandCategory) => { // Get the "without prefix" category
     return commandCategory.categoryName == false;

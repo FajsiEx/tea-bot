@@ -1,135 +1,175 @@
-
 const generators = require("./generatorData").generators;
 const crypto = require("crypto");
 const dbBridge = require("../db/bridge");
 
 module.exports = {
-    createStickyPost: function(creationData){
-        return new Promise((resolve, reject)=>{
-            let guildId = creationData.guildId;
-            let type = creationData.type;
-            let channel = creationData.channel;
+    createStickyPost: async function (creationData) {
+        let guildId = creationData.guildId;
+        let type = creationData.type;
+        let channel = creationData.channel;
 
-            if (!guildId || !type || !channel) {
-                reject("False guildId or false type or false channel");
-            }
+        if (!guildId || !type || !channel) {
+            throw ("False guildId or false type or false channel");
+        }
 
-            let stickyMsgId;
-            let hash;
+        let stickyMsgId;
+        let hash;
 
-            this.generateMessageData(creationData).then((messageData)=>{
-                console.log(messageData);
-                channel.send(messageData).then((stickyMsg)=>{
-                    stickyMsgId = stickyMsg.id;
-                    hash = this.hashMsgData(messageData);
-                    console.log(hash);
+        let messageData;
+        try {
+            messageData = await this.generateMessageData(creationData);
+        } catch (e) {
+            throw ("GenerateMessageData has rejected it's promise: " + e);
+        }
 
-                    dbBridge.createStickyMsgDocument({
-                        hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
-                        g_id: guildId, // Guild id
-                        c_id: channel.id, // Channel id
-                        m_id: stickyMsgId, // Message id
-                        expiry: new Date().getTime() + (1*60*1000), // Timestamp when the data needs to be regenerated. Used in the interval db query, TODO: Make this a const somewhere
-                        type: type // Type for generator purposes 
-                    }).then(()=>{
-                        resolve();
-                    }).catch((e)=>{
-                        reject("Failed to store data in db: " + e);
-                    });
+        let stickyMsg;
+        try {
+            stickyMsg = await channel.send(messageData);
+        } catch (e) {
+            throw ("Failed to send a message: " + e);
+        }
 
-                }).catch((e)=>{
-                    reject("Failed to send a message: " + e);
-                });
+        stickyMsgId = stickyMsg.id;
+        hash = this.hashMsgData(messageData);
 
-            }).catch((e)=>{
-                reject("GenerateMessageData has rejected it's promise: " + e);
+        try {
+            await dbBridge.createStickyMsgDocument({
+                hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
+                g_id: guildId, // Guild id
+                c_id: channel.id, // Channel id
+                m_id: stickyMsgId, // Message id
+                expiry: new Date().getTime() + (1 * 60 * 1000), // Timestamp when the data needs to be regenerated. Used in the interval db query, TODO: Make this a const somewhere
+                type: type // Type for generator purposes 
             });
-        });
+        } catch (e) {
+            throw ("Failed to store data in db: " + e);
+        }
+        return true;
+
     },
 
-    generateMessageData: function(messageCreationData) {
-        return new Promise((resolve, reject)=>{
-            let guildId = messageCreationData.guildId;
-            let type = messageCreationData.type;
+    generateMessageData: async function (messageCreationData) {
+        let guildId = messageCreationData.guildId;
+        let type = messageCreationData.type;
 
-            if (!guildId || !type) {
-                reject("False guildId or false type");
-            }
+        if (!guildId || !type) {
+            throw ("False guildId or false type");
+        }
 
-            if (generators[type]) {
-                generators[type].generator({
-                    guildId: guildId
-                }).then((messageData)=>{
-                    resolve(messageData);
-                }).catch((e)=>{
-                    reject(`Generator of type [${type}] has rejected it's promise: ${e}`);
-                });
-            }else{
-                reject(`Did not find generator with type [${type}]. Please check if you imported it correctly in /sticky/generatorData`);
-            }
-        });
+        if (!generators[type]) { // If a generator of this type is not found, throw an error
+            throw (`Did not find generator with type [${type}]. Please check if you imported it correctly in /sticky/generatorData`);
+        }
+
+        let messageData;
+        try {
+            messageData = await generators[type].generator({
+                guildId: guildId
+            });
+        } catch (e) {
+            throw (`Generator of type [${type}] has rejected it's promise: ${e}`);
+        }
+
+        return messageData;
     },
 
-    hashMsgData: function(messageData) {
+    hashMsgData: function (messageData) {
         return crypto.createHash('md5').update(JSON.stringify(messageData)).digest("hex");
     },
 
-    updateStickyDocs: function(dClient) {
-        return new Promise((resolve, reject)=>{
-            dbBridge.getExpiredStickyDocs().then((expiredDocs)=>{
-                console.log(expiredDocs);
-                if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know
-                    reject("expiredDocs is false");
-                }
-                expiredDocs.forEach(doc => {
-                    // TODO: Add external check for stickyDoc plz
-                    this.generateMessageData({
-                        guildId: doc.g_id,
-                        type: doc.type
-                    }).then((messageData)=>{
-                        console.log(messageData);
-                        let oldHash = doc.hash;
-                        let newHash = this.hashMsgData(messageData);
+    updateStickyDocs: async function (dClient, guildId, forceUpdate) {
+        let expiredDocs;
 
-                        if (oldHash == newHash) { // Data is the same
-                            dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000)});
-                        }else{
-                            let channel = dClient.channels.get(doc.c_id);
-                            channel.startTyping();
-                            channel.fetchMessage(doc.m_id).then((msg)=>{
-                                msg.edit(messageData).catch((e)=>{
-                                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
-                                    dbBridge.deleteStickyDoc(doc.m_id);
-                                    channel.stopTyping();
-                                });
+        try {
+            expiredDocs = await dbBridge.getExpiredStickyDocs(guildId, forceUpdate);
+        } catch (e) {
+            throw ("Failed to getExpiredStickyDocs: " + e);
+        }
 
-                                dbBridge.updateStickyDoc(doc.m_id, {expiry: new Date().getTime() + (1*60*1000), hash:newHash}).then(()=>{
-                                    channel.stopTyping();
-                                }).catch((e)=>{
-                                    console.log("[STICKYCTRL:UPDSTICKYDOCS] Failed to save updated data to db. e: " + e);
-                                    channel.stopTyping();
-                                });
-                            }).catch((e)=>{
-                                console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}]: ${e}`.warn);
-                                dbBridge.deleteStickyDoc(doc.m_id);
-                                channel.stopTyping();
-                            });
-                        }
-                    });
+        if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know ;)
+            throw ("expiredDocs is false");
+        }
+
+        for (let doc of expiredDocs) {
+            // TODO: Add external check for stickyDoc plz
+            let messageData;
+            try {
+                messageData = await this.generateMessageData({
+                    guildId: doc.g_id,
+                    type: doc.type
                 });
-            }).catch((e)=>{
-                reject("Failed to get expired docs: " + e);
-            });
-        });
+            } catch (e) {
+                throw ("GenerateMessageData rejected: " + e);
+            }
+
+            let oldHash = doc.hash;
+            let newHash = this.hashMsgData(messageData);
+
+            if (oldHash == newHash) { // Data is the same
+                try {
+                    await dbBridge.updateStickyDoc(doc.m_id, {
+                        expiry: new Date().getTime() + (1 * 60 * 1000)
+                    });
+                } catch (e) {
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ updateStickyDoc (expiry) for [${doc.m_id}] : ${e}`.warn);
+                    continue;
+                }
+            } else {
+                let channel = dClient.channels.get(doc.c_id);
+
+                // START OF TYPING
+                channel.startTyping();
+
+                let msg;
+                try {
+                    msg = await channel.fetchMessage(doc.m_id);
+                } catch (e) {
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ fetchMessage - deleting sticky doc for [${doc.m_id}] : ${e}`.warn);
+                    try {
+                        await dbBridge.deleteStickyDoc(doc.m_id);
+                    } catch (e) {
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                    }
+
+                    channel.stopTyping();
+                    continue;
+                }
+
+                try {
+                    await msg.edit(messageData);
+                } catch (e) {
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}] : ${e}`.warn);
+                    try {
+                        await dbBridge.deleteStickyDoc(doc.m_id);
+                    } catch (e) {
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                    }
+
+                    channel.stopTyping();
+                    continue;
+                }
+
+                try {
+                    await dbBridge.updateStickyDoc(doc.m_id, {
+                        expiry: new Date().getTime() + (1 * 60 * 1000),
+                        hash: newHash
+                    });
+                } catch (e) {
+                    console.log("[STICKYCTRL:UPDSTICKYDOCS] Failed to save updated data to db. e: " + e);
+                    channel.stopTyping();
+                    continue;
+                }
+                channel.stopTyping();
+            }
+        }
+        return true;
     },
 
-    deleteAllStickyMessagesFromChannel: function(c_id) {
-        return new Promise((resolve, reject)=>{
-            dbBridge.deleteAllStickyDocsFromChannel(c_id).then(()=>{
-                resolve();
-            }).catch((e)=>{
-                reject("Failed to delete data in db: " + e);
-            });
-        });
+    deleteAllStickyMessagesFromChannel: async function (c_id) {
+        try {
+            await dbBridge.deleteAllStickyDocsFromChannel(c_id);
+        }catch(e){
+            throw ("Failed to delete data in db: " + e);
+        }
+        return;
     }
 };

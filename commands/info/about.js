@@ -1,4 +1,4 @@
-const CONFIG = require("../modules/config");
+const CONFIG = require("../../modules/config");
 
 module.exports = {
     handler: (handleData) => {
@@ -6,11 +6,15 @@ module.exports = {
             let msg = handleData.msg;
             msg.channel.send({
                 "embed": {
-                    "title": "Ping",
+                    "title": "Tea-bot | About",
                     "color": CONFIG.EMBED.COLORS.INFO,
                     "description": `
-                    Server message latency: ${new Date().getTime() - msg.createdTimestamp} ms
-                `,
+                        「 Tea-bot Re:Write 」 Project
+                        Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}
+
+                        Server message latency: ${new Date().getTime() - msg.createdTimestamp} ms
+                        Server time: ${new Date().toString()}
+                    `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
             }).then(()=>{

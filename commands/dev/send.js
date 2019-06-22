@@ -8,33 +8,95 @@
 const CONFIG = require("../../modules/config");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
+    handler: async function (handleData) {
+        let msg = handleData.msg;
 
-            let command = msg.content.split(" ")[0];
-            let channelId = msg.content.split(" ")[1];
-            let sendMsg = msg.content.slice(command.length + channelId.length + 2);
+        let command = msg.content.split(" ")[0];
+        let channelId = msg.content.split(" ")[1];
+        let sendMsg = parseInt(channelId) ? msg.content.slice(command.length + channelId.length + 2) : false;
 
-            msg.channel.send({
+        if (!parseInt(channelId) || !sendMsg) {
+            try {
+                msg.channel.send({
+                    "embed": {
+                        "title": "Send | Invalid syntax",
+                        "color": CONFIG.EMBED.COLORS.FAIL,
+                        "description": `
+                            That's an invalid syntax! Use:
+                            \`!dev:send <chan_id> <msg>\`
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed to send 'invalid syntax' message: " + e);
+            }
+
+            return 1;
+        }
+
+        let channel;
+        try {
+            channel = await handleData.dClient.channels.get(channelId);
+        } catch (e) {
+            console.log(`Could not get a channel: ${e}`.warn);
+
+            try {
+                await msg.channel.send({
+                    "embed": {
+                        "title": "Send",
+                        "color": CONFIG.EMBED.COLORS.FAIL,
+                        "description": `
+                            Could not get the channel
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed to send 'failed to send' message: " + e);
+            }
+            return 2;
+        }
+
+        try {
+            await channel.send(sendMsg);
+        } catch (e) {
+            try {
+                console.log(`Could not send the message: ${e}`.warn);
+                await msg.channel.send({
+                    "embed": {
+                        "title": "Send",
+                        "color": CONFIG.EMBED.COLORS.FAIL,
+                        "description": `
+                            Failed to send the message.
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed to send 'failed to send' message: " + e);
+            }
+            return 3;
+        }
+
+        // Message was sent
+
+        try {
+            await msg.channel.send({
                 "embed": {
                     "title": "Send",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
-                    The following message will be sent to \`${channelId}\`
-                    \`\`\`${sendMsg}\`\`\`
-                `,
+                        The following message was sent to \`${channelId}\`
+                        \`\`\`${sendMsg}\`\`\`
+                    `,
                     "footer": CONFIG.EMBED.FOOTER(handleData)
                 }
-            }).catch((e)=>{
-                return reject("Failed to send response: " + e);
             });
+        } catch (e) {
+            throw ("Failed to send success message: " + e);
+        }
 
-            handleData.dClient.channels.get(channelId).send(sendMsg).then(()=>{
-                return resolve(0);
-            }).catch((e)=>{
-                return reject("Failed to send message to the specified channel: " + e);
-            });
-        });
+        return 0;
     }
 };

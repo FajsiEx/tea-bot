@@ -3,188 +3,258 @@ const MongoClient = require('mongodb').MongoClient;
 
 const cache = require("./cache");
 
+let client, db;
+
+// Status:
+// 0 - initial: no even attempted to connect yet
+// 1 - connected
+// 2 - failed to connect in the first place
+// 3 - got disconnected
+let dbConnStatus = 0;
+
 module.exports = {
+    // * Connection management methods
+
+    initDB: async function() {
+        try { // To connect to Wanilla mongoDB
+            console.log("[DB] Trying to connect to db...".working);
+            connectedClient = await MongoClient.connect(DB_URI, {
+                bufferMaxEntries: 0, // If there's an error, throw it instead of waiting on reconnect!
+                reconnectTries: Number.MAX_VALUE, // Reconnect as many times as you can! 1.79E+308 should be enough...
+                reconnectInterval: 1000, // Try to reconnect every second
+                autoReconnect: true,
+                useNewUrlParser: true
+            });
+            
+            client = connectedClient;
+            db = client.db('tea-bot');
+            
+            db.on('close', ()=>{
+                console.log("Connection closed for some reason. Will try to reconnect.".warn);
+                dbConnStatus = 3; // Got disconnected.
+            });
+            db.on('reconnect', ()=>{
+                console.log("Reconnected to db.".success);
+                dbConnStatus = 1; // Connected. again.
+            });
+
+            console.log("[DB] Connected to the database".success);
+            dbConnStatus = 1; // Connected.
+            return client;
+        } catch (e) {
+            dbConnStatus = 2; // Failed to connect.
+
+            client = false;
+            db = false;
+
+            console.error("Failed to connect to db! " + e);
+
+            setTimeout(this.initDB, 5000);
+            return;
+        }
+    },
+
+    isDBReady: function() {
+        switch (dbConnStatus) {
+            case 0:
+                console.log("[DBSTAT] Database connection not yet tried".warn);
+                return false;
+            case 1:
+                return true;
+            case 2:
+                console.log("[DBSTAT] Failed to connect to database. Retrying in the background.".warn);
+                return false;
+            case 3:
+                console.log("[DBSTAT] Got disconnected from the database. Retrying in the background.".warn);
+                return false;
+            default:
+                throw("Unknown dbConnStat:" + e);
+        }
+    },
+
+    // * Database interface methods
+
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
-    getGuildDocument: function(guildId) {
-        return new Promise((resolve)=>{
-            console.log(`[DB:GGD] WORKING Get guild document for [${guildId}]`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+    getGuildDocument: async function (guildId) {
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").find({guildId: guildId}).toArray((err, docs)=> { // Find document in the guild collection by guildId and convert that to an array
-                    if (err) return console.error(err); // If there's a problem, return.
+        let docs;
+        try {
+            docs = await db.collection("guilds").find({ // Find document in the guild collection by guildId and convert that to an array
+                guildId: guildId
+            }).toArray();
+        } catch (e) {
+            throw ("Could not get docs from collection: " + e);
+        }
 
-                    if (docs.length < 1) { // If the array length is less than one (0) the doc doesn't exist
-                        console.log(`[DB:GGD] WARN No guild document for [${guildId}]`.warn);
-                        this.createGuildDocument(guildId).then((doc)=>{ // so create it
-                            console.log(`[DB:GGD] DONE Get guild document for [${guildId}] - just created`.success);
-                            cache.setCache(guildId, doc); // store the doc in cache
-                            resolve(doc); // and return that newly created doc.
-                        });
-                    }else{ // If the guild doc exist
-                        console.log(`[DB:GGD] DONE Get guild document for [${guildId}]`.success);
-                        cache.setCache(guildId, docs[0]); // store the doc in cache
-                        resolve(docs[0]); // and return that.
-                    }
-                });
-            });
-        });
+        if (docs.length < 1) { // If the array length is less than one (0) - the doc doesn't exist
+            let doc;
+            try {
+                doc = await this.createGuildDocument(guildId);
+            } catch (e) {
+                throw ("Could not create guildDoc: " + e);
+            }
+
+            cache.setCache(guildId, doc); // store the doc in cache
+            return doc; // and return that newly created doc.
+
+        } else { // If the guild doc exists
+            cache.setCache(guildId, docs[0]); // store the doc in cache
+            return docs[0]; // and return that.
+        }
     },
 
     // Creates a doc in the guilds collection based on guildId
-    createGuildDocument: function(guildId) {
-        return new Promise((resolve)=>{
-            console.log(`[DB:CGD] WORKING Create guild doc for [${guildId}]`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+    createGuildDocument: async function (guildId) {
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").insertOne({guildId: guildId}, (err, res)=> { // Insert doc with guildId to the guilds collection
-                    if (err) return console.error(err); // If there's a problem, return.
-
-                    console.log(`[DB:CGD] DONE Create guild doc for [${guildId}]`.success);
-
-                    resolve(res.ops[0]); // Return the new guild doc
-                });
+        let res;
+        try {
+            res = await db.collection("guilds").insertOne({ // Insert doc with guildId to the guilds collection
+                guildId: guildId,
+                events: []
             });
-        });
+        } catch (e) {
+            throw ("Failed to insert the new guildDoc: " + e);
+        }
+
+        return res.ops[0]; // Return the created guild doc
     },
 
     // Creates a doc in the guilds collection based on guildId
-    deleteGuildDocument: function(guildId) {
-        return new Promise((resolve)=>{
-            console.log(`[DB:DELETEGD] WARNING Deleting guild document [${guildId}] !`.warn);
-            console.log(`[DB:DELETEGD] WORKING Delete guild doc for [${guildId}]`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+    deleteGuildDocument: async function (guildId) {
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").deleteOne({guildId: guildId}, (err)=> { // Delete doc with guildId to the guilds collection
-                    if (err) return console.error(err); // If there's a problem, return.
-
-                    console.log(`[DB:CGD] DONE Delete guild doc for [${guildId}]`.success);
-
-                    cache.setCache(guildId, false); // Delete guild doc from cache kthx
-
-                    resolve(true); // Return with success
-                });
+        try {
+            db.collection("guilds").deleteOne({ // Delete doc with guildId to the guilds collection
+                guildId: guildId
             });
-        });
+        } catch (e) {
+            throw ("Could not delete guild document: " + e);
+        }
+
+        console.log(`[DB:DELETEGD] WARNING Deleted guild document [${guildId}]!`.warn);
+
+        try {
+            cache.setCache(guildId, false); // Delete guild doc from cache kthx
+        } catch (e) {
+            console.log("Guild doc was deleted, but the cache failed to update it: " + e);
+        }
+
+        return true; // Return with success
     },
 
-    writeGuildDocument: function(guildId, guildDoc) {
-        return new Promise((resolve)=>{
-            console.log(`[DB:WGD] WORKING Write guild doc for [${guildId}]`.working);
-            console.log(`[DB:WGD] DEBUG About to write this [${guildId}]`.debug);
-            console.log(guildDoc);
-
+    writeGuildDocument: async function (guildId, guildDoc) {
+        try {
             cache.setCache(guildId, guildDoc); // store the doc in cache
+        } catch (e) {
+            console.log("Guild doc will be written, but cache refused to store the updated guildDoc:" + e);
+        }
 
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) return console.error(err); // If there's a problem, return.
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("guilds").updateOne({guildId: guildId}, {$set:guildDoc}, (err)=> { // Update doc with guildId
-                    if (err) return console.error(err); // If there's a problem, return.
-
-                    console.log(`[DB:WGD] DONE Write guild doc for [${guildId}]`.success);
-
-                    resolve(true);
-                });
+        try {
+            await db.collection("guilds").updateOne({ // Update doc
+                guildId: guildId // with guildId
+            }, {
+                $set: guildDoc // with the new updated doc
             });
-        });
+        } catch (e) {
+            throw ("Could not update guildDoc: " + e);
+        }
+
+        return true;
     },
 
-    createStickyMsgDocument: function(documentData) {
-        return new Promise((resolve, reject)=>{
-            // TODO: add checks plz
-            console.log(`[DB:CSMSGD] WORKING Create sticky msg doc`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    createStickyMsgDocument: async function (documentData) {
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").insertOne(documentData, (err, res)=> { // Insert doc with the data of the sticky message to "sticky" collection
-                    if (err) reject("Insert error " + err); // If there's a problem, return.
+        let res;
+        try {
+            res = await db.collection("sticky").insertOne(documentData); // Insert doc with the data of the sticky message to "sticky" collection
+        } catch (e) {
+            throw ("Failed to insert stickyMessageDocument");
+        }
 
-                    console.log(`[DB:CSMSGD] DONE Create sticky msg doc`.success);
-
-                    resolve(res.ops[0]); // Return the new sticky msg doc
-                });
-            });
-        });
+        return res.ops[0]; // Return the new sticky msg doc
     },
 
-    getExpiredStickyDocs: function() {
-        return new Promise((resolve, reject)=>{
-            console.log(`[DB:GESD] WORKING Get expired sticky documents`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    getExpiredStickyDocs: async function (guildId, forceUpdate) {
+        let eventExpiryDeadline = new Date().getTime();
+        if (forceUpdate) {
+            eventExpiryDeadline = Infinity;
+        }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").find({expiry: {$lte: new Date().getTime()}}).toArray((err, docs)=> { // 
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
-                    console.log(`[DB:GESD] DONE Get expired sticky documents`.success);
-                    resolve(docs);
-                });
-            });
-        });
+        let query = {
+            expiry: {
+                $lte: eventExpiryDeadline
+            }
+        };
+        if (guildId) { // If guildId was specified
+            query = {
+                expiry: {
+                    $lte: eventExpiryDeadline
+                },
+                g_id: guildId
+            };
+        }
+
+        let docs;
+        try {
+            docs = db.collection("sticky").find(query).toArray();
+        } catch (e) {
+            throw ("Failed to get expired sticky posts: " + e);
+        }
+        return docs;
     },
 
-    updateStickyDoc: function(m_id, stickyDocUpdateData) {
-        return new Promise((resolve, reject)=>{
-            console.log(`[DB:USD] WORKING Update sticky doc with m_id [${m_id}]`.working);
+    updateStickyDoc: async function (m_id, stickyDocUpdateData) {
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
-
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").updateOne({m_id: m_id}, {$set:stickyDocUpdateData}, (err)=> { // Update doc with the m_id (message id of the sticky message)
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
-
-                    console.log(`[DB:USD] DONE Update sticky doc with m_id [${m_id}]`.success);
-
-                    resolve(true);
-                });
+        try {
+            await db.collection("sticky").updateOne({
+                m_id: m_id
+            }, {
+                $set: stickyDocUpdateData
             });
-        });
+        } catch (e) {
+            throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+        }
+
+        return true; // Return with success
     },
 
-    deleteStickyDoc: function(m_id) {
-        return new Promise((resolve)=>{
-            // TODO: Add check if m_id is a number
-            console.log(`[DB:DELETESD] WORKING Delete sticky doc with m_id [${m_id}]`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    deleteStickyDoc: async function (m_id) {
+        if (!parseInt(m_id)) { throw("m_id is not a snowflake"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").deleteOne({m_id: m_id}, (err)=> { // Delete sticky doc based on m_id
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                    console.log(`[DB:DELETESD] DONE Delete sticky doc with m_id [${m_id}]`.success);
-
-                    resolve(true); // Return with success
-                });
+        try {
+            db.collection("sticky").deleteOne({ // Delete sticky doc based on m_id
+                m_id: m_id
             });
-        });
+        } catch (e) {
+            throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+        }
+
+        return true; // Return with success
     },
 
-    deleteAllStickyDocsFromChannel: function(c_id) {
-        return new Promise((resolve)=>{
-            // TODO: Add check if c_id is a number
-            console.log(`[DB:DELETEASD] WORKING Delete all sticky docs with c_id [${c_id}]`.working);
-            MongoClient.connect(DB_URI, (err, client) => { // Connect to Wanilla mongoDB
-                if (err) reject("Connection error " + err); // If there's a problem, return.
+    deleteAllStickyDocsFromChannel: async function (c_id) {
+        if (!parseInt(c_id)) { throw("c_id is not a snowflake"); }
 
-                let db = client.db('tea-bot'); // Get tea-bot db
-                db.collection("sticky").deleteMany({c_id: c_id}, (err)=> { // Delete sticky doc based on m_id
-                    if (err) reject("Connection error " + err); // If there's a problem, return.
+        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
 
-                    console.log(`[DB:DELETEASD] DONE Delete all sticky docs with c_id [${c_id}]`.success);
-
-                    resolve(true); // Return with success
-                });
+        try {
+            await db.collection("sticky").deleteMany({
+                c_id: c_id
             });
-        });
+        } catch (e) {
+            throw(`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
+        }
+
+        return true;
     }
 };
+
+module.exports.initDB();

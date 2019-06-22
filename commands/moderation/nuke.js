@@ -7,224 +7,306 @@
 const CONFIG = require("../../modules/config");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
+    handler: async function (handleData) {
+        let msg = handleData.msg;
 
-            if (msg.channel.type != "text") {
-                msg.channel.send({
-                    "embed": {
-                        "title": "Can't do that",
-                        "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
-                        Nuke works only in guild text channels. oof.
-                    `,
-                        "footer": CONFIG.EMBED.FOOTER(handleData)
-                    }
-                }).then((botMsg) => {
-                    botMsg.delete(10000);
-                    return resolve(10);
-                }).catch((e)=>{
-                    return reject("Failed to send 'not a text channel' fail message: " + e);
-                });
-                return;
+        let type = msg.content.split(" ")[1];
+        let arg = parseInt(msg.content.split(" ")[2]);
+
+        //* count nuke type
+        if (type == "count") {
+            if (!arg) {
+                try {
+                    await module.exports.responses.error.noCount(handleData);
+                } catch (e) {
+                    throw ("Failed to send noCount fail message: " + e);
+                }
+                return 1;
             }
 
-            let type = msg.content.split(" ")[1];
-            let arg = parseInt(msg.content.split(" ")[2]);
-
-            if (type == "count") {
-                if (!arg) {
-                    msg.channel.send({
-                        "embed": {
-                            "title": "Can't do that",
-                            "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
-                                You must specify the number of msgs to be nuked (maximum 99)
-                                \`!nuke count 15\`
-                            `,
-                            "footer": CONFIG.EMBED.FOOTER(handleData)
-                        }
-                    }).then((botMsg) => {
-                        botMsg.delete(10000);
-                        return resolve(1);
-                    }).catch((e)=>{
-                        return reject("Failed to send invalid args fail message: " + e);
-                    });
-                    return;
+            if (arg > 99 || arg < 1) {
+                try {
+                    await module.exports.responses.error.rangeError(handleData);
+                } catch (e) {
+                    throw ("Failed to send invalidCount fail message: " + e);
                 }
+                return 2;
+            }
 
-                if (arg > 99 || arg < 1) {
-                    msg.channel.send({
-                        "embed": {
-                            "title": "Can't do that",
-                            "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
-                                Number of messages to be nuked must be in a range of 1-99
-                            `,
-                            "footer": CONFIG.EMBED.FOOTER(handleData)
-                        }
-                    }).then((botMsg) => {
-                        botMsg.delete(10000);
-                        return resolve(2);
-                    }).catch((e)=>{
-                        return reject("Failed to send invalid args fail message: " + e);
-                    });
-                    return;
+            try {
+                await msg.channel.bulkDelete(arg);
+            } catch (e) {
+                console.log(`Failed to delete messages: ${e}`.warn);
+                module.exports.responses.error.deleteError(handleData);
+                return 3;
+            }
+
+            try {
+                await module.exports.responses.success.nuked(handleData, arg);
+            } catch (e) {
+                throw ("Failed to send success message: " + e);
+            }
+            return 0;
+
+            //* after nuke type
+        } else if (type == "after") { 
+            if (!parseInt(arg)) { // If arg is not a number
+                try {
+                    await module.exports.responses.error.idIntError(handleData);
+                } catch (e) {
+                    throw ("Failed to send invalid id error message: " + e);
                 }
+                return 6;
+            }
 
-                msg.channel.bulkDelete(arg).then(() => {
-                    msg.channel.send({
+            let messages;
+            try {
+                messages = await msg.channel.fetchMessages({
+                    after: arg
+                });
+            } catch (e) {
+                try {
+                    await module.exports.responses.error.noFetchedMessages(handleData);
+                } catch (e) {
+                    throw ("Failed to send empty fetch message collection fail message: " + e);
+                }
+                return 4;
+            }
+
+            if (messages.size < 1) {
+                try {
+                    await module.exports.responses.error.noFetchedMessages(handleData);
+                } catch (e) {
+                    throw ("Failed to send empty fetch message collection fail message: " + e);
+                }
+                return 4;
+            }
+
+            if (messages.size > 99) {
+                try {
+                    await module.exports.responses.error.noFetchedMessages(handleData);
+                } catch (e) {
+                    throw ("Failed to send empty fetch message collection fail message: " + e);
+                }
+                return 5;
+            }
+
+            try {
+                await msg.channel.bulkDelete(messages);
+            } catch (e) {
+                console.log(`Failed to delete messages: ${e}`.warn);
+                module.exports.responses.error.deleteError(handleData);
+                return 3;
+            }
+
+            try {
+                await module.exports.responses.success.nuked(handleData, messages.size);
+            } catch (e) {
+                throw ("Failed to send success message: " + e);
+            }
+
+            return 0;
+
+        } else {
+            try {
+                await module.exports.responses.error.noTypeError(handleData);
+            } catch (e) {
+                throw ("Failed to send invalid type message: " + e);
+            }
+        }
+    }, // End of handler
+
+    responses: {
+        success: {
+            nuked: async function (handleData, messageCount) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
                         "embed": {
                             "title": "Nuked",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
                             "description": `
-                            Deleted \`${arg}\` messages.
-                        `,
-                            "footer": CONFIG.EMBED.FOOTER(handleData)
-                        }
-                    }).then((botMsg) => {
-                        botMsg.delete(10000);
-                        return resolve(0);
-                    }).catch((e)=>{
-                        return reject("Failed to send success message: " + e);
-                    });
-                    return;
-                }).catch(()=>{
-                    msg.channel.send({
-                        "embed": {
-                            "title": "Can't do that",
-                            "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
-                            Either the messages are older than 14 days OR I don't have manage messages permission.
-                        `,
-                            "footer": CONFIG.EMBED.FOOTER(handleData)
-                        }
-                    }).then((botMsg) => {
-                        botMsg.delete(10000);
-                        return resolve(100);
-                    }).catch((e)=>{
-                        return reject("Failed to send 'failed to delete' message: " + e);
-                    });
-                    return;
-                });
-
-            } else if (type == "from") {
-
-                if (!parseInt(arg)) {
-                    msg.channel.send({
-                        "embed": {
-                            "title": "Can't do that",
-                            "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
-                                You must specify starting message by it's snowflake id
-                                For example: \`!nuke from 575607273645277214\`
+                                Deleted \`${messageCount}\` messages.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
                         }
-                    }).then((botMsg) => {
-                        botMsg.delete(10000);
-                        return resolve(6);
-                    }).catch((e)=>{
-                        return reject("Failed to send 'no messages' fail message: " + e);
                     });
-                    return;
+                } catch (e) {
+                    throw ("Failed to send success response message: " + e);
                 }
 
-                msg.channel.fetchMessages({
-                    after: arg
-                }).then((messages) => {
-                    if (messages.size < 1) {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "Can't do that",
-                                "color": CONFIG.EMBED.COLORS.FAIL,
-                                "description": `
-                                    Have not found a single message
-                                `,
-                                "footer": CONFIG.EMBED.FOOTER(handleData)
-                            }
-                        }).then((botMsg) => {
-                            botMsg.delete(10000);
-                            return resolve(4);
-                        }).catch((e)=>{
-                            return reject("Failed to send 'no messages' fail message: " + e);
-                        });
-                        return;
-                    }
-                    if (messages.size > 99) {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "Can't do that",
-                                "color": CONFIG.EMBED.COLORS.FAIL,
-                                "description": `
-                                    Too many messages (max 99)
-                                `,
-                                "footer": CONFIG.EMBED.FOOTER(handleData)
-                            }
-                        }).then((botMsg) => {
-                            botMsg.delete(10000);
-                            return resolve(5);
-                        }).catch((e)=>{
-                            return reject("Failed to send limit fail message: " + e);
-                        });
-                        return;
-                    }
+                try { botMsg.delete(5000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
 
-                    msg.channel.bulkDelete(messages).then(() => {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "Nuked",
-                                "color": CONFIG.EMBED.COLORS.SUCCESS,
-                                "description": `
-                                    Deleted \`${messages.size}\` messages.
-                                `,
-                                "footer": CONFIG.EMBED.FOOTER(handleData)
-                            }
-                        }).then((botMsg) => {
-                            botMsg.delete(10000);
-                            return resolve(0);
-                        }).catch((e)=>{
-                            return reject("Failed to send success message: " + e);
-                        });
-                        return;
-                    }).catch(() => {
-                        msg.channel.send({
-                            "embed": {
-                                "title": "Can't do that",
-                                "color": CONFIG.EMBED.COLORS.FAIL,
-                                "description": `
-                                    Either the messages are older than 14 days OR there are more than 99 messages to be deleted OR I don't have manage messages permission.
-                                `,
-                                "footer": CONFIG.EMBED.FOOTER(handleData)
-                            }
-                        }).then((botMsg) => {
-                            botMsg.delete(10000);
-                        });
-                        return false;
-                    });
-                });
-
-            } else {
-                msg.channel.send({
-                    "embed": {
-                        "title": "Can't do that",
-                        "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
-                            You must specify a type of nuke
-                            \`nuke count 60\`
-                            \`nuke from (msgId)\`
-                        `,
-                        "footer": CONFIG.EMBED.FOOTER(handleData)
-                    }
-                }).then((botMsg) => {
-                    botMsg.delete(10000);
-                    return resolve(3);
-                }).catch((e)=>{
-                    return reject("Failed to send 'wrong type of nuke' message: " + e);
-                });
-                return;
+                return true;
             }
-        }); // End of promise
-    } // End of handler
+        },
+        error: {
+            noTypeError: async function (handleData) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | No count",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                You must specify a type of nuke
+                                \`nuke count 60\`
+                                \`nuke after (msgId)\`
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send noTypeError response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+            noCount: async function (handleData) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | No count",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                You must specify the number of messages to be nuked (maximum 99)
+                                \`!nuke count 15\`
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send noCount response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+            rangeError: async function (handleData) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | Invalid range",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Only 1 to 99 messages can be deleted.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send rangeError response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+            deleteError: async function (handleData) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | Couldn't nuke",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Make sure the messages you want to nuke are less than 14 days old. (discord's API limit)
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send deleteError response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+            idIntError: async function (handleData) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | Invalid message id",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                What you entered as a message id is not valid.
+                                \`!nuke after 588437298459443203\`
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send idIntError response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+            noFetchedMessages: async function (handleData) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | No messages to be deleted",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                There are no message that can be deleted. Select older than the most recent message to use 'after' or copy the right message id.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send noFetchedMessages response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+            messageTopLimitError: async function (handleData, messageCount) {
+                let botMsg;
+                try {
+                    botMsg = await handleData.msg.channel.send({
+                        "embed": {
+                            "title": "Nuke | That's too many",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Maximum I can delete is 99, but you selected ${messageCount}. That's ${99 - messageCount} over the limit!
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(handleData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed to send messageTopLimitError response message: " + e);
+                }
+
+                try { botMsg.delete(10000); }
+                catch (e) { console.log(`Could not delete message: ${e}`); }
+
+                return true;
+            },
+
+        }
+    }
 };

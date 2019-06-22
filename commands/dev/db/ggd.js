@@ -1,5 +1,5 @@
-const CONFIG = require("../../../modules/config");
-const dbBridge = require("../../../db/bridge");
+const CONFIG = require("/modules/config");
+const dbInt = require("/db/interface");
 
 module.exports = {
     handler: (handleData) => {
@@ -12,20 +12,19 @@ module.exports = {
                 guildId = msg.guild.id;
             }
 
-            console.log("[COMMAND:DEV:GGD] DEBUG ARG1: " + msg.content.split(" ")[1]);
-            let commandArg_guildId = parseInt(msg.content.split(" ")[1]);
+            let commandArg_guildId = msg.content.split(" ")[1];
             if (commandArg_guildId) {
                 guildId = commandArg_guildId;
             }
 
-            if (!guildId) { // If the msg isn't in a guild (to get id from) and true user hasn't specified an id in the params, please fuck off
+            if (!parseInt(guildId)) { // If the msg isn't in a guild (to get id from) and true user hasn't specified an id in the params, please fuck off
                 msg.channel.send({
                     "embed": {
                         "title": "Get guild document",
                         "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": `
-                        Could not get guild id from the message and no id was specified.
-                    `,
+                            Could not get guild id from the message and no id was specified.
+                        `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
                     }
                 }).then(()=>{
@@ -33,9 +32,10 @@ module.exports = {
                 }).catch((e)=>{
                     return reject("Failed to send a message: " + e);
                 });
+                return;
             }
 
-            dbBridge.getGuildDocument(guildId).then((doc) => {
+            dbInt.getGuildDocument(guildId).then((doc) => {
                 msg.channel.send({
                     "embed": {
                         "title": "Get guild document",

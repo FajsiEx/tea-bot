@@ -1,11 +1,10 @@
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            handleData.msg.channel.send("Hi!").then(()=>{
-                return resolve(0);
-            }).catch((e)=>{
-                return reject("Error sending message: " + e)
-            });
-        });
+    handler: async function (handleData) {
+        try {
+            await handleData.msg.channel.send("Hi!");
+        } catch (e) {
+            throw (`Failed to send response message: ${e}`);
+        }
+        return 0;
     }
-}
+};
