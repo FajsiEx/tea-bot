@@ -6,87 +6,28 @@
 
 */
 
-let startTimestamp = new Date().getTime();
 require("./inits/consoleColors").init();
-
-const discordJS = require('discord.js'); // Lib for interacting with the discord API
-
 require('sexy-require'); // For those nice absolute paths
 
 let CONFIG = require("./modules/config");
 
-const messageHandler = require("./handlers/message/messageHandler").handler;
-const discordClientErrorHandler = require("./handlers/clientError/errorHandler").handler;
-const handleId = require("./modules/handleId");
-
 console.log("[BOOT] Modules loaded".success);
 
-const Sentry = require('@sentry/node');
 CONFIG.SENTRY.IS = require("./sentry/init").init();
 
 console.log("[BOOT] Sentry initialized".success);
 
-const dClient = new discordJS.Client(); // Construct a discord client object
+require("./discord/client").init();
+const dClient = require("./discord/client").getDiscordClient();
+
 console.log("[BOOT] Initialized Discord client".success);
-
-let ready = false; // Initial ready - won't trigger things made to run only once on ready
-
-// Add event listeners
-dClient.on("ready", ()=>{
-    // Call intervals first time
-    statusInterval(dClient);
-    
-    if (!ready) {
-        console.log("________________________________________________________\n");
-        console.log("「 Tea-bot Re:Write 」 Project".special);
-        console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`.warn);
-        console.log("(c) FajsiEx 2019 - under MIT license\n");
-
-        console.log("Website: https://tea-bot.ml/".debug);
-        console.log("Github:  https://github.com/FajsiEx/tea-bot".debug);
-        console.log("________________________________________________________\n");
-
-        console.log(`Tea-bot ready. Startup time: ${new Date().getTime() - startTimestamp}ms`.event);
-        ready = true;
-    }
-});
-
-// TODO: Add checks if the dclient is ready
-let statusInterval = require("./intervals/setStatus").interval;
-setInterval(()=>{statusInterval(dClient);}, 15000); // TODO: convert this
-require('./intervals/autoUpdSticky').setup(dClient);
-
-dClient.on("message", async (msg)=> {
-    let handleData = {
-        msg:msg,
-        dClient:dClient,
-        footer: false,
-        id: undefined
-    };
-
-    try {
-        try {
-            handleData.id = await handleId.generate(handleData);
-        }catch(e){
-            console.log(`Failed to generate handleId for handleData: ${e}`.warn);
-        }
-        
-        await messageHandler(handleData);
-    }catch(e){
-        console.log(`[EVENT:MESSAGE] [${handleData.id}] Got a reject: ${e}`.error);
-        if(CONFIG.SENTRY.IS) Sentry.captureException(new Error(e));
-        return;
-    }
-});
-
-dClient.on("error", discordClientErrorHandler);
-
-console.log("[BOOT] Created event listeners".success);
 
 let express = require("express");
 let app = express();
+
 require("./api/server").init(app, dClient);
 require("./modules/stats").init(dClient);
+
 console.log("[BOOT] Initialized express API server".success);
 
 dClient.login(CONFIG.SECRETS.DISCORD.TOKEN).then(()=>{

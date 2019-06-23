@@ -11,10 +11,9 @@
 const handleDataCheck = require("../checks/handleData");
 
 module.exports = {
-    generate: async function(handleData) {
-        if (handleDataCheck.check(handleData)) { throw("Failed handleData check."); }
+    generate: function(msg) {
 
-        let x = handleData.msg.author.id.toString();
+        let x = msg.author.id.toString();
         x = parseInt(x.slice(x.length - 2));
         let y = new Date().getMinutes();
         let z = new Date().getSeconds();
