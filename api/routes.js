@@ -7,6 +7,7 @@ module.exports = {
         dClient = dClientRef;
 
         app.get('/api/stats', (req, res) => {
+            console.log("hi");
             stats.get().then((stat)=>{
                 res.json(stat);
             });

@@ -22,10 +22,7 @@ const dClient = require("./discord/client").getDiscordClient();
 
 console.log("[BOOT] Initialized Discord client".success);
 
-let express = require("express");
-let app = express();
-
-require("./api/server").init(app, dClient);
+require("./api/server").init(dClient);
 require("./modules/stats").init(dClient);
 
 console.log("[BOOT] Initialized express API server".success);
