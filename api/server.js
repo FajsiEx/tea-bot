@@ -1,9 +1,12 @@
 const routes = require("./routes.js");
+
+const express = require("express");
+const http = require("http");
+
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
 const socket = require("../socket/socket");
-const http = require("http");
-const express = require("express");
 
 let app;
 let server;
@@ -16,11 +19,14 @@ module.exports = {
         app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
             extended: true
         }));
-        app.use(cors());
+        app.use(cors({
+            credentials: true,
+            origin: (o,c)=>{c(null,true)}
+        }));
 
         server = http.Server(app);
 
-        socket.init();
+        socket.init(server);
 
         routes.init(app, dClient);
 
