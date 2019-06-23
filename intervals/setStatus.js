@@ -15,6 +15,12 @@ module.exports = {
 
     },
 
+    setup: function (dClient) {
+        setInterval(()=>{
+            this.interval(dClient);
+        }, 15000);
+    },
+
     getTimeString: function () {
         let dt = new Date();
         let hours = (dt.getHours() < 10 ? '0' : '') + dt.getHours();

@@ -17,14 +17,11 @@ let ready = false; // Initial ready - won't trigger things made to run only once
 module.exports = {
     init: function () {
         
-        setInterval(() => { statusInterval(dClient); }, 15000); // TODO: convert this
+        require('/intervals/setStatus').setup(dClient);
         require('/intervals/autoUpdSticky').setup(dClient);
         
         // Add event listeners
         dClient.on("ready", () => {
-            // Call intervals first time
-            statusInterval(dClient);
-
             if (!ready) {
                 console.log("________________________________________________________\n");
                 console.log("「 Tea-bot Re:Write 」 Project".special);
