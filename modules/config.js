@@ -54,10 +54,6 @@ const CONFIG = {
         }
     },
 
-    AESTHETICS: {
-        BOT_LOGO_ASCII: "[removed]"
-    },
-
     SENTRY: {}
 };
 
