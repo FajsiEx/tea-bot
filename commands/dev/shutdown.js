@@ -6,7 +6,7 @@ module.exports = {
             await messageEventData.msg.channel.send({
                 "embed": {
                     "title": "Shutdown",
-                    "color": CONFIG.EMBED.COLORS.INFO,
+                    "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                         Ok then. Here goes nothing.
                     `,
@@ -22,7 +22,8 @@ module.exports = {
         } catch (e) {
             throw ("Failed to destroy dClient: " + e);
         }
-
+        
+        console.log("Discord client destroyed!".critError);
         return 0;
     }
 };
