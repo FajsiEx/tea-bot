@@ -1,28 +1,28 @@
 const CONFIG = require("../../modules/config");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
-
-            msg.channel.send({
+    handler: async function (messageEventData) {
+        try {
+            await messageEventData.msg.channel.send({
                 "embed": {
                     "title": "Shutdown",
                     "color": CONFIG.EMBED.COLORS.INFO,
                     "description": `
                         Ok then. Here goes nothing.
                     `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
-            }).catch((e)=>{
-                return reject("Failed to send response msg: " + e);
             });
+        } catch (e) {
+            throw ("Failed to send response msg: " + e);
+        }
 
-            handleData.dClient.destroy().then(()=>{
-                return resolve(0);
-            }).catch((e)=>{
-                return reject("dClient.destroy method rejected it's promise: " + e);
-            });
-        });
+        try {
+            await messageEventData.dClient.destroy();
+        } catch (e) {
+            throw ("Failed to destroy dClient: " + e);
+        }
+
+        return 0;
     }
 };
