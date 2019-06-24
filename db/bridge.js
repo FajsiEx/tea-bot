@@ -15,7 +15,7 @@ let dbConnStatus = 0;
 module.exports = {
     // * Connection management methods
 
-    initDB: async function() {
+    initDB: async function () {
         try { // To connect to Wanilla mongoDB
             console.log("[DB] Trying to connect to db...".working);
             connectedClient = await MongoClient.connect(DB_URI, {
@@ -25,15 +25,15 @@ module.exports = {
                 autoReconnect: true,
                 useNewUrlParser: true
             });
-            
+
             client = connectedClient;
             db = client.db('tea-bot');
-            
-            db.on('close', ()=>{
+
+            db.on('close', () => {
                 console.log("Connection closed for some reason. Will try to reconnect.".warn);
                 dbConnStatus = 3; // Got disconnected.
             });
-            db.on('reconnect', ()=>{
+            db.on('reconnect', () => {
                 console.log("Reconnected to db.".success);
                 dbConnStatus = 1; // Connected. again.
             });
@@ -54,7 +54,7 @@ module.exports = {
         }
     },
 
-    isDBReady: function() {
+    isDBReady: function () {
         switch (dbConnStatus) {
             case 0:
                 console.log("[DBSTAT] Database connection not yet tried".warn);
@@ -68,7 +68,7 @@ module.exports = {
                 console.log("[DBSTAT] Got disconnected from the database. Retrying in the background.".warn);
                 return false;
             default:
-                throw("Unknown dbConnStat:" + e);
+                throw ("Unknown dbConnStat:" + e);
         }
     },
 
@@ -76,7 +76,7 @@ module.exports = {
 
     // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
     getGuildDocument: async function (guildId) {
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         let docs;
         try {
@@ -106,7 +106,7 @@ module.exports = {
 
     // Creates a doc in the guilds collection based on guildId
     createGuildDocument: async function (guildId) {
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         let res;
         try {
@@ -123,7 +123,7 @@ module.exports = {
 
     // Creates a doc in the guilds collection based on guildId
     deleteGuildDocument: async function (guildId) {
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         try {
             db.collection("guilds").deleteOne({ // Delete doc with guildId to the guilds collection
@@ -151,14 +151,14 @@ module.exports = {
             console.log("Guild doc will be written, but cache refused to store the updated guildDoc:" + e);
         }
 
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         try {
             await db.collection("guilds").updateOne({ // Update doc
                 guildId: guildId // with guildId
             }, {
-                $set: guildDoc // with the new updated doc
-            });
+                    $set: guildDoc // with the new updated doc
+                });
         } catch (e) {
             throw ("Could not update guildDoc: " + e);
         }
@@ -167,7 +167,7 @@ module.exports = {
     },
 
     createStickyMsgDocument: async function (documentData) {
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         let res;
         try {
@@ -209,14 +209,14 @@ module.exports = {
     },
 
     updateStickyDoc: async function (m_id, stickyDocUpdateData) {
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         try {
             await db.collection("sticky").updateOne({
                 m_id: m_id
             }, {
-                $set: stickyDocUpdateData
-            });
+                    $set: stickyDocUpdateData
+                });
         } catch (e) {
             throw (`Failed to update sticky doc [${m_id}] : ${e}`);
         }
@@ -225,9 +225,9 @@ module.exports = {
     },
 
     deleteStickyDoc: async function (m_id) {
-        if (!parseInt(m_id)) { throw("m_id is not a snowflake"); }
+        if (!parseInt(m_id)) { throw ("m_id is not a snowflake"); }
 
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         try {
             db.collection("sticky").deleteOne({ // Delete sticky doc based on m_id
@@ -241,19 +241,47 @@ module.exports = {
     },
 
     deleteAllStickyDocsFromChannel: async function (c_id) {
-        if (!parseInt(c_id)) { throw("c_id is not a snowflake"); }
+        if (!parseInt(c_id)) { throw ("c_id is not a snowflake"); }
 
-        if (dbConnStatus != 1) { throw("Database error. !DB!"); }
+        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
         try {
             await db.collection("sticky").deleteMany({
                 c_id: c_id
             });
         } catch (e) {
-            throw(`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
+            throw (`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
         }
 
         return true;
+    },
+
+    triggers: {
+        getDocFromToken: async function (token) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            let docs;
+            try {
+                docs = await db.collection("triggers").find({
+                    token: token
+                }).toArray();
+            } catch (e) {
+                throw ("Could not get docs from collection: " + e);
+            }
+
+            if (docs.length < 1) {
+                throw("No triggerDoc found.");
+            }
+
+            if (docs.length > 1) {
+                console.log(`[BRIDGE:TRIGGERS] There is more than one triggerDoc with token: ${token}. Wait, that's illegal.`.warn);
+                throw("More than one triggerDoc found.");
+            }
+
+            let triggerDoc = docs[0];
+
+            return triggerDoc;
+        }
     }
 };
 

@@ -13,7 +13,7 @@ let CONFIG = require("./modules/config");
 
 console.log("[BOOT] Modules loaded".success);
 
-CONFIG.SENTRY.IS = require("./sentry/init").init();
+//CONFIG.SENTRY.IS = require("./sentry/init").init();
 
 console.log("[BOOT] Sentry initialized".success);
 
