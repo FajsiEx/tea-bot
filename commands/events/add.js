@@ -3,14 +3,14 @@ const dbInt = require("../../db/interface");
 const stickyController = require("../../sticky/stickyController");
 
 module.exports = {
-    handler: async function (handleData) {
-        let msg = handleData.msg;
+    handler: async function (messageEventData) {
+        let msg = messageEventData.msg;
         let content = msg.content;
 
         let eventDayString = content.split(" ")[1];
         let eventContentString = content.split(" ")[2] ? content.slice(content.indexOf(content.split(" ")[2])) : false; // If there is !events:add 25 [content] (3 thing split by spaces) slice safely, otherwise mission abort!
 
-        let eventDate = handleData.msg.createdAt;
+        let eventDate = messageEventData.msg.createdAt;
 
         let eventDay, eventMonth, eventYear;
 
@@ -24,7 +24,7 @@ module.exports = {
 
         if (!eventDay || !eventContentString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
             try {
-                await module.exports.replyInvalidFormat(handleData);
+                await module.exports.replyInvalidFormat(messageEventData);
                 return 1;
             } catch (e) {
                 throw ("Reply invalid format rejected: " + e);
@@ -33,7 +33,7 @@ module.exports = {
 
         if (!eventDay || !eventDayString) { // If event day is false (or NaN from parsing) or eventDayString is false (catches above if statement)
             try {
-                await module.exports.replyInvalidDate(handleData);
+                await module.exports.replyInvalidDate(messageEventData);
                 return 1;
             } catch (e) {
                 throw ("Reply invalid date rejected: " + e);
@@ -55,7 +55,7 @@ module.exports = {
 
         let guildDoc;
         try {
-            guildDoc = await dbInt.getGuildDoc(handleData.msg.guild.id);
+            guildDoc = await dbInt.getGuildDoc(messageEventData.msg.guild.id);
         } catch (e) {
             throw ("Couldn't get guildDoc: " + e);
         }
@@ -67,27 +67,27 @@ module.exports = {
         guildDoc.events.push(eventObject);
 
         try {
-            await dbInt.setGuildDoc(handleData.msg.guild.id, guildDoc);
+            await dbInt.setGuildDoc(messageEventData.msg.guild.id, guildDoc);
         } catch (e) {
             throw ("Couldn't set guildDoc: " + e);
         }
 
         try {
-            await stickyController.updateStickyDocs(handleData.dClient, handleData.msg.guild.id, true);
+            await stickyController.updateStickyDocs(messageEventData.dClient, messageEventData.msg.guild.id, true);
         } catch (e) {
             throw ("Couldn't autoUpdate stickys: " + e);
         }
 
         try {
-            await handleData.msg.channel.send({
+            await messageEventData.msg.channel.send({
                 "embed": {
                     "title": "Add event",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                             Done.
-                            Event \`${eventContentString}\` was added on \`${eventObject.date.getDate()}.${eventObject.date.getMonth()+1}.${eventObject.date.getFullYear()}\`
+                            Event \`${eventContentString}\` was added on \`${eventObject.date.getDate()}.${eventObject.date.getMonth() + 1}.${eventObject.date.getFullYear()}\`
                         `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
             });
         } catch (e) {
@@ -97,28 +97,25 @@ module.exports = {
         return 0;
     },
 
-    replyInvalidFormat: function (handleData) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                await handleData.msg.channel.send({
-                    "embed": {
-                        "title": "Add event",
-                        "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+    replyInvalidFormat: async function (messageEventData) {
+        try {
+            await messageEventData.msg.channel.send({
+                "embed": {
+                    "title": "Add event",
+                    "color": CONFIG.EMBED.COLORS.FAIL,
+                    "description": `
                             Invalid format of event.
                             
-                            \`!events:add 11 something\` - Adds something on 11.${new Date().getMonth()+1}.${new Date().getFullYear()}
+                            \`!events:add 11 something\` - Adds something on 11.${new Date().getMonth() + 1}.${new Date().getFullYear()}
                             \`!events:add 11.12 something\` - Adds something on 11.12.${new Date().getFullYear()}
                             \`!events:add 11.12.2022 something\` - Adds something on 11.12.2022
                         `,
-                        "footer": CONFIG.EMBED.FOOTER(handleData)
-                    }
-                });
-                resolve(0);
-            } catch (e) {
-                reject("Failed to send a fail message: " + e);
-            }
-            return;
-        });
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                }
+            });
+            return 0;
+        } catch (e) {
+            throw ("Failed to send a fail message: " + e);
+        }
     }
 };
