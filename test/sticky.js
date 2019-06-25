@@ -8,16 +8,8 @@ const CONFIG = require("../modules/config");
 describe('Sticky', () => {
     describe('Controller', () => {
         it('Hash', () => {
-            let testMessageData = {
-                "embed": {
-                    "title": "Test",
-                    "color": CONFIG.EMBED.COLORS.STICKY,
-                    "description": `
-                        Test data
-                    `
-                }
-            }
-            expect(stickyCtrl.hashMsgData(testMessageData)).to.equal('aafcda27704dcad375fa05b8131c0927');
+            let testHashData = "test data wwwww";
+            expect(stickyCtrl.hashMsgData(testHashData)).to.equal('77ce80484b4ddd51b3937329bd5fd9af');
         });
     });
 });
