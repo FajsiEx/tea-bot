@@ -2,8 +2,6 @@ require('sexy-require'); // For those nice absolute paths
 
 let expect = require("chai").expect;
 let stickyCtrl = require("../sticky/stickyController");
-const CONFIG = require("../modules/config");
-
 
 describe('Sticky', () => {
     describe('Controller', () => {
