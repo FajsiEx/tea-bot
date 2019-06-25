@@ -2,10 +2,10 @@ const CONFIG = require("/modules/config");
 const outdent = require("outdent");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
-            msg.channel.send({
+    handler: async function (messageEventData) {
+        let msg = messageEventData.msg;
+        try {
+            await msg.channel.send({
                 "embed": {
                     "title": "Tea-bot | About",
                     "color": CONFIG.EMBED.COLORS.INFO,
@@ -19,13 +19,13 @@ module.exports = {
                         [Website (tea-bot.ml)](https://tea-bot.ml)
                         [GitHub (FajsiEx/tea-bot)](https://github.com/FajsiEx/tea-bot)
                     `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
-            }).then(()=>{
-                return resolve(0);
-            }).catch((e)=>{
-                return reject("Failed sending message: " + e);
             });
-        });
+        } catch (e) {
+            throw ("Failed sending message: " + e);
+        }
+
+        return 0;
     }
 };
