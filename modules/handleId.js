@@ -8,8 +8,6 @@
 
 */
 
-const handleDataCheck = require("../checks/handleData");
-
 module.exports = {
     generate: function(msg) {
 
