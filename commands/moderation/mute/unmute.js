@@ -1,13 +1,13 @@
 const CONFIG = require("../../../modules/config");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
+    handler: async function (messageEventData) {
+        let msg = messageEventData.msg;
 
-            let mentionedUsers = msg.mentions.users;
+        let mentionedUsers = msg.mentions.users;
 
-            if (mentionedUsers.size < 1) {
+        if (mentionedUsers.size < 1) {
+            try {
                 msg.channel.send({
                     embed: {
                         "title": "Unmute",
@@ -15,43 +15,43 @@ module.exports = {
                         "description": `
                             You must mention someone to be unmuted.
                         `,
-                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                        "footer": CONFIG.EMBED.FOOTER(messageEventData)
                     }
-                }).then(() => {
-                    return resolve(1);
-                }).catch((e) => {
-                    return reject("Error sending 'no mentions' message: " + e);
                 });
-                return;
+            } catch (e) {
+                throw ("Error sending 'no mentions' message: " + e);
             }
 
-            mentionedUsers.forEach((mentionedUser) => {
-                msg.guild.channels.forEach(channel => {
-                    try {
-                        channel.overwritePermissions(mentionedUser, {
-                            SEND_MESSAGES: null, // For defaulting the perm
-                        });
-                    } catch (e) {
-                        console.log(`[COMMAND:MUTE] Unable to unmute user [${mentionedUser.tag}] from channel [${channel.id}] due to: ${e}`.warn);
-                    }
-                });
+            return 1;
+        }
+
+        mentionedUsers.forEach((mentionedUser) => { // TODO: Promise.all (same as !mod:mute)
+            msg.guild.channels.forEach(channel => {
+                try {
+                    channel.overwritePermissions(mentionedUser, {
+                        SEND_MESSAGES: null, // For defaulting the perm
+                    });
+                } catch (e) {
+                    console.log(`[COMMAND:MUTE] Unable to unmute user [${mentionedUser.tag}] from channel [${channel.id}] due to: ${e}`.warn);
+                }
             });
+        });
 
-
-            msg.channel.send({
+        try {
+            await msg.channel.send({
                 embed: {
                     "title": "Unmute",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                         User(s) was unmuted.
                     `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
-            }).then(() => {
-                return resolve(0);
-            }).catch((e) => {
-                return reject("Error sending result message: " + e);
             });
-        });
+        } catch (e) {
+            throw ("Error sending result message: " + e);
+        }
+
+        return 0;
     }
 };
