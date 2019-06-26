@@ -14,7 +14,7 @@ module.exports = {
         let doc;
 
         try {
-            await dbInt.getGuildDoc(msg.guild.id);
+            doc = await dbInt.getGuildDoc(msg.guild.id);
         } catch (e) {
             throw ("Failed to get guild doc: " + e);
         }
