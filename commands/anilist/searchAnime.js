@@ -11,32 +11,50 @@ module.exports = {
 
         let anime;
         try {
-            anime = anilistApi.search(term);
+            anime = await anilistApi.search(term, "anime");
         } catch (e) {
             throw ("Failed to search: " + e);
         }
 
         if (!anime) {
-            this.responses.fail.noResults(msg);
+            try {
+                await module.exports.responses.fail.noResults(messageEventData);
+            }catch(e){
+                throw("Failed sending noResults message: " + e);
+            }
             return 2;
         }
 
-        this.responses.success.searched(msg, anime);
+        try {
+            await module.exports.responses.success.searched(messageEventData, anime);
+        }catch(e){
+            throw("Failed sending response message: " + e);
+        }
 
         return 0;
     },
 
     responses: {
         success: {
-            searched: async function (msg,anime) {
+            searched: async function (messageEventData,anime) {
                 try {
-                    await msg.channel.send({
+                    await messageEventData.msg.channel.send({
                         "embed": {
-                            "title": "(title)",
-                            "color": CONFIG.EMBED.COLORS.SUCCESS,
+                            "title": anime.title.english, // TODO: make this config via guild settings
+                            "url": anime.siteUrl,
+                            "color": CONFIG.EMBED.COLORS.INFO,
                             "description": outdent`
-                                ${JSON.stringify(anime)}
+                                **${anime.episodes}** episodes
+                                ${anime.description.replace(/<br\s*\/?>/mg,"")}
+
+                                Avg score: **${anime.averageScore}**
+                                Ep duration: **${anime.duration} minutes**
+                                Genres: **${anime.genres.join(", ")}**
+                                ${anime.trailer}
                             `,
+                            "thumbnail": {
+                                "url": anime.coverImage.medium
+                            },
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
                     });
@@ -48,9 +66,9 @@ module.exports = {
             }
         },
         fail: {
-            noResults: async function(msg) {
+            noResults: async function(messageEventData) {
                 try {
-                    await msg.channel.send({
+                    await messageEventData.msg.channel.send({
                         "embed": {
                             "title": "(title)",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,

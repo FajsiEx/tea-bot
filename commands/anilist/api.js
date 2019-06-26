@@ -1,21 +1,36 @@
 
 const CONFIG = require("../../modules/config");
-const Anilist = require('aniwrapper/node');
-const aniClient = new Anilist(CONFIG.SECRETS.ANILIST.TOKEN);
+const anilist = require('anilist-node');
+const anilistClient = new anilist(CONFIG.SECRETS.ANILIST.TOKEN);
 
 module.exports = {
-    search: async function(term) {
+    search: async function (term, type) {
+        console.log(term);
         let results;
         try {
-            results = await aniClient.searchAnime(term);
-        }catch(e){
-            throw("Failed to search: " + e);
+            results = await anilistClient.search(type, term, 1, 5);
+            results = results.media;
+        } catch (e) {
+            throw ("Failed to search: " + e);
         }
+
 
         if (results.length < 1) {
             return false;
         }
+        console.log(results);
 
-        return results[0];
+        let result; // TODO: add reject if nsfw is disabled in settings and result is nsfw
+        if (type == "anime") {
+            try {
+                result = await anilistClient.media.anime(results[0].id);
+            } catch (e) {
+                throw ("Failed to fetch anime: " + e);
+            }
+        }
+
+        console.log(result);
+
+        return result;
     }
 }

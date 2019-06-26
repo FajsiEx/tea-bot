@@ -192,6 +192,16 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "ali",
+        commands: [
+            {
+                keywords: ["a"],
+                handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchAnime").handler
+            }
+        ]
+    },
+
+    {
         categoryName: "invalid", // Invalid command/category replies
         commands: [
             {
