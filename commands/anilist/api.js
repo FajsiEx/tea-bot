@@ -32,5 +32,17 @@ module.exports = {
         console.log(result);
 
         return result;
+    },
+
+    getUser: async function(username) {
+        let user;
+        try {
+            user = await anilistClient.user.all(username);
+        }catch(e){
+            throw("Failed to get user: " + e);
+        }
+        console.log(user);
+
+        return user;
     }
 }

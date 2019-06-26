@@ -197,6 +197,10 @@ let COMMANDS = [
             {
                 keywords: ["a"],
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchAnime").handler
+            },
+            {
+                keywords: ["u"],
+                handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchUser").handler
             }
         ]
     },
