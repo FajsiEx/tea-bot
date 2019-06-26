@@ -84,6 +84,11 @@ let COMMANDS = [
                     readyDatabase: true
                 }
             },
+            {
+                keywords: ["testperm"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/tests/perm").handler,
+                cannotBeUsedWithoutCommandCategory: true,
+            },
         ]
     },
 
