@@ -80,7 +80,7 @@ module.exports = {
                     await messageEventData.msg.channel.send({
                         "embed": {
                             "title": "No results",
-                            "color": CONFIG.EMBED.COLORS.SUCCESS,
+                            "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": outdent`
                                 No results for that search term (or none was provided)
                             `,
