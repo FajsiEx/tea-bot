@@ -51,7 +51,7 @@ module.exports = {
                         "embed": {
                             "title": anime.title.english, // TODO: make this config via guild settings
                             "url": anime.siteUrl,
-                            "color": CONFIG.EMBED.COLORS.INFO,
+                            "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
                             "description": outdent`
                                 **${anime.episodes}** episodes
                                 ${anime.description.replace(/<br\s*\/?>/mg,"")}
@@ -59,7 +59,7 @@ module.exports = {
                                 Avg score: **${anime.averageScore}**
                                 Ep duration: **${anime.duration} minutes**
                                 Genres: **${anime.genres.join(", ")}**
-                                ${(anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : ""}
+                                ${(anime.trailer) ? (anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : "" : ""}
                             `,
                             "thumbnail": {
                                 "url": anime.coverImage.medium
