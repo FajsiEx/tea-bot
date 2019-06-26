@@ -50,7 +50,7 @@ module.exports = {
                                 Avg score: **${anime.averageScore}**
                                 Ep duration: **${anime.duration} minutes**
                                 Genres: **${anime.genres.join(", ")}**
-                                ${anime.trailer}
+                                ${(anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : ""}
                             `,
                             "thumbnail": {
                                 "url": anime.coverImage.medium
