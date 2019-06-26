@@ -49,7 +49,7 @@ module.exports = {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
-                            "title": anime.title.english, // TODO: make this config via guild settings
+                            "title": (anime.title.english) ? anime.title.english : anime.title.romaji, // TODO: make this config via guild settings
                             "url": anime.siteUrl,
                             "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
                             "description": outdent`
