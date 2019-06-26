@@ -9,6 +9,15 @@ module.exports = {
         let commandLength = msg.content.split(" ")[0].length + 1;
         let term = msg.content.slice(commandLength);
 
+        if (!term) {
+            try {
+                await module.exports.responses.fail.noResults(messageEventData);
+            }catch(e){
+                throw("Failed sending noResults message: " + e);
+            }
+            return 1;
+        }
+
         let anime;
         try {
             anime = await anilistApi.search(term, "anime");
@@ -70,10 +79,10 @@ module.exports = {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
-                            "title": "(title)",
+                            "title": "No results",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
                             "description": outdent`
-                                (desc)
+                                No results for that search term (or none was provided)
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
