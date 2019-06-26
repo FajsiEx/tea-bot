@@ -49,14 +49,14 @@ module.exports = {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
-                            "title": user.name,
-                            "url": user.siteUrl,
+                            "title": user.profile.name,
+                            "url": user.profile.siteUrl,
                             "color": CONFIG.EMBED.COLORS.INFO,
                             "description": outdent`
-                                
+                                Total time watched: **${module.exports.convertMinutesToTimeString(user.stats.watchedTime)}**
                             `,
                             "thumbnail": {
-                                "url": user.avatar
+                                "url": user.profile.avatar.medium
                             },
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
@@ -88,5 +88,16 @@ module.exports = {
                 return;
             }
         }
+    },
+
+    convertMinutesToTimeString: function(minutes) {
+        let rawDays = Math.floor(minutes / 60 / 24 * 1000) / 1000;
+        let days = Math.floor(minutes / 60 / 24);
+        minutes-=days*24*60;
+
+        let hours = Math.floor(minutes / 60);
+        minutes-=hours*60;
+
+        return `${days}d ${hours}h ${minutes}m (${rawDays} total days)`;
     }
 };
