@@ -27,7 +27,7 @@ module.exports = {
             throw (`createStickyPost has rejected it's promise: ${e}`);
         }
 
-        msg.delete(1000).catch(() => { }); // Delete the request msg. Catch any errors along the way
+        msg.delete(1000).catch((e) => { console.log(`Failed to delete message ${e}`.warn); }); // Delete the request msg. Catch any errors along the way
         return 0;
     },
 
