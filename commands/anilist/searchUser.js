@@ -54,6 +54,8 @@ module.exports = {
                             "color": CONFIG.EMBED.COLORS.INFO,
                             "description": outdent`
                                 Total time watched: **${module.exports.convertMinutesToTimeString(user.stats.watchedTime)}**
+                                Total chapters read: **${user.stats.chaptersRead}**
+                                Mean scores: A: **${user.stats.animeListScores.meanScore}** M: **${user.stats.mangaListScores.meanScore}** 
                             `,
                             "thumbnail": {
                                 "url": user.profile.avatar.medium
