@@ -53,6 +53,7 @@ module.exports = {
                             "url": user.profile.siteUrl,
                             "color": CONFIG.EMBED.COLORS.INFO,
                             "description": outdent`
+                                Current activity streak: **${module.exports.calculateActivityStreak(user.stats.activityHistory)}**
                                 Total time watched: **${module.exports.convertMinutesToTimeString(user.stats.watchedTime)}**
                                 Total chapters read: **${user.stats.chaptersRead}**
                                 Mean scores: A: **${user.stats.animeListScores.meanScore}** M: **${user.stats.mangaListScores.meanScore}** 
@@ -101,5 +102,22 @@ module.exports = {
         minutes-=hours*60;
 
         return `${days}d ${hours}h ${minutes}m (${rawDays} total days)`;
+    },
+
+    calculateActivityStreak: function(activityHistory) {
+        let streak = 0;
+        let lastDayTS = 0;
+
+        activityHistory.forEach(day=>{
+            console.log(day.date - lastDayTS);
+            if ((day.date - lastDayTS) > 24*60*60+2) {
+                streak = 0;
+            }else{
+                streak++;
+            }
+            lastDayTS = day.date;
+        });
+
+        return streak;
     }
 };
