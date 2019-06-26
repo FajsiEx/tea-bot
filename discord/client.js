@@ -43,7 +43,7 @@ module.exports = {
             try {
                 await messageHandler(messageEventData);
             } catch (e) {
-                console.log(`[EVENT:MESSAGE] [${handleData.id}] Got a reject: ${e}`.error);
+                console.log(`[EVENT:MESSAGE] [${messageEventData.id}] Got a reject: ${e}`.error);
                 if (CONFIG.SENTRY.IS) Sentry.captureException(new Error(e));
                 return;
             }
