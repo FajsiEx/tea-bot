@@ -43,6 +43,9 @@ const CONFIG = {
     },
 
     SECRETS: {
+        ANILIST: {
+            TOKEN: process.env.T_ALT
+        },
         DISCORD: {
             TOKEN: process.env.T_DT
         },
