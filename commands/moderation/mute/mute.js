@@ -1,53 +1,53 @@
 const CONFIG = require("../../../modules/config");
 
 module.exports = {
-    handler: (handleData) => {
-        return new Promise((resolve, reject) => {
-            let msg = handleData.msg;
+    handler: async function (messageEventData) {
+        let msg = messageEventData.msg;
 
-            let mentionedUsers = msg.mentions.users;
+        let mentionedUsers = msg.mentions.users;
 
-            if (mentionedUsers.size < 1) {
-                msg.channel.send({
+        if (mentionedUsers.size < 1) {
+            try {
+                await msg.channel.send({
                     embed: {
                         "title": "Mute",
                         "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": `
                             You must mention someone to be muted.
                         `,
-                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                        "footer": CONFIG.EMBED.FOOTER(messageEventData)
                     }
-                }).then(()=>{
-                    return resolve(1);
-                }).catch((e)=>{
-                    return reject("Error sending 'no mentions' message: " + e);
                 });
-                return;
+            } catch (e) {
+                throw ("Error sending 'no mentions' message: " + e);
             }
+            return 1;
+        }
 
-            mentionedUsers.forEach((mentionedUser)=>{
-                msg.guild.channels.forEach(channel => {
-                    channel.overwritePermissions(mentionedUser, {
-                        //SEND_MESSAGES: null, // For defaulting the perm
-                        SEND_MESSAGES: false,
-                    });
+        mentionedUsers.forEach((mentionedUser) => { // TODO: Promise.all
+            msg.guild.channels.forEach(channel => {
+                channel.overwritePermissions(mentionedUser, {
+                    //SEND_MESSAGES: null, // For defaulting the perm
+                    SEND_MESSAGES: false,
                 });
             });
+        });
 
-            msg.channel.send({
+        try {
+            await msg.channel.send({
                 embed: {
                     "title": "Mute",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": `
                         User(s) were muted.
                     `,
-                    "footer": CONFIG.EMBED.FOOTER(handleData)
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
-            }).then(()=>{
-                return resolve(0);
-            }).catch((e)=>{
-                return reject("Error sending result message: " + e);
             });
-        });
+        } catch (e) {
+            throw ("Error sending result message: " + e);
+        }
+
+        return 0;
     }
 };
