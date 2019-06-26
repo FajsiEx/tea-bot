@@ -9,21 +9,17 @@ let cacheExpireTimestamps = {};
 const CACHE_LIFESPAN = 1 * 60 * 1000; // 15 minutes
 
 module.exports = {
-    getFromCache: function (guildId) {
-        return new Promise((resolve) => {
-            if (cachedGuildDocuments[guildId] && cacheExpireTimestamps[guildId] > new Date().getTime()) {
-                resolve(cachedGuildDocuments[guildId]);
-            }else{
-                resolve(false);
-            }
-        });
+    getFromCache: async function (guildId) {
+        if (cachedGuildDocuments[guildId] && cacheExpireTimestamps[guildId] > new Date().getTime()) {
+            return cachedGuildDocuments[guildId];
+        } else {
+            return false;
+        }
     },
 
-    setCache: function (guildId, guildDoc) {
-        return new Promise((resolve) => {
-            cachedGuildDocuments[guildId] = guildDoc;
-            cacheExpireTimestamps[guildId] = new Date().getTime() + CACHE_LIFESPAN;
-            resolve(true);
-        });
+    setCache: async function (guildId, guildDoc) {
+        cachedGuildDocuments[guildId] = guildDoc;
+        cacheExpireTimestamps[guildId] = new Date().getTime() + CACHE_LIFESPAN;
+        return true;
     }
 };
