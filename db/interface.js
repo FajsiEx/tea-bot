@@ -8,25 +8,36 @@ const cache = require("./cache");
 const dbBridge = require("./bridge");
 
 module.exports = {
-    getGuildDoc: function (guildId) {
-        return new Promise((resolve, reject) => {
-            cache.getFromCache(guildId).then((cachedGuildDoc) => {
-                if (cachedGuildDoc) {
-                    resolve(cachedGuildDoc);
-                }else{
-                    dbBridge.getGuildDocument(guildId).then((guildDoc)=>{
-                        resolve(guildDoc);
-                    }).catch((e)=>{return reject("Failed to get guildDoc from database: " + e);});
-                }
-            }).catch((e)=>{return reject("Failed to get guildDoc from cache: " + e);});
-        });
+    getGuildDoc: async function (guildId) {
+        let cachedGuildDoc;
+
+        try {
+            cachedGuildDoc = await cache.getFromCache(guildId);
+        } catch (e) {
+            throw ("Failed to get guildDoc from cache: " + e);
+        }
+
+        if (cachedGuildDoc) { //If the guild doc was found in cache, return that
+            return cachedGuildDoc;
+        } else { // Otherwise call db to get it and return that fetched guildDoc
+            let guildDoc;
+            try {
+                guildDoc = await dbBridge.getGuildDocument(guildId);
+            } catch (e) {
+                throw ("Failed to get guildDoc from database: " + e);
+            }
+
+            return guildDoc;
+        }
     },
 
-    setGuildDoc: function (guildId, guildDoc) {
-        return new Promise((resolve) => {
-            dbBridge.writeGuildDocument(guildId, guildDoc).then(()=>{
-                resolve(true);
-            });
-        });
+    setGuildDoc: async function (guildId, guildDoc) {
+        try {
+            await dbBridge.writeGuildDocument(guildId, guildDoc);
+        }catch(e){
+            throw("Failed to set guildDoc: " + e);
+        }
+
+        return true;
     }
 };
