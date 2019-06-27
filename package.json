@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "Just another discord bot",
   "main": "server.js",
+  "engines": {
+    "node": "10.x.x"
+  },
   "dependencies": {
     "@sentry/node": "^5.4.0",
     "anilist-node": "^1.1.0",
