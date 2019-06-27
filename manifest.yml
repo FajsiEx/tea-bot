@@ -1,0 +1,4 @@
+---
+applications:
+- name: tea-bot
+  health-check-type: process
