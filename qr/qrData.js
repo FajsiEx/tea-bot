@@ -9,7 +9,7 @@
 
 // TODO: add embed type reply
 module.exports = [
-    // PLAIN
+    //* PLAIN
     {
         keywords: ["oof"],
         type: "plain",
@@ -26,7 +26,20 @@ module.exports = [
         data: "🎉🎉🎉🎉🎉🎉🎉🎉🎉"
     },
 
-    // FILE
+    //* RANDOM
+    {
+        keywords: ["testrand"],
+        type: "random",
+        data: [
+            "0",
+            "1",
+            "2",
+            "3"
+        ]
+    },
+
+
+    //* FILE
     {
         keywords: ["explosion"],
         type: "file",
