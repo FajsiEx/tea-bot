@@ -65,6 +65,9 @@ module.exports = {
                                 Plays: **${user.counts.plays}**
                                 SS+:**${user.counts.SSH} ** SS:**${user.counts.SS} ** S+:**${user.counts.SH} ** S:**${user.counts.S} ** A:**${user.counts.A} ** 
                             `,
+                            "thumbnail": {
+                                "url": `https://a.ppy.sh/${user.id}`
+                            },
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
                     });
