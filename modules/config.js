@@ -52,6 +52,9 @@ const CONFIG = {
         DATABASE: {
             URI: process.env.T_DURI
         },
+        OSU: {
+            TOKEN: process.env.T_OSUT
+        },
         SENTRY: {
             DSN: process.env.T_SDSN
         }
