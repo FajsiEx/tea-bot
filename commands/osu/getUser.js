@@ -2,7 +2,7 @@ const CONFIG = require("../../modules/config");
 const outdent = require("outdent");
 const osu = require("node-osu");
 
-const osuApi = new osu.Api(CONFIG.SECRETS.OSU.TOKEN, {notFoundAsError: false}); // TODO: make api module
+const osuApi = new osu.Api(CONFIG.SECRETS.OSU.TOKEN, { notFoundAsError: false }); // TODO: make api module
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -14,36 +14,34 @@ module.exports = {
         if (!term) {
             try {
                 await module.exports.responses.fail.noResults(messageEventData);
-            }catch(e){
-                throw("Failed sending noResults message: " + e);
+            } catch (e) {
+                throw ("Failed sending noResults message: " + e);
             }
             return 1;
         }
 
         let user;
         try {
-            user = await osuApi.getUser({u: term});
+            user = await osuApi.getUser({ u: term });
         } catch (e) {
             throw ("Failed to search: " + e);
         }
 
         console.log(user);
 
-        return 0;
-
-        if (!user) {
+        if (user === []) {
             try {
                 await module.exports.responses.fail.noResults(messageEventData);
-            }catch(e){
-                throw("Failed sending noResults message: " + e);
+            } catch (e) {
+                throw ("Failed sending noResults message: " + e);
             }
             return 2;
         }
 
         try {
-            await module.exports.responses.success.searched(messageEventData, anime);
-        }catch(e){
-            throw("Failed sending response message: " + e);
+            await module.exports.responses.success.searched(messageEventData, user);
+        } catch (e) {
+            throw ("Failed sending response message: " + e);
         }
 
         return 0;
@@ -51,25 +49,22 @@ module.exports = {
 
     responses: {
         success: {
-            searched: async function (messageEventData,anime) {
+            searched: async function (messageEventData, user) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
-                            "title": (anime.title.english) ? anime.title.english : anime.title.romaji, // TODO: make this config via guild settings
-                            "url": anime.siteUrl,
-                            "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
+                            "title": user.name,
+                            "url": `https://osu.ppy.sh/users/${user.id}`,
+                            "color": CONFIG.EMBED.COLORS.OSU,
                             "description": outdent`
-                                **${anime.episodes}** episodes
-                                ${anime.description.replace(/<br\s*\/?>/mg,"")}
-
-                                Avg score: **${anime.averageScore}**
-                                Ep duration: **${anime.duration} minutes**
-                                Genres: **${anime.genres.join(", ")}**
-                                ${(anime.trailer) ? (anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : "" : ""}
+                                PP: **${user.pp.raw}**
+                                Rank: **#${user.pp.rank}** [${user.country}: #${user.pp.countryRank}]
+                                Accuracy: **${user.accuracyFormatted}**
+                                Level: **${user.level}**
+                                Total score: **${user.scores.total}** [ranked: ${user.scores.ranked}]
+                                Plays: **${user.counts.plays}**
+                                SS+:**${user.counts.SSH} ** SS:**${user.counts.SS} ** S+:**${user.counts.SH} ** S:**${user.counts.S} ** A:**${user.counts.A} ** 
                             `,
-                            "thumbnail": {
-                                "url": anime.coverImage.medium
-                            },
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
                     });
@@ -81,7 +76,7 @@ module.exports = {
             }
         },
         fail: {
-            noResults: async function(messageEventData) {
+            noResults: async function (messageEventData) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
