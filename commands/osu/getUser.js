@@ -29,7 +29,7 @@ module.exports = {
 
         console.log(user);
 
-        if (user === []) {
+        if (user.length < 1) {
             try {
                 await module.exports.responses.fail.noResults(messageEventData);
             } catch (e) {
