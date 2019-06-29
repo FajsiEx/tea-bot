@@ -10,11 +10,22 @@ const dClient = require("../discord/client").getDiscordClient();
 
 module.exports = {
     incomingData: async function (incomingData) {
-        console.log(module.exports.checkIncomingData(incomingData));
+        if(!module.exports.checkIncomingData(incomingData)) {
+            console.log(`handleTrigger failed ${e}`.warn);
+            throw("Invalid data");
+        }
+
         let triggerDoc = await dbBridge.triggers.getDocFromToken(incomingData.token);
+
         console.log(triggerDoc);
 
-        module.exports.handleTrigger(incomingData, triggerDoc);
+        try {
+            await module.exports.handleTrigger(incomingData, triggerDoc);
+        }catch(e){
+            throw("Could not handle the trigger: " + e);
+        }
+
+        return 0;
     },
 
     handleTrigger: async function (incomingData, triggerDoc) {
@@ -35,6 +46,7 @@ module.exports = {
             return 0;
         }else{
             console.log("wtf that type");
+            return 10;
         }
     },
 
