@@ -2,7 +2,7 @@ const CONFIG = require("../../modules/config");
 const outdent = require("outdent");
 const osu = require("node-osu");
 
-const osuApi = new osu.Api(CONFIG.SECRETS.OSU.TOKEN, {notFoundAsError: false});
+const osuApi = new osu.Api(CONFIG.SECRETS.OSU.TOKEN, {notFoundAsError: false}); // TODO: make api module
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -85,10 +85,10 @@ module.exports = {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
-                            "title": "No results",
+                            "title": "osu! | No user",
                             "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": outdent`
-                                No results for that search term (or none was provided)
+                                No users under that name (or no name was provided)
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }

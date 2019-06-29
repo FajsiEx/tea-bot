@@ -206,6 +206,16 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "osu",
+        commands: [
+            {
+                keywords: ["u", "user"],
+                handler: require(DEFAULT_COMMANDS_PATH + "osu/getUser").handler
+            }
+        ]
+    },
+
+    {
         categoryName: "invalid", // Invalid command/category replies
         commands: [
             {
