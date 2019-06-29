@@ -28,13 +28,12 @@ module.exports = [
 
     //* RANDOM
     {
-        keywords: ["testrand"],
+        keywords: ["hi", "hello"],
         type: "random",
         data: [
-            "0",
-            "1",
-            "2",
-            "3"
+            "Hi!",
+            "Hello!",
+            "こんにちは!"
         ]
     },
 

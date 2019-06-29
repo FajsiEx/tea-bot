@@ -232,10 +232,7 @@ let COMMANDS = [
     {
         categoryName: false, // Without prefix
         commands: [
-            {
-                keywords: ["hi", "hello", "konichiwa"],
-                handler: require(DEFAULT_COMMANDS_PATH + "hi").handler,
-            }
+            // Commands that don't need prefixes go here. If it's only a simple response [!hi => msg.channel.send("Hello")], take a look at QRs
         ]
     },
 ];
