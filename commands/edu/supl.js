@@ -1,6 +1,8 @@
 const CONFIG = require("../../modules/config");
+
 const outdent = require("outdent");
 const fetch = require('node-fetch');
+const htmlParser = require('node-html-parser');
 
 module.exports = {
     handler: async function (handleData) {
@@ -21,8 +23,7 @@ module.exports = {
 
         },"referrer":"https://spseadlerka.edupage.org/substitution/","referrerPolicy":"no-referrer-when-downgrade","body":"{\"__args\":[null,{\"date\":\"2019-06-14\",\"mode\":\"classes\"}],\"__gsh\":\"4027fe5c\"}","method":"POST","mode":"cors"}).then((d)=>{return d.text()})
 
-        let parser = new DOMParser();
-        let document = parser.parseFromString(tempCont, "text/html");
+        let document = htmlParser.parse(JSON.parse(tempCont).r, "text/html");
         console.log(document);
 
         try {
