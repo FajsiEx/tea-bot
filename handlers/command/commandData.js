@@ -17,6 +17,7 @@ const qrData = require("/qr/qrData");
 let COMMANDS = [
     {
         categoryName: "dev",
+        displayName: "Developer commands",
         commands: [
             {
                 keywords: ["send"],
@@ -102,6 +103,7 @@ let COMMANDS = [
 
     {
         categoryName: "mod",
+        displayName: "Moderation commands",
         commands: [
             {
                 keywords: ["nuke", "bulkdelete"],
@@ -153,6 +155,7 @@ let COMMANDS = [
 
     {
         categoryName: "sticky",
+        displayName: "Sticky posts",
         commands: [
             {
                 keywords: ["create"],
@@ -171,6 +174,7 @@ let COMMANDS = [
 
     {
         categoryName: "events",
+        displayName: "Event commands",
         commands: [
             {
                 keywords: ["add", "create"],
@@ -187,6 +191,7 @@ let COMMANDS = [
 
     {
         categoryName: "info",
+        displayName: "Information commands",
         commands: [
             {
                 keywords: ["about", "info", "help", "tasukete", "ping"],
@@ -198,6 +203,7 @@ let COMMANDS = [
 
     { // TODO: do this seriously
         categoryName: "edupica",
+        displayName: "Edupage commands",
         commands: [
             {
                 keywords: ["sukfest"],
@@ -209,6 +215,7 @@ let COMMANDS = [
 
     {
         categoryName: "ali",
+        displayName: "AniList commands",
         commands: [
             {
                 keywords: ["a"],
@@ -225,6 +232,7 @@ let COMMANDS = [
 
     {
         categoryName: "osu",
+        displayName: "Osu! commands",
         commands: [
             {
                 keywords: ["u", "user"],
@@ -267,7 +275,7 @@ let qrCategory = {
     commands: []
 };
 
-qrData.forEach((qr)=>{
+qrData.forEach((qr) => {
     qrCategory.commands.push({
         keywords: qr.keywords,
         handler: qrHandler.handler
@@ -343,7 +351,49 @@ module.exports = {
         Input: -
         Return value: Command object with all categories and merged commands from 1only category to no prefix cat
     */
-    getCommands: function() {
+    getCommands: function () {
         return COMMANDS;
     },
+
+    getCommandList: function () {
+        let formattedMsg = "";
+
+        COMMANDS.forEach(commandCategory => {
+            if (commandCategory.categoryName == "qr") return;
+            if (commandCategory.categoryName == "invalid") return;
+            if (!commandCategory.categoryName) return;
+
+
+            formattedMsg += `<h2>${commandCategory.displayName}</h2>`;
+
+            formattedMsg += `
+                <table class="table table-bordered text-light">
+                    <thead class="thead-dark">
+                        <td><b>Command</b></td>
+                        <td><b>Description</b></td>
+                    </thead>
+                    <tbody>
+            `;
+
+            commandCategory.commands.forEach(command => {
+                let rowColor = "";
+                if (command.rights) {
+                    if (command.rights.devOnly) { rowColor = "bg-danger"; }
+                    if (command.rights.adminOnly) { rowColor = "bg-info"; }
+                }
+
+                formattedMsg += `<tr class="${rowColor}"><td>`;
+
+                command.keywords.forEach(keyword=>{
+                    formattedMsg += `!${commandCategory.categoryName}:${keyword}<br>`;
+                });
+
+                formattedMsg += `</td><td>${command.desc}</td></tr>`;
+            });
+
+            formattedMsg += "</tbody></table><br>";
+        });
+
+        return formattedMsg;
+    }
 };

@@ -1,5 +1,6 @@
 
 let stats = require("../modules/stats");
+let commandData = require("../handlers/command/commandData");
 let dClient;
 
 module.exports = {
@@ -31,6 +32,13 @@ module.exports = {
                 data: teaBotGuilds
             });
             
+        });
+
+        app.get('/api/getCommandList', (req, res) => {
+            res.json({
+                status: "ok",
+                data: commandData.getCommandList()
+            });
         });
     }
 };
