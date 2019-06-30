@@ -192,11 +192,6 @@ let COMMANDS = [
                 keywords: ["about", "info", "help", "tasukete", "ping"],
                 desc: "Replies with bot information",
                 handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
-            },
-            {
-                keywords: ["commands"],
-                desc: "Replies with list of available command",
-                handler: require(DEFAULT_COMMANDS_PATH + "info/commands").handler
             }
         ]
     },
@@ -351,17 +346,4 @@ module.exports = {
     getCommands: function() {
         return COMMANDS;
     },
-
-    getAllCommandsFormattedForMsg: function() {
-        let formattedMsg = "";
-
-        COMMANDS.forEach(commandCategory=>{
-            formattedMsg+=`\n`;
-            commandCategory.commands.forEach(command=>{
-                formattedMsg+=`!${commandCategory.categoryName}:**${command.keywords.join(" / ")}** - ${command.desc}`;
-            });
-        });
-
-        return formattedMsg;
-    }
 };
