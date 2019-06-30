@@ -21,17 +21,17 @@ module.exports = {
 
         },"referrer":"https://spseadlerka.edupage.org/substitution/","referrerPolicy":"no-referrer-when-downgrade","body":"{\"__args\":[null,{\"date\":\"2019-06-14\",\"mode\":\"classes\"}],\"__gsh\":\"4027fe5c\"}","method":"POST","mode":"cors"}).then((d)=>{return d.text()})
 
-        console.log(tempCont);
+        let parser = new DOMParser();
+        let document = parser.parseFromString(tempCont, "text/html");
+        console.log(document);
 
         try {
             await msg.channel.send({
                 embed: {
-                    title: "Edu | Suplovanie",
+                    title: "Edu | Substitution",
                     color: CONFIG.EMBED.COLORS.INFO,
                     description: `
-                        \`\`\`html
-                            ${tempCont.slice(0, 1800)}
-                        \`\`\`
+                        Logged in console
                     `,
                     footer: CONFIG.EMBED.FOOTER(handleData)
                 }
