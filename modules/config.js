@@ -26,7 +26,8 @@ const CONFIG = {
             PROGRESS:   0x5500ff,
             WARN:       0xffff00,
             FAIL:       0xff2222,
-            STICKY:     0x00ffaa
+            STICKY:     0x00ffaa,
+            OSU:        0xff66aa
         },
         FOOTER: function(handleData){
             if (handleDataCheck(handleData, true)) {
@@ -51,6 +52,9 @@ const CONFIG = {
         },
         DATABASE: {
             URI: process.env.T_DURI
+        },
+        OSU: {
+            TOKEN: process.env.T_OSUT
         },
         SENTRY: {
             DSN: process.env.T_SDSN

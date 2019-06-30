@@ -23,6 +23,9 @@ module.exports = {
             case "plain":
                 responseHandler = module.exports.responseHandlers.plain;
                 break;
+            case "random":
+                responseHandler = module.exports.responseHandlers.random;
+                break;
             case "file":
                 responseHandler = module.exports.responseHandlers.file;
                 break;
@@ -43,6 +46,14 @@ module.exports = {
         plain: async function (handleData, qr) {
             try {
                 await handleData.msg.channel.send(qr.data);
+            } catch (e) {
+                throw ("Failed to send plain QR response: " + e);
+            }
+            return 0;
+        },
+        random: async function (handleData, qr) {
+            try {
+                await handleData.msg.channel.send(qr.data[Math.floor(Math.random() * 100 % qr.data.length)]); // TODO: clean up
             } catch (e) {
                 throw ("Failed to send plain QR response: " + e);
             }

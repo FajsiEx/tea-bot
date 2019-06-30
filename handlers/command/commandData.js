@@ -20,11 +20,13 @@ let COMMANDS = [
         commands: [
             {
                 keywords: ["send"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler,
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler, // TODO: dev only
+                desc: "Sends a message to channel specified"
             },
             {
                 keywords: ["shutdown", "skapnadruhulomenohned"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/shutdown").handler,
+                desc: "Shuts down the bot",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -33,6 +35,7 @@ let COMMANDS = [
             {
                 keywords: ["stickyautoupd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/autoupd").handler,
+                desc: "Forces auto-update of all sticky messages",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -45,6 +48,7 @@ let COMMANDS = [
             {
                 keywords: ["stickydelall"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/deleteall").handler,
+                desc: "Deletes all sticky docs for the specified channel",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -57,6 +61,7 @@ let COMMANDS = [
             {
                 keywords: ["throwup"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/throwup").handler,
+                desc: "Forces a reject - mainly used for crash reporting",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -65,6 +70,7 @@ let COMMANDS = [
             {
                 keywords: ["getgd", "ggd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
+                desc: "Gets guild doc for the specified guild and logs it to the console", // TODO: make this pp and available to everyone
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -76,6 +82,7 @@ let COMMANDS = [
             {
                 keywords: ["deletegd", "delgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/deletegd").handler,
+                desc: "Deletes the guild doc and resets all cache for that guild to zero",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -87,6 +94,7 @@ let COMMANDS = [
             {
                 keywords: ["testperm"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/tests/perm").handler,
+                desc: "Replies with your current permissions",
                 cannotBeUsedWithoutCommandCategory: true,
             },
         ]
@@ -98,6 +106,7 @@ let COMMANDS = [
             {
                 keywords: ["nuke", "bulkdelete"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
+                desc: "Deletes a number of messages specified by a number or id",
                 rights: {
                     adminOnly: true
                 },
@@ -108,6 +117,7 @@ let COMMANDS = [
             {
                 keywords: ["mute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
+                desc: "Mutes mentioned users",
                 rights: {
                     adminOnly: true
                 },
@@ -118,6 +128,7 @@ let COMMANDS = [
             {
                 keywords: ["unmute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
+                desc: "Un-mutes mentioned users",
                 rights: {
                     adminOnly: true
                 },
@@ -128,6 +139,7 @@ let COMMANDS = [
             {
                 keywords: ["restrict"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/restrict/restrict").handler,
+                desc: "Restrict command usage to selected group or excludes mentioned users",
                 rights: {
                     adminOnly: true
                 },
@@ -145,6 +157,7 @@ let COMMANDS = [
             {
                 keywords: ["create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "sticky/create").handler,
+                desc: "Creates sticky message of specified type",
                 rights: {
                     adminOnly: true
                 },
@@ -162,6 +175,7 @@ let COMMANDS = [
             {
                 keywords: ["add", "create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
+                desc: "Adds to guild events on specified date",
                 cannotBeUsedWithoutCommandCategory: true,
                 requirements: {
                     channelType: "text",
@@ -176,6 +190,7 @@ let COMMANDS = [
         commands: [
             {
                 keywords: ["about", "info", "help", "tasukete", "ping"],
+                desc: "Replies with bot information",
                 handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
             }
         ]
@@ -186,6 +201,7 @@ let COMMANDS = [
         commands: [
             {
                 keywords: ["sukfest"],
+                desc: "Debug command atm",
                 handler: require(DEFAULT_COMMANDS_PATH + "edu/supl").handler
             }
         ]
@@ -196,11 +212,24 @@ let COMMANDS = [
         commands: [
             {
                 keywords: ["a"],
+                desc: "Gets anime by it's name",
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchAnime").handler
             },
             {
                 keywords: ["u"],
+                desc: "Gets user by his/her/its name",
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchUser").handler
+            }
+        ]
+    },
+
+    {
+        categoryName: "osu",
+        commands: [
+            {
+                keywords: ["u", "user"],
+                desc: "Gets user by his/her/it's name",
+                handler: require(DEFAULT_COMMANDS_PATH + "osu/getUser").handler
             }
         ]
     },
@@ -210,10 +239,12 @@ let COMMANDS = [
         commands: [
             {
                 keywords: ["category"],
+                desc: "Response for invalid category",
                 handler: require(DEFAULT_COMMANDS_PATH + "invalid/category").handler,
             },
             {
                 keywords: ["command"],
+                desc: "Response for invalid command",
                 handler: require(DEFAULT_COMMANDS_PATH + "invalid/command").handler,
             }
         ]
@@ -222,10 +253,7 @@ let COMMANDS = [
     {
         categoryName: false, // Without prefix
         commands: [
-            {
-                keywords: ["hi", "hello", "konichiwa"],
-                handler: require(DEFAULT_COMMANDS_PATH + "hi").handler,
-            }
+            // Commands that don't need prefixes go here. If it's only a simple response [!hi => msg.channel.send("Hello")], take a look at QRs
         ]
     },
 ];
@@ -317,5 +345,5 @@ module.exports = {
     */
     getCommands: function() {
         return COMMANDS;
-    }
+    },
 };
