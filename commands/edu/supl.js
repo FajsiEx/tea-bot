@@ -38,8 +38,8 @@ module.exports = {
         let paramMonth = substDate.getMonth() + 1;
         let paramYear = substDate.getFullYear();
 
-        paramDay = (paramDay < 10) ? "0"+paramDay : paramDay;
-        paramMonth = (paramMonth < 10) ? "0"+paramMonth : paramMonth;
+        paramDay = (paramDay < 10) ? "0" + paramDay : paramDay;
+        paramMonth = (paramMonth < 10) ? "0" + paramMonth : paramMonth;
 
         console.log(`${paramYear}-${paramMonth}-${paramDay}`);
 
@@ -62,33 +62,54 @@ module.exports = {
         let document = htmlParser.parse(JSON.parse(tempCont).r, "text/html");
         console.log(document);
 
-        let subNote = document.querySelector("div div div span").innerHTML;
-        let subNoteTitle = subNote.split(":")[0]
-        let subNoteContent = (subNote.split(":")[1]) ? subNote.split(":")[1].split(",").join("\n") : "";
+        let responseText;
 
-        let subSects = document.querySelectorAll(".section");
-        console.log(subSects);
+        try {
 
-        let classSubString;
-        subSects.forEach(section => {
-            let className = section.querySelector(".header span").innerHTML;
-            if (className != "I.B") return;
+            let subNote = document.querySelector("div div div span").innerHTML;
+            let subNoteTitle = subNote.split(":")[0]
+            let subNoteContent = (subNote.split(":")[1]) ? subNote.split(":")[1].split(",").join("\n") : "";
 
-            classSubString = `**${className}**\n`;
+            let subSects = document.querySelectorAll(".section");
+            console.log(subSects);
 
-            let rows = section.querySelectorAll(".row");
+            let classSubString;
+            subSects.forEach(section => {
+                let className = section.querySelector(".header span").innerHTML;
+                if (className != "I.B") return;
 
-            rows.forEach(row => {
-                let period = row.querySelector(".period span").innerHTML;
-                let info = row.querySelector(".info span").innerHTML;
-                info = info.split(" - ").join("\n");
-                info = info.split(",").join("\n");
+                console.log(className);
 
-                console.log(info);
+                classSubString = `**${className}**\n`;
 
-                classSubString += `\`\`\`${period} - ${info}\`\`\`\n`;
+                let rows = section.querySelectorAll(".row");
+
+                rows.forEach(row => {
+                    let period = row.querySelector(".period span").innerHTML;
+                    let info = row.querySelector(".info span").innerHTML;
+                    info = info.split(" - ").join("\n");
+                    info = info.split(",").join("\n");
+
+                    console.log(info);
+
+                    classSubString += `\`\`\`${period} - ${info}\`\`\`\n`;
+                });
             });
-        });
+
+            if (subSects.length <= 1 && !classSubString) {
+                throw("def");
+            }
+
+            responseText = `
+                **${subNoteTitle}**
+                ${subNoteContent}
+
+                ${classSubString}
+            `;
+        } catch (e) {
+            responseText = document.structuredText;
+        }
+
 
         try {
             await msg.channel.send({
@@ -96,10 +117,7 @@ module.exports = {
                     title: "Edu | Substitution",
                     color: CONFIG.EMBED.COLORS.INFO,
                     description: outdent`
-                        **${subNoteTitle}**
-                        ${subNoteContent}
-
-                        ${classSubString}
+                        ${responseText}
                     `,
                     footer: CONFIG.EMBED.FOOTER(messageEventData)
                 }
