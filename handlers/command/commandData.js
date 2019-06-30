@@ -37,6 +37,15 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["nou"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/nou").handler,
+                desc: "Replies with 5 'no u' - mainly used just for testing",
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    adminOnly: true
+                }
+            },
+            {
                 keywords: ["stickyautoupd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/sticky/autoupd").handler,
                 desc: "Forces auto-update of all sticky messages",
