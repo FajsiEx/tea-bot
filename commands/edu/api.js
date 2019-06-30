@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const htmlParser = require('node-html-parser');
 
 module.exports = {
-    getSubstStringForDate: async function(substDate) {
+    getSubstStringForDate: async function(substDate) { // TODO: move more things into separate functions
         let paramDay = substDate.getDate();
         let paramMonth = substDate.getMonth() + 1;
         let paramYear = substDate.getFullYear();
