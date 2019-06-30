@@ -324,5 +324,9 @@ module.exports = {
     */
     getCommands: function() {
         return COMMANDS;
+    },
+
+    getAllCommandsFormatted: function() {
+        
     }
 };
