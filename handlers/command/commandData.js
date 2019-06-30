@@ -22,7 +22,10 @@ let COMMANDS = [
             {
                 keywords: ["send"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler, // TODO: dev only
-                desc: "Sends a message to channel specified"
+                desc: "Sends a message to channel specified",
+                usage: [
+                    "<channel id> <message>",
+                ],
             },
             {
                 keywords: ["shutdown", "skapnadruhulomenohned"],
@@ -84,6 +87,18 @@ let COMMANDS = [
                 keywords: ["deletegd", "delgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/deletegd").handler,
                 desc: "Deletes the guild doc and resets all cache for that guild to zero",
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
+                }
+            },
+            {
+                keywords: ["killeveryone"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/killEveryone").handler,
+                desc: "Kills every user.",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -371,6 +386,7 @@ module.exports = {
                     <thead class="thead-dark">
                         <td><b>Command</b></td>
                         <td><b>Description</b></td>
+                        <td><b>Usage</b></td>
                     </thead>
                     <tbody>
             `;
@@ -388,7 +404,19 @@ module.exports = {
                     formattedMsg += `!${commandCategory.categoryName}:${keyword}<br>`;
                 });
 
-                formattedMsg += `</td><td>${command.desc}</td></tr>`;
+                formattedMsg += `</td><td>${command.desc}</td><td>`;
+
+                console.log(command.usage);
+
+                if (command.usage) {
+                    command.usage.forEach(usage=>{
+                        formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${usage}<br>`;
+                    });
+                }else{
+                    formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
+                }
+
+                formattedMsg += "</td></tr>";
             });
 
             formattedMsg += "</tbody></table><br>";
