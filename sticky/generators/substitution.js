@@ -17,6 +17,7 @@ module.exports = {
             throw ("False guildId");
         }
 
+        //let todayDate = new Date("2019/06/13"); // Dan, I know, this is just for testing a specific data-busy day
         let todayDate = new Date();
         let tomorrowDate = new Date(todayDate.getTime() + (24*60*60*1000));
 
@@ -30,7 +31,6 @@ module.exports = {
                 "description": `
                     ***Today - ${todayDate.getDate()}.${todayDate.getMonth() + 1}.${todayDate.getFullYear()}***
                     ${todaySubstString}
-
                     ***Tomorrow - ${tomorrowDate.getDate()}.${tomorrowDate.getMonth() + 1}.${tomorrowDate.getFullYear()}***
                     ${tomorrowSubstString}
                 `,

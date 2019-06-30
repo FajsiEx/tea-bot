@@ -35,7 +35,7 @@ module.exports = {
         try {
 
             let subNote = document.querySelector("div div div span").innerHTML;
-            let subNoteTitle = subNote.split(":")[0]
+            let subNoteTitle = subNote.split(":")[0];
             let subNoteContent = (subNote.split(":")[1]) ? subNote.split(":")[1].split(",").join("\n") : "";
 
             let subSects = document.querySelectorAll(".section");
@@ -48,7 +48,7 @@ module.exports = {
 
                 console.log(className);
 
-                classSubString = `**${className}**\n`;
+                classSubString = `**${className}**`;
 
                 let rows = section.querySelectorAll(".row");
 
@@ -60,7 +60,7 @@ module.exports = {
 
                     console.log(info);
 
-                    classSubString += `\`\`\`${period} - ${info}\`\`\`\n`;
+                    classSubString += `\`\`\`${period} - ${info}\`\`\``;
                 });
             });
 
@@ -68,12 +68,10 @@ module.exports = {
                 throw("def");
             }
 
-            responseText = `
-                **${subNoteTitle}**
+            responseText = `**${subNoteTitle}**
                 ${subNoteContent}
-
-                ${classSubString}
-            `;
+                
+                ${classSubString}`;
         } catch (e) {
             responseText = document.structuredText;
         }
