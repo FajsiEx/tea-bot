@@ -347,7 +347,16 @@ module.exports = {
         return COMMANDS;
     },
 
-    getAllCommandsFormatted: function() {
+    getAllCommandsFormattedForMsg: function() {
+        let formattedMsg;
 
+        COMMANDS.forEach(commandCategory=>{
+            formattedMsg+=`\n`;
+            commandCategory.commands.forEach(command=>{
+                formattedMsg+=`!${commandCategory.categoryName}:**${command.keyword.join(" / ")}** - ${command.desc}`;
+            });
+        });
+
+        return formattedMsg;
     }
 };
