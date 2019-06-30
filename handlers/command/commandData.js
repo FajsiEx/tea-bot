@@ -192,6 +192,11 @@ let COMMANDS = [
                 keywords: ["about", "info", "help", "tasukete", "ping"],
                 desc: "Replies with bot information",
                 handler: require(DEFAULT_COMMANDS_PATH + "info/about").handler
+            },
+            {
+                keywords: ["commands"],
+                desc: "Replies with list of available command",
+                handler: require(DEFAULT_COMMANDS_PATH + "info/commands").handler
             }
         ]
     },
