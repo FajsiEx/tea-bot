@@ -28,6 +28,9 @@ let COMMANDS = [
                 usage: [
                     "<channel id> <message>",
                 ],
+                examples: [
+                    "4546751213754314 Hello, World!"
+                ]
             },
             {
                 keywords: ["shutdown", "skapnadruhulomenohned"],
@@ -90,6 +93,10 @@ let COMMANDS = [
                     "",
                     "<guild id>",
                 ],
+                examples: [
+                    "",
+                    "476741231564843"
+                ],
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -105,6 +112,10 @@ let COMMANDS = [
                 usage: [
                     "",
                     "<guild id>",
+                ],
+                examples: [
+                    "",
+                    "476741231564843"
                 ],
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
@@ -147,6 +158,10 @@ let COMMANDS = [
                     "count <message count>",
                     "after <message id>",
                 ],
+                examples: [
+                    "count 15",
+                    "after 798454351214864"
+                ],
                 rights: {
                     adminOnly: true
                 },
@@ -160,7 +175,11 @@ let COMMANDS = [
                 desc: "Mutes mentioned users",
                 usage: [
                     "<mention>",
-                    "<mention>, <mention2>, ...",
+                    "<mention> <mention2> ...",
+                ],
+                examples: [
+                    "@FajsiEx",
+                    "@FajsiEx @Phantom"
                 ],
                 rights: {
                     adminOnly: true
@@ -175,7 +194,11 @@ let COMMANDS = [
                 desc: "Un-mutes mentioned users",
                 usage: [
                     "<mention>",
-                    "<mention>, <mention2>, ...",
+                    "<mention> <mention2> ...",
+                ],
+                examples: [
+                    "@FajsiEx",
+                    "@FajsiEx @Phantom"
                 ],
                 rights: {
                     adminOnly: true
@@ -193,6 +216,12 @@ let COMMANDS = [
                     "<mention>",
                     "admin",
                     "dev",
+                ],
+                examples: [
+                    "@FajsiEx",
+                    "@FajsiEx @Phantom",
+                    "admin",
+                    "dev" // TODO: To mi nevychadza. admin can restrict to devOnly... why tf.
                 ],
                 rights: {
                     adminOnly: true
@@ -215,6 +244,11 @@ let COMMANDS = [
                 desc: "Creates sticky message of specified type",
                 usage: [
                     "<sticky type>",
+                ],
+                examples: [
+                    "time",
+                    "events",
+                    "substitution"
                 ],
                 rights: {
                     adminOnly: true
@@ -239,6 +273,11 @@ let COMMANDS = [
                     "<day> <event name>",
                     "<day>.<month> <event name>",
                     "<day>.<month>.<year> <event name>",
+                ],
+                examples: [
+                    "5 event",
+                    "5.2 event",
+                    "5.2.2022 event",
                 ],
                 cannotBeUsedWithoutCommandCategory: true,
                 requirements: {
@@ -283,6 +322,9 @@ let COMMANDS = [
                 usage: [
                     "<anime name>",
                 ],
+                examples: [
+                    "kimi no na wa"
+                ],
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchAnime").handler
             },
             {
@@ -290,6 +332,9 @@ let COMMANDS = [
                 desc: "Gets user by his/her/its name",
                 usage: [
                     "<username>",
+                ],
+                examples: [
+                    "fajsiex"
                 ],
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchUser").handler
             }
@@ -305,6 +350,9 @@ let COMMANDS = [
                 desc: "Gets user by his/her/it's name",
                 usage: [
                     "<username>",
+                ],
+                examples: [
+                    "fajsiex"
                 ],
                 handler: require(DEFAULT_COMMANDS_PATH + "osu/getUser").handler
             }
@@ -476,6 +524,8 @@ module.exports = {
 
                 if (command.examples) {
                     command.usage.forEach(example=>{
+                        console.log(example);
+                        
                         formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(example)}<br>`;
                     });
                 }else{
