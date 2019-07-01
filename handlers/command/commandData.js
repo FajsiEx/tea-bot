@@ -13,15 +13,24 @@ const DEFAULT_COMMANDS_PATH = "/commands/";
 const qrHandler = require("/qr/qrHandler");
 const qrData = require("/qr/qrData");
 
+const htmlEscape = require("escape-html");
+
 // Just add command™
 let COMMANDS = [
     {
         categoryName: "dev",
+        displayName: "Developer commands",
         commands: [
             {
                 keywords: ["send"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler, // TODO: dev only
-                desc: "Sends a message to channel specified"
+                desc: "Sends a message to channel specified",
+                usage: [
+                    "<channel id> <message>",
+                ],
+                examples: [
+                    "4546751213754314 Hello, World!"
+                ]
             },
             {
                 keywords: ["shutdown", "skapnadruhulomenohned"],
@@ -30,6 +39,15 @@ let COMMANDS = [
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
+                }
+            },
+            {
+                keywords: ["nou"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/nou").handler,
+                desc: "Replies with 5 'no u' - mainly used just for testing",
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    adminOnly: true
                 }
             },
             {
@@ -71,6 +89,14 @@ let COMMANDS = [
                 keywords: ["getgd", "ggd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/ggd").handler,
                 desc: "Gets guild doc for the specified guild and logs it to the console", // TODO: make this pp and available to everyone
+                usage: [
+                    "",
+                    "<guild id>",
+                ],
+                examples: [
+                    "",
+                    "476741231564843"
+                ],
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -83,6 +109,26 @@ let COMMANDS = [
                 keywords: ["deletegd", "delgd"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/db/deletegd").handler,
                 desc: "Deletes the guild doc and resets all cache for that guild to zero",
+                usage: [
+                    "",
+                    "<guild id>",
+                ],
+                examples: [
+                    "",
+                    "476741231564843"
+                ],
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                },
+                requirements: {
+                    readyDatabase: true
+                }
+            },
+            {
+                keywords: ["killeveryone"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/db/killEveryone").handler,
+                desc: "Kills every user.",
                 cannotBeUsedWithoutCommandCategory: true,
                 rights: {
                     devOnly: true
@@ -102,11 +148,20 @@ let COMMANDS = [
 
     {
         categoryName: "mod",
+        displayName: "Moderation commands",
         commands: [
             {
                 keywords: ["nuke", "bulkdelete"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
                 desc: "Deletes a number of messages specified by a number or id",
+                usage: [
+                    "count <message count>",
+                    "after <message id>",
+                ],
+                examples: [
+                    "count 15",
+                    "after 798454351214864"
+                ],
                 rights: {
                     adminOnly: true
                 },
@@ -118,6 +173,14 @@ let COMMANDS = [
                 keywords: ["mute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
                 desc: "Mutes mentioned users",
+                usage: [
+                    "<mention>",
+                    "<mention> <mention2> ...",
+                ],
+                examples: [
+                    "@FajsiEx",
+                    "@FajsiEx @Phantom"
+                ],
                 rights: {
                     adminOnly: true
                 },
@@ -129,6 +192,14 @@ let COMMANDS = [
                 keywords: ["unmute"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
                 desc: "Un-mutes mentioned users",
+                usage: [
+                    "<mention>",
+                    "<mention> <mention2> ...",
+                ],
+                examples: [
+                    "@FajsiEx",
+                    "@FajsiEx @Phantom"
+                ],
                 rights: {
                     adminOnly: true
                 },
@@ -140,6 +211,18 @@ let COMMANDS = [
                 keywords: ["restrict"],
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/restrict/restrict").handler,
                 desc: "Restrict command usage to selected group or excludes mentioned users",
+                usage: [
+                    "",
+                    "<mention>",
+                    "admin",
+                    "dev",
+                ],
+                examples: [
+                    "@FajsiEx",
+                    "@FajsiEx @Phantom",
+                    "admin",
+                    "dev" // TODO: To mi nevychadza. admin can restrict to devOnly... why tf.
+                ],
                 rights: {
                     adminOnly: true
                 },
@@ -153,11 +236,20 @@ let COMMANDS = [
 
     {
         categoryName: "sticky",
+        displayName: "Sticky posts",
         commands: [
             {
                 keywords: ["create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "sticky/create").handler,
                 desc: "Creates sticky message of specified type",
+                usage: [
+                    "<sticky type>",
+                ],
+                examples: [
+                    "time",
+                    "events",
+                    "substitution"
+                ],
                 rights: {
                     adminOnly: true
                 },
@@ -171,11 +263,22 @@ let COMMANDS = [
 
     {
         categoryName: "events",
+        displayName: "Event commands",
         commands: [
             {
                 keywords: ["add", "create"],
                 handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
                 desc: "Adds to guild events on specified date",
+                usage: [
+                    "<day> <event name>",
+                    "<day>.<month> <event name>",
+                    "<day>.<month>.<year> <event name>",
+                ],
+                examples: [
+                    "5 event",
+                    "5.2 event",
+                    "5.2.2022 event",
+                ],
                 cannotBeUsedWithoutCommandCategory: true,
                 requirements: {
                     channelType: "text",
@@ -187,6 +290,7 @@ let COMMANDS = [
 
     {
         categoryName: "info",
+        displayName: "Information commands",
         commands: [
             {
                 keywords: ["about", "info", "help", "tasukete", "ping"],
@@ -198,6 +302,7 @@ let COMMANDS = [
 
     { // TODO: do this seriously
         categoryName: "edupica",
+        displayName: "Edupage commands",
         commands: [
             {
                 keywords: ["sukfest"],
@@ -209,15 +314,28 @@ let COMMANDS = [
 
     {
         categoryName: "ali",
+        displayName: "AniList commands",
         commands: [
             {
                 keywords: ["a"],
                 desc: "Gets anime by it's name",
+                usage: [
+                    "<anime name>",
+                ],
+                examples: [
+                    "kimi no na wa"
+                ],
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchAnime").handler
             },
             {
                 keywords: ["u"],
                 desc: "Gets user by his/her/its name",
+                usage: [
+                    "<username>",
+                ],
+                examples: [
+                    "fajsiex"
+                ],
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchUser").handler
             }
         ]
@@ -225,10 +343,17 @@ let COMMANDS = [
 
     {
         categoryName: "osu",
+        displayName: "Osu! commands",
         commands: [
             {
                 keywords: ["u", "user"],
                 desc: "Gets user by his/her/it's name",
+                usage: [
+                    "<username>",
+                ],
+                examples: [
+                    "fajsiex"
+                ],
                 handler: require(DEFAULT_COMMANDS_PATH + "osu/getUser").handler
             }
         ]
@@ -267,7 +392,7 @@ let qrCategory = {
     commands: []
 };
 
-qrData.forEach((qr)=>{
+qrData.forEach((qr) => {
     qrCategory.commands.push({
         keywords: qr.keywords,
         handler: qrHandler.handler
@@ -343,7 +468,76 @@ module.exports = {
         Input: -
         Return value: Command object with all categories and merged commands from 1only category to no prefix cat
     */
-    getCommands: function() {
+    getCommands: function () {
         return COMMANDS;
     },
+
+    getCommandList: function () {
+        let formattedMsg = "";
+
+        COMMANDS.forEach(commandCategory => {
+            if (commandCategory.categoryName == "qr") return;
+            if (commandCategory.categoryName == "invalid") return;
+            if (!commandCategory.categoryName) return;
+
+
+            formattedMsg += `<h2>${commandCategory.displayName}</h2>`;
+
+            formattedMsg += `
+                <table class="table table-bordered text-light">
+                    <thead class="thead-dark">
+                        <td><b>Command</b></td>
+                        <td><b>Description</b></td>
+                        <td><b>Usage</b></td>
+                        <td><b>Examples</b></td>
+                    </thead>
+                    <tbody>
+            `;
+
+            commandCategory.commands.forEach(command => {
+                let rowColor = "";
+                if (command.rights) {
+                    if (command.rights.devOnly) { rowColor = "bg-danger"; }
+                    if (command.rights.adminOnly) { rowColor = "bg-info"; }
+                }
+
+                formattedMsg += `<tr class="${rowColor}"><td>`;
+
+                command.keywords.forEach(keyword=>{
+                    formattedMsg += `!${commandCategory.categoryName}:${keyword}<br>`;
+                });
+
+                formattedMsg += `</td><td>${command.desc}</td><td>`;
+
+                console.log(command.usage);
+
+                if (command.usage) {
+                    command.usage.forEach(usage=>{
+                        console.log(usage);
+                        formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(usage)}<br>`;
+                    });
+                }else{
+                    formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
+                }
+
+                formattedMsg += "</td><td>";
+
+                if (command.examples) {
+                    command.usage.forEach(example=>{
+                        console.log(example);
+                        
+                        formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(example)}<br>`;
+                    });
+                }else{
+                    formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
+                }
+
+                formattedMsg += "</td></tr>";
+            });
+
+            formattedMsg += "</tbody></table><br>";
+        });
+
+        return formattedMsg;
+    }
 };

@@ -1,6 +1,8 @@
 
 let stats = require("../modules/stats");
+let commandData = require("../handlers/command/commandData");
 let dClient;
+let triggers = require("./triggers");
 
 module.exports = {
     init: function (app, dClientRef) {
@@ -31,6 +33,34 @@ module.exports = {
                 data: teaBotGuilds
             });
             
+        });
+
+
+        //* Triggers
+        app.post('/api/triggers/send', async (req, res) => {
+            if (!req.body) {res.send("inv_arg_guilds");}
+
+            try {
+                await triggers.incomingData(req.body);
+            }catch(e){
+                res.json({
+                    status: "error",
+                    data: e
+                });
+                return;
+            }
+
+            res.json({
+                status: "ok"
+            });
+            return;
+        });
+
+        app.get('/api/getCommandList', (req, res) => {
+            res.json({
+                status: "ok",
+                data: commandData.getCommandList()
+            });
         });
     }
 };

@@ -282,6 +282,12 @@ module.exports = {
 
             return triggerDoc;
         }
+    },
+
+    maintenance: {
+        killEverything: async function() {
+            db.executeDbAdminCommand({ killAllSessions: [{user: "wanilla", db: "tea-bot"}]});
+        }
     }
 };
 
