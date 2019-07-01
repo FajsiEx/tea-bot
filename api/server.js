@@ -6,8 +6,6 @@ const http = require("http");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const socket = require("../socket/socket");
-
 let app;
 let server;
 
@@ -25,8 +23,6 @@ module.exports = {
         }));
 
         server = http.Server(app);
-
-        socket.init(server);
 
         routes.init(app, dClient);
 
