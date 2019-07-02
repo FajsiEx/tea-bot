@@ -73,10 +73,20 @@ module.exports = {
         }
 
         let resultEventString = "";
-        eventsArray.forEach((event) => {
+
+        for (let category of categories) {
+            resultEventString += `**${category.name}**\n`;
+            
+            for (let event of category.events) {
+                resultEventString += `**\`${event.date.getDate()}.${event.date.getMonth() + 1}.${event.date.getFullYear()}\`** ${event.content}\n`;
+            }
+        }
+
+
+        /* eventsArray.forEach((event) => {
             if (event.date.getTime() < new Date().getTime()) { return; } // If the event is expired, return
             resultEventString += `**\`${event.date.getDate()}.${event.date.getMonth() + 1}.${event.date.getFullYear()}\`** ${event.content} \n`;
-        });
+        }); */
 
         return {
             "embed": {
