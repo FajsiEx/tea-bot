@@ -10,8 +10,6 @@ module.exports = {
         paramDay = (paramDay < 10) ? "0" + paramDay : paramDay;
         paramMonth = (paramMonth < 10) ? "0" + paramMonth : paramMonth;
 
-        console.log(`${paramYear}-${paramMonth}-${paramDay}`);
-
         let tempCont = await fetch("https://spseadlerka.edupage.org/substitution/server/viewer.js?__func=getSubstViewerDayDataHtml", {
             "credentials": "include", "headers": {
                 "Host": "spseadlerka.edupage.org",
@@ -29,7 +27,6 @@ module.exports = {
         }).then((d) => { return d.text(); });
 
         let document = htmlParser.parse(JSON.parse(tempCont).r, "text/html");
-        console.log(document);
 
         let responseText;
         try {
@@ -39,14 +36,11 @@ module.exports = {
             let subNoteContent = (subNote.split(":")[1]) ? subNote.split(":")[1].split(",").join("\n") : "";
 
             let subSects = document.querySelectorAll(".section");
-            console.log(subSects);
 
             let classSubString = "";
             subSects.forEach(section => {
                 let className = section.querySelector(".header span").innerHTML;
                 if (className != "I.B") return;
-
-                console.log(className);
 
                 classSubString = `**${className}**`;
 
@@ -57,8 +51,6 @@ module.exports = {
                     let info = row.querySelector(".info span").innerHTML;
                     info = info.split(" - ").join("\n");
                     info = info.split(",").join("\n");
-
-                    console.log(info);
 
                     classSubString += `\`\`\`${period} - ${info}\`\`\``;
                 });
