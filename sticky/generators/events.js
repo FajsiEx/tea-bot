@@ -28,27 +28,37 @@ module.exports = {
         //* CATEGORIES
         let categories = [
             {
-                name: "24 hours",
+                name: "Less than a day",
                 maxDelta: 24*60*60*1000,
                 events: []
             },
             {
-                name: "48 hours",
+                name: "Less than 2 days",
                 maxDelta: 48*60*60*1000,
                 events: []
             },
             {
-                name: "Week",
+                name: "Less than a week",
                 maxDelta: 7*24*60*60*1000,
                 events: []
             },
             {
-                name: "Month",
+                name: "Less than a month",
                 maxDelta: 30*24*60*60*1000,
                 events: []
             },
             {
-                name: "Year",
+                name: "Less than 2 months",
+                maxDelta: 60*24*60*60*1000,
+                events: []
+            },
+            {
+                name: "Less than 3 months",
+                maxDelta: 90*24*60*60*1000,
+                events: []
+            },
+            {
+                name: "Less than a year",
                 maxDelta: 365.25*24*60*60*1000,
                 events: []
             },
