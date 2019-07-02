@@ -237,7 +237,7 @@ module.exports = {
                         "description": `
                             While processing the \`!${requestedCommandCategoryName}${requestedCommandName}\` command an error has occurred.
                             Don't worry, this error will be reported to Sentry in a couple of seconds.
-                            If you feel like it, you should report this bug [here](https://github.com/FajsiEx/tea-bot/issues/new) with as much info as possible.
+                            If you feel like it, you should report this bug [here](https://github.com/tea-bot-project/tea-bot/issues/new) with as much info as possible.
 
                             **Technical details:**
                             Command handler has received a reject from the command module.
