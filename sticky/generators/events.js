@@ -90,7 +90,7 @@ module.exports = {
             resultEventString += `**${category.name}**\n`;
             
             for (let event of category.events) {
-                resultEventString += `**\`${event.date.getDate()}.${event.date.getMonth() + 1}.${event.date.getFullYear()}\`** ${event.content}\n`;
+                resultEventString += `**\` ${event.date.getDate()}.${event.date.getMonth() + 1}.${event.date.getFullYear()} (${this.calculateRemainingDays(event.date)}d) \`** ${event.content}\n`;
             }
 
             resultEventString += "\n";
@@ -112,5 +112,14 @@ module.exports = {
                 "footer": CONFIG.EMBED.FOOTER()
             }
         };
+    },
+
+    calculateRemainingDays: function(eventDate) {
+        let eventTs = eventDate.getTime();
+        let currentTs = new Date().getTime();
+
+        let deltaTs = eventTs - currentTs;
+
+        return Math.floor((deltaTs / (24*60*60*1000))*100) / 100;
     }
 };
