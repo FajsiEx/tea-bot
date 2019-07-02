@@ -1,7 +1,7 @@
 # Tea-bot
-[![CodeFactor](https://www.codefactor.io/repository/github/fajsiex/tea-bot/badge)](https://www.codefactor.io/repository/github/fajsiex/tea-bot)
-[![Build Status](https://travis-ci.org/FajsiEx/tea-bot.svg?branch=alpha)](https://travis-ci.org/FajsiEx/tea-bot)
-![Dependencies](https://david-dm.org/FajsiEx/tea-bot.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/tea-bot-project/tea-bot/badge)](https://www.codefactor.io/repository/github/fajsiex/tea-bot)
+[![Build Status](https://travis-ci.org/tea-bot-project/tea-bot.svg?branch=alpha)](https://travis-ci.org/FajsiEx/tea-bot)
+![Dependencies](https://david-dm.org/tea-bot-project/tea-bot.svg)
 
 ## Bug reports
 1. Look if the issue for it doesn't exist. If it does, don't report it again (duh.)
