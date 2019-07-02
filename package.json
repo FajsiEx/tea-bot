@@ -40,12 +40,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FajsiEx/tea-bot.git"
+    "url": "git+https://github.com/tea-bot-project/tea-bot.git"
   },
   "author": "FajsiEx",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/FajsiEx/tea-bot/issues"
+    "url": "https://github.com/tea-bot-project/tea-bot/issues"
   },
-  "homepage": "https://github.com/FajsiEx/tea-bot#readme"
+  "homepage": "https://github.com/tea-bot-project/tea-bot#readme"
 }

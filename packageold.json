@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FajsiEx/tea-bot.git"
+    "url": "git+https://github.com/tea-bot-project/tea-bot.git"
   },
   "keywords": [
     "discord",
@@ -19,9 +19,9 @@
   "author": "FajsiEx",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/FajsiEx/tea-bot/issues"
+    "url": "https://github.com/tea-bot-project/tea-bot/issues"
   },
-  "homepage": "https://github.com/FajsiEx/tea-bot#readme",
+  "homepage": "https://github.com/tea-bot-project/tea-bot#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "colors": "^1.3.3",
