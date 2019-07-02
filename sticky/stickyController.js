@@ -116,6 +116,10 @@ module.exports = {
             } else {
                 let channel = dClient.channels.get(doc.c_id);
 
+                if (!channel) { // If the channel is out of reach of tea-bot
+                    continue; // Rather that deleting sticky doc, just continue on to the next one.
+                }
+
                 // START OF TYPING
                 channel.startTyping();
 
