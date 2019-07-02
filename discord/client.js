@@ -29,7 +29,7 @@ module.exports = {
                 console.log("(c) FajsiEx 2019 - under MIT license\n");
 
                 console.log("Website: https://tea-bot.ml/".debug);
-                console.log("Github:  https://github.com/FajsiEx/tea-bot".debug);
+                console.log("Github:  https://github.com/tea-bot-project/tea-bot".debug);
                 console.log("________________________________________________________\n");
 
                 console.log(`Tea-bot ready! Current server time: ${new Date().toString()}`.event);
