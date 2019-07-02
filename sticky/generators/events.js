@@ -28,27 +28,27 @@ module.exports = {
         //* CATEGORIES
         let categories = [
             {
-                name: "In the next 24 hours",
+                name: "24 hours",
                 maxDelta: 24*60*60*1000,
                 events: []
             },
             {
-                name: "In the next 48 hours",
+                name: "48 hours",
                 maxDelta: 48*60*60*1000,
                 events: []
             },
             {
-                name: "In the next week",
+                name: "Week",
                 maxDelta: 7*24*60*60*1000,
                 events: []
             },
             {
-                name: "In the next month",
+                name: "Month",
                 maxDelta: 30*24*60*60*1000,
                 events: []
             },
             {
-                name: "In the next year",
+                name: "Year",
                 maxDelta: 365.25*24*60*60*1000,
                 events: []
             },
@@ -82,6 +82,8 @@ module.exports = {
             for (let event of category.events) {
                 resultEventString += `**\`${event.date.getDate()}.${event.date.getMonth() + 1}.${event.date.getFullYear()}\`** ${event.content}\n`;
             }
+
+            resultEventString += "\n";
         }
 
 
