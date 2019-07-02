@@ -75,6 +75,8 @@ module.exports = {
         let resultEventString = "";
 
         for (let category of categories) {
+            if (category.events.length < 1) { continue; } // We don't want to output categories which have no events in them
+
             resultEventString += `**${category.name}**\n`;
             
             for (let event of category.events) {
