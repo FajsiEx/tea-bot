@@ -509,11 +509,8 @@ module.exports = {
 
                 formattedMsg += `</td><td>${command.desc}</td><td>`;
 
-                console.log(command.usage);
-
                 if (command.usage) {
                     command.usage.forEach(usage=>{
-                        console.log(usage);
                         formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(usage)}<br>`;
                     });
                 }else{
@@ -523,9 +520,7 @@ module.exports = {
                 formattedMsg += "</td><td>";
 
                 if (command.examples) {
-                    command.usage.forEach(example=>{
-                        console.log(example);
-                        
+                    command.usage.forEach(example=>{                        
                         formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(example)}<br>`;
                     });
                 }else{

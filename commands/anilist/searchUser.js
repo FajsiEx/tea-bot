@@ -109,7 +109,6 @@ module.exports = {
         let lastDayTS = 0;
 
         activityHistory.forEach(day=>{
-            console.log(day.date - lastDayTS);
             if ((day.date - lastDayTS) > 24*60*60+2) {
                 streak = 0;
             }else{

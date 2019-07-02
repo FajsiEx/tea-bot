@@ -27,8 +27,6 @@ module.exports = {
             throw ("Failed to search: " + e);
         }
 
-        console.log(user);
-
         if (user.length < 1) {
             try {
                 await module.exports.responses.fail.noResults(messageEventData);
