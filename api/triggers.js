@@ -17,8 +17,6 @@ module.exports = {
 
         let triggerDoc = await dbBridge.triggers.getDocFromToken(incomingData.token);
 
-        console.log(triggerDoc);
-
         try {
             await module.exports.handleTrigger(incomingData, triggerDoc);
         }catch(e){
@@ -33,7 +31,6 @@ module.exports = {
             try {
                 targetChannel = await dClient.channels.get(triggerDoc.c_id);
             } catch (e) {
-                console.log(`Could not get a channel: ${e}`.warn);
                 throw("Could not get target channel: " + e);
             }
 
@@ -45,8 +42,7 @@ module.exports = {
             
             return 0;
         }else{
-            console.log("wtf that type");
-            return 10;
+            throw("Invalid trigger type");
         }
     },
 

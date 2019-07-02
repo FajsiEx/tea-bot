@@ -30,9 +30,6 @@ module.exports = {
             substDate.setYear(substYear);
         }
 
-        console.log(substDay, substMonth, substYear);
-        console.log(substDate.getMonth());
-
         let responseText;
         try {
             responseText = await eduApi.getSubstStringForDate(substDate);
