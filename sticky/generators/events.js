@@ -1,6 +1,33 @@
 const CONFIG = require("../../modules/config");
 const dbInt = require("../../db/interface");
 
+const categories = [
+    {
+        name: "In the next 24 hours",
+        maxDelta: 24*60*60*1000
+    },
+    {
+        name: "In the next 48 hours",
+        maxDelta: 48*60*60*1000
+    },
+    {
+        name: "In the next week",
+        maxDelta: 7*24*60*60*1000
+    },
+    {
+        name: "In the next month",
+        maxDelta: 30*24*60*60*1000
+    },
+    {
+        name: "In the next year",
+        maxDelta: 365.25*24*60*60*1000
+    },
+    {
+        name: "Other",
+        maxDelta: Infinity
+    },
+];
+
 module.exports = {
     generator: async function (generatorData) {
         let guildId = generatorData.guildId;
