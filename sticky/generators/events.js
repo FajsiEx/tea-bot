@@ -22,6 +22,8 @@ module.exports = {
             eventsArray = [];
         }
 
+        eventsArray.sort(function(a, b){return a.date.getTime() - b.date.getTime();});
+
         let resultEventString = "";
         eventsArray.forEach((event) => {
             if (event.date.getTime() < new Date().getTime()) { return; } // If the event is expired, return
