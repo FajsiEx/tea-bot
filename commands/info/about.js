@@ -17,7 +17,7 @@ module.exports = {
                         Server time: **${new Date().toString()}**
 
                         [Website (tea-bot.ml)](https://tea-bot.ml)
-                        [GitHub (tea-bot-projects/tea-bot)](https://github.com/tea-bot-projects/tea-bot)
+                        [GitHub (tea-bot-projects/tea-bot)](https://github.com/tea-bot-project/tea-bot)
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
