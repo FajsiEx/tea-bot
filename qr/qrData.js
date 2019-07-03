@@ -137,4 +137,9 @@ module.exports = [
         type: "file",
         data: "https://i.imgur.com/0Z7cJQR.jpg"
     },
+    {
+        keywords: ["holdup", "holdhore", "drzup", "drzhore", "holehore"],
+        type: "file",
+        data: "https://i.kym-cdn.com/entries/icons/original/000/029/433/holdup.jpg"
+    },
 ];
