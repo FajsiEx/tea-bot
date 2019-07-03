@@ -132,4 +132,9 @@ module.exports = [
         type: "file",
         data: "https://pbs.twimg.com/media/CP3AUr9WcAApMcw.png"
     },
+    {
+        keywords: ["speech", "speech100"],
+        type: "file",
+        data: "https://i.imgur.com/0Z7cJQR.jpg"
+    },
 ];
