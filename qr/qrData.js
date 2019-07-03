@@ -30,6 +30,11 @@ module.exports = [
         type: "plain",
         data: "HAHAHAAHAHA so fucking funny. Fuck off, will ya?"
     },
+    {
+        keywords: ["rip"],
+        type: "plain",
+        data: "Rest in piss, forever miss..."
+    },
 
     //* RANDOM
     {
