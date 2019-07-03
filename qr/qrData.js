@@ -86,5 +86,10 @@ module.exports = [
         keywords: ["explosion"],
         type: "file",
         data: "https://media.giphy.com/media/XUFPGrX5Zis6Y/giphy.gif"
-    }
+    },
+    {
+        keywords: ["excuse", "excuseme", "excusemewtf", "wtf"],
+        type: "file",
+        data: "https://i.imgur.com/7HBO0SC.png"
+    },
 ];
