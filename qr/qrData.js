@@ -107,4 +107,9 @@ module.exports = [
         type: "file",
         data: "https://thumbs.gfycat.com/HappygoluckySpiritedCatbird-small.gif"
     },
+    {
+        keywords: ["pika"],
+        type: "file",
+        data: "https://en.meming.world/images/en/2/2c/Surprised_Pikachu_HD.jpg"
+    },
 ];
