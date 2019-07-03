@@ -55,7 +55,7 @@ module.exports = [
         ]
     },
     {
-        keywords: ["gtg", "cya"],
+        keywords: ["gtg", "cya", "bye", "cau"],
         type: "random",
         data: [
             "Cya!",
