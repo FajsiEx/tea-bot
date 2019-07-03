@@ -25,6 +25,11 @@ module.exports = [
         type: "plain",
         data: "🎉🎉🎉🎉🎉🎉🎉🎉🎉"
     },
+    {
+        keywords: ["correctcommand"],
+        type: "plain",
+        data: "HAHAHAAHAHA so fucking funny. Fuck off, will ya?"
+    },
 
     //* RANDOM
     {
