@@ -71,6 +71,14 @@ module.exports = [
             "Sweet dreams!"
         ]
     },
+    {
+        keywords: ["thanks", "thx", "arigatou"],
+        type: "random",
+        data: [
+            "No worries",
+            "You're welcome!"
+        ]
+    },
 
 
     //* FILE
