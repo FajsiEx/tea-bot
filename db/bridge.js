@@ -245,7 +245,7 @@ module.exports = {
             return true; // Return with success
         },
 
-        deleteAllStickyDocsFromChannel: async function (c_id) {
+        deleteAllFromChannel: async function (c_id) {
             if (!parseInt(c_id)) { throw ("c_id is not a snowflake"); }
 
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }

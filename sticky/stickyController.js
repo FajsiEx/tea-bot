@@ -170,7 +170,7 @@ module.exports = {
 
     deleteAllStickyMessagesFromChannel: async function (c_id) {
         try {
-            await dbBridge.deleteAllStickyDocsFromChannel(c_id);
+            await dbBridge.stickyDoc.deleteAllFromChannel(c_id);
         }catch(e){
             throw ("Failed to delete data in db: " + e);
         }
