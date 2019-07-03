@@ -55,10 +55,11 @@ module.exports = [
         ]
     },
     {
-        keywords: ["gtg"],
+        keywords: ["gtg", "cya"],
         type: "random",
         data: [
             "Cya!",
+            "Cya next time!",
             "Bye bye!"
         ]
     },
