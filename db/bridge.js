@@ -75,7 +75,7 @@ module.exports = {
     // * Database interface methods
 
     guildDoc: {
-        // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
+        // Gets document of the guild data from guild collection. If it does not exist it will call create and return the freshly created document
         get: async function (guildId) {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
@@ -91,7 +91,7 @@ module.exports = {
             if (docs.length < 1) { // If the array length is less than one (0) - the doc doesn't exist
                 let doc;
                 try {
-                    doc = await this.createGuildDocument(guildId);
+                    doc = await this.create(guildId);
                 } catch (e) {
                     throw ("Could not create guildDoc: " + e);
                 }
@@ -106,7 +106,7 @@ module.exports = {
         },
 
         // Creates a doc in the guilds collection based on guildId
-        createGuildDocument: async function (guildId) {
+        create: async function (guildId) {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
             let res;
