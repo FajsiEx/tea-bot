@@ -35,7 +35,7 @@ module.exports = {
                 return;
             }
 
-            dbBridge.deleteGuildDocument(guildId).then(() => {
+            dbBridge.guildDoc.delete(guildId).then(() => {
                 msg.channel.send({
                     "embed": {
                         "title": "Delete guild document",
@@ -52,7 +52,7 @@ module.exports = {
                     return reject("Failed to send a success message: " + e);
                 });
             }).catch((e)=>{
-                return reject("Failed to deleteGuildDocument: " + e);
+                return reject("Failed to delete guild document: " + e);
             });
         }); // End of promise
     } // End of handler

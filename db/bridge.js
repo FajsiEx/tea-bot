@@ -123,7 +123,7 @@ module.exports = {
         },
 
         // Creates a doc in the guilds collection based on guildId
-        deleteGuildDocument: async function (guildId) {
+        delete: async function (guildId) {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
             try {
