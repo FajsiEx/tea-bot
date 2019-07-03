@@ -112,4 +112,9 @@ module.exports = [
         type: "file",
         data: "https://en.meming.world/images/en/2/2c/Surprised_Pikachu_HD.jpg"
     },
+    {
+        keywords: ["tsj"],
+        type: "file",
+        data: "https://i.imgur.com/8y9Uji5.jpg"
+    },
 ];
