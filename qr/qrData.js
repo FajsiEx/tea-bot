@@ -127,4 +127,9 @@ module.exports = [
         type: "file",
         data: "https://i.imgur.com/vwMOUZN.gif"
     },
+    {
+        keywords: ["kappa"],
+        type: "file",
+        data: "https://pbs.twimg.com/media/CP3AUr9WcAApMcw.png"
+    },
 ];
