@@ -79,6 +79,20 @@ module.exports = [
             "You're welcome!"
         ]
     },
+    {
+        keywords: ["flashbang"],
+        type: "random",
+        data: [
+            "Nope. Fuck you, baka.",
+            "As a president of 'keep it dark club', I refuse to serve this picture. -FajsiEx",
+            "Go fuck yourself :)",
+            "Do you like hurting others? If yes, there might be something wrong with you...",
+            "Whitecon",
+            "Baka :)",
+            "I hope H2SO4 will burn your eyes.",
+            "Fuck off."
+        ]
+    },
 
 
     //* FILE
