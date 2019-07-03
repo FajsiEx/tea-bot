@@ -97,4 +97,14 @@ module.exports = [
         type: "file",
         data: "https://media.giphy.com/media/3og0IMJcSI8p6hYQXS/giphy.gif"
     },
+    {
+        keywords: ["facepalm", "fp"],
+        type: "file",
+        data: "https://media.giphy.com/media/Ra1bmpxpsppNC/giphy.gif"
+    },
+    {
+        keywords: ["forehead"],
+        type: "file",
+        data: "https://thumbs.gfycat.com/HappygoluckySpiritedCatbird-small.gif"
+    },
 ];
