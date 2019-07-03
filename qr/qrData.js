@@ -38,6 +38,11 @@ module.exports = [
         type: "plain",
         data: "Weird flex. but ok."
     },
+    {
+        keywords: ["crabrave", "ravecrab"],
+        type: "plain",
+        data: "https://www.youtube.com/watch?v=LDU_Txk06tM"
+    },
 
     //* RANDOM
     {
