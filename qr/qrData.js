@@ -142,4 +142,9 @@ module.exports = [
         type: "file",
         data: "https://i.kym-cdn.com/entries/icons/original/000/029/433/holdup.jpg"
     },
+    {
+        keywords: ["butwhy", "ycdtbw"],
+        type: "file",
+        data: "https://i.imgur.com/Dv9li1r.jpg"
+    },
 ];
