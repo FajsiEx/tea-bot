@@ -52,6 +52,14 @@ module.exports = [
             "Bye bye!"
         ]
     },
+    {
+        keywords: ["gn", "sleep"],
+        type: "random",
+        data: [
+            "Good night!",
+            "Sweet dreams!"
+        ]
+    },
 
 
     //* FILE
