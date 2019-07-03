@@ -41,6 +41,14 @@ module.exports = [
             "こんにちは!"
         ]
     },
+    {
+        keywords: ["gtg"],
+        type: "random",
+        data: [
+            "Cya!",
+            "Bye bye!"
+        ]
+    },
 
 
     //* FILE
