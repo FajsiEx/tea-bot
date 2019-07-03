@@ -6,8 +6,6 @@
 
 */
 
-
-// TODO: add embed type reply
 module.exports = [
     //* PLAIN
     {
