@@ -145,7 +145,7 @@ module.exports = {
             return true; // Return with success
         },
 
-        writeGuildDocument: async function (guildId, guildDoc) {
+        update: async function (guildId, guildDoc) {
             try {
                 cache.setCache(guildId, guildDoc); // store the doc in cache
             } catch (e) {

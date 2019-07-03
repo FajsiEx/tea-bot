@@ -33,7 +33,7 @@ module.exports = {
 
     setGuildDoc: async function (guildId, guildDoc) {
         try {
-            await dbBridge.writeGuildDocument(guildId, guildDoc);
+            await dbBridge.guildDoc.update(guildId, guildDoc);
         }catch(e){
             throw("Failed to set guildDoc: " + e);
         }
