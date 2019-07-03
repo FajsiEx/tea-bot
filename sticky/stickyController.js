@@ -33,7 +33,7 @@ module.exports = {
         hash = this.hashMsgData(messageData);
 
         try {
-            await dbBridge.createStickyMsgDocument({
+            await dbBridge.stickyDoc.create({
                 hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
                 g_id: guildId, // Guild id
                 c_id: channel.id, // Channel id
@@ -80,9 +80,9 @@ module.exports = {
         let expiredDocs;
 
         try {
-            expiredDocs = await dbBridge.getExpiredStickyDocs(guildId, forceUpdate);
+            expiredDocs = await dbBridge.stickyDoc.getExpired(guildId, forceUpdate);
         } catch (e) {
-            throw ("Failed to getExpiredStickyDocs: " + e);
+            throw ("Failed to get expired sticky documents: " + e);
         }
 
         if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know ;)
@@ -106,11 +106,11 @@ module.exports = {
 
             if (oldHash == newHash) { // Data is the same
                 try {
-                    await dbBridge.updateStickyDoc(doc.m_id, {
+                    await dbBridge.stickyDoc.update(doc.m_id, {
                         expiry: new Date().getTime() + (1 * 60 * 1000)
                     });
                 } catch (e) {
-                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ updateStickyDoc (expiry) for [${doc.m_id}] : ${e}`.warn);
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ stickyDoc.update (expiry) for [${doc.m_id}] : ${e}`.warn);
                     continue;
                 }
             } else {
@@ -129,9 +129,9 @@ module.exports = {
                 } catch (e) {
                     console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ fetchMessage - deleting sticky doc for [${doc.m_id}] : ${e}`.warn);
                     try {
-                        await dbBridge.deleteStickyDoc(doc.m_id);
+                        await dbBridge.stickyDoc.delete(doc.m_id);
                     } catch (e) {
-                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ stickyDoc.delete [${doc.m_id}] : ${e}`.warn);
                     }
 
                     channel.stopTyping();
@@ -143,9 +143,9 @@ module.exports = {
                 } catch (e) {
                     console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}] : ${e}`.warn);
                     try {
-                        await dbBridge.deleteStickyDoc(doc.m_id);
+                        await dbBridge.stickyDoc.delete(doc.m_id);
                     } catch (e) {
-                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ stickyDoc.delete [${doc.m_id}] : ${e}`.warn);
                     }
 
                     channel.stopTyping();
@@ -153,7 +153,7 @@ module.exports = {
                 }
 
                 try {
-                    await dbBridge.updateStickyDoc(doc.m_id, {
+                    await dbBridge.stickyDoc.update(doc.m_id, {
                         expiry: new Date().getTime() + (1 * 60 * 1000),
                         hash: newHash
                     });
@@ -170,7 +170,7 @@ module.exports = {
 
     deleteAllStickyMessagesFromChannel: async function (c_id) {
         try {
-            await dbBridge.deleteAllStickyDocsFromChannel(c_id);
+            await dbBridge.stickyDoc.deleteAllFromChannel(c_id);
         }catch(e){
             throw ("Failed to delete data in db: " + e);
         }

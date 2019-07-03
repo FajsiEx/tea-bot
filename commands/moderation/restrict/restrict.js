@@ -3,6 +3,8 @@ const dbInt = require("../../../db/interface");
 
 const permChecker = require("../../../modules/permChecker");
 
+const fetchMemberName = require("../../../discord/fetchMemberName");
+
 module.exports = {
     handler: async function (messageEventData) {
         let msg = messageEventData.msg;
@@ -22,13 +24,30 @@ module.exports = {
         let restrictions = doc.restrictions;
 
         if (!type) { // If the command does not have an argument (only !mod:restrict)
+            if (typeof (restrictions) == "object") {
+                let usernameRestrictions = [];
+
+                for (let userId of restrictions) {
+                    try {
+                        usernameRestrictions.push(await fetchMemberName(userId, msg.guild));
+                    }catch(e){
+                        console.log(e);
+                        usernameRestrictions.push(userId);
+                    }
+                }
+
+                restrictions = usernameRestrictions.join("\n");
+            }
+
+
             try { // We will send listing of restrictions
-                await msg.channel.send({ // TODO: Make this do more instead just stringifying data
+                await msg.channel.send({
                     embed: {
                         "title": "Restrict",
                         "color": CONFIG.EMBED.COLORS.INFO,
                         "description": `
-                            Current restrictions: ${restrictions}
+                            Current restrictions:
+                            **${restrictions}**
                         `,
                         "footer": CONFIG.EMBED.FOOTER(messageEventData)
                     }
