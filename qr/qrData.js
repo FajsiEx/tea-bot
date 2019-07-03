@@ -92,4 +92,9 @@ module.exports = [
         type: "file",
         data: "https://i.imgur.com/7HBO0SC.png"
     },
+    {
+        keywords: ["tmyk", "themoreyouknow"],
+        type: "file",
+        data: "https://media.giphy.com/media/3og0IMJcSI8p6hYQXS/giphy.gif"
+    },
 ];
