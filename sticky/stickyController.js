@@ -106,11 +106,11 @@ module.exports = {
 
             if (oldHash == newHash) { // Data is the same
                 try {
-                    await dbBridge.updateStickyDoc(doc.m_id, {
+                    await dbBridge.stickyDoc.update(doc.m_id, {
                         expiry: new Date().getTime() + (1 * 60 * 1000)
                     });
                 } catch (e) {
-                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ updateStickyDoc (expiry) for [${doc.m_id}] : ${e}`.warn);
+                    console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ stickyDoc.update (expiry) for [${doc.m_id}] : ${e}`.warn);
                     continue;
                 }
             } else {
@@ -153,7 +153,7 @@ module.exports = {
                 }
 
                 try {
-                    await dbBridge.updateStickyDoc(doc.m_id, {
+                    await dbBridge.stickyDoc.update(doc.m_id, {
                         expiry: new Date().getTime() + (1 * 60 * 1000),
                         hash: newHash
                     });

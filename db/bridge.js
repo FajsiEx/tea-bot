@@ -213,7 +213,7 @@ module.exports = {
             return docs;
         },
 
-        updateStickyDoc: async function (m_id, stickyDocUpdateData) {
+        update: async function (m_id, stickyDocUpdateData) {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
             try {
