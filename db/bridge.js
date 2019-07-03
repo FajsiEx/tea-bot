@@ -229,7 +229,7 @@ module.exports = {
             return true; // Return with success
         },
 
-        deleteStickyDoc: async function (m_id) {
+        delete: async function (m_id) {
             if (!parseInt(m_id)) { throw ("m_id is not a snowflake"); }
 
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }

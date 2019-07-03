@@ -129,9 +129,9 @@ module.exports = {
                 } catch (e) {
                     console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ fetchMessage - deleting sticky doc for [${doc.m_id}] : ${e}`.warn);
                     try {
-                        await dbBridge.deleteStickyDoc(doc.m_id);
+                        await dbBridge.stickyDoc.delete(doc.m_id);
                     } catch (e) {
-                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ stickyDoc.delete [${doc.m_id}] : ${e}`.warn);
                     }
 
                     channel.stopTyping();
@@ -143,9 +143,9 @@ module.exports = {
                 } catch (e) {
                     console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ edit - deleting the sticky doc for [${doc.m_id}] : ${e}`.warn);
                     try {
-                        await dbBridge.deleteStickyDoc(doc.m_id);
+                        await dbBridge.stickyDoc.delete(doc.m_id);
                     } catch (e) {
-                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ deleteStickyDoc [${doc.m_id}] : ${e}`.warn);
+                        console.log(`[STICKYCTRL:UPDSTICKYDOCS] Promise rejection @ stickyDoc.delete [${doc.m_id}] : ${e}`.warn);
                     }
 
                     channel.stopTyping();
