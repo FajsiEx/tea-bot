@@ -33,7 +33,7 @@ module.exports = {
         hash = this.hashMsgData(messageData);
 
         try {
-            await dbBridge.createStickyMsgDocument({
+            await dbBridge.stickyDoc.create({
                 hash: hash, // MD5 hash of json stringified message data. Used to compare if the data was changed on interval
                 g_id: guildId, // Guild id
                 c_id: channel.id, // Channel id

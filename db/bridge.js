@@ -169,94 +169,98 @@ module.exports = {
 
     },
 
-    createStickyMsgDocument: async function (documentData) {
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+    stickyDoc: {
 
-        let res;
-        try {
-            res = await db.collection("sticky").insertOne(documentData); // Insert doc with the data of the sticky message to "sticky" collection
-        } catch (e) {
-            throw ("Failed to insert stickyMessageDocument");
-        }
+        create: async function (documentData) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
-        return res.ops[0]; // Return the new sticky msg doc
-    },
-
-    getExpiredStickyDocs: async function (guildId, forceUpdate) {
-        let eventExpiryDeadline = new Date().getTime();
-        if (forceUpdate) {
-            eventExpiryDeadline = Infinity;
-        }
-
-        let query = {
-            expiry: {
-                $lte: eventExpiryDeadline
+            let res;
+            try {
+                res = await db.collection("sticky").insertOne(documentData); // Insert doc with the data of the sticky message to "sticky" collection
+            } catch (e) {
+                throw ("Failed to insert stickyMessageDocument");
             }
-        };
-        if (guildId) { // If guildId was specified
-            query = {
+
+            return res.ops[0]; // Return the new sticky msg doc
+        },
+
+        getExpiredStickyDocs: async function (guildId, forceUpdate) {
+            let eventExpiryDeadline = new Date().getTime();
+            if (forceUpdate) {
+                eventExpiryDeadline = Infinity;
+            }
+
+            let query = {
                 expiry: {
                     $lte: eventExpiryDeadline
-                },
-                g_id: guildId
+                }
             };
-        }
+            if (guildId) { // If guildId was specified
+                query = {
+                    expiry: {
+                        $lte: eventExpiryDeadline
+                    },
+                    g_id: guildId
+                };
+            }
 
-        let docs;
-        try {
-            docs = db.collection("sticky").find(query).toArray();
-        } catch (e) {
-            throw ("Failed to get expired sticky posts: " + e);
-        }
-        return docs;
-    },
+            let docs;
+            try {
+                docs = db.collection("sticky").find(query).toArray();
+            } catch (e) {
+                throw ("Failed to get expired sticky posts: " + e);
+            }
+            return docs;
+        },
 
-    updateStickyDoc: async function (m_id, stickyDocUpdateData) {
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+        updateStickyDoc: async function (m_id, stickyDocUpdateData) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
-        try {
-            await db.collection("sticky").updateOne({
-                m_id: m_id
-            }, {
-                    $set: stickyDocUpdateData
+            try {
+                await db.collection("sticky").updateOne({
+                    m_id: m_id
+                }, {
+                        $set: stickyDocUpdateData
+                    });
+            } catch (e) {
+                throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+            }
+
+            return true; // Return with success
+        },
+
+        deleteStickyDoc: async function (m_id) {
+            if (!parseInt(m_id)) { throw ("m_id is not a snowflake"); }
+
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            try {
+                db.collection("sticky").deleteOne({ // Delete sticky doc based on m_id
+                    m_id: m_id
                 });
-        } catch (e) {
-            throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+            } catch (e) {
+                throw (`Failed to update sticky doc [${m_id}] : ${e}`);
+            }
+
+            return true; // Return with success
+        },
+
+        deleteAllStickyDocsFromChannel: async function (c_id) {
+            if (!parseInt(c_id)) { throw ("c_id is not a snowflake"); }
+
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            try {
+                await db.collection("sticky").deleteMany({
+                    c_id: c_id
+                });
+            } catch (e) {
+                throw (`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
+            }
+
+            return true;
         }
 
-        return true; // Return with success
-    },
-
-    deleteStickyDoc: async function (m_id) {
-        if (!parseInt(m_id)) { throw ("m_id is not a snowflake"); }
-
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
-
-        try {
-            db.collection("sticky").deleteOne({ // Delete sticky doc based on m_id
-                m_id: m_id
-            });
-        } catch (e) {
-            throw (`Failed to update sticky doc [${m_id}] : ${e}`);
-        }
-
-        return true; // Return with success
-    },
-
-    deleteAllStickyDocsFromChannel: async function (c_id) {
-        if (!parseInt(c_id)) { throw ("c_id is not a snowflake"); }
-
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
-
-        try {
-            await db.collection("sticky").deleteMany({
-                c_id: c_id
-            });
-        } catch (e) {
-            throw (`Failed to delete all sticky docs from channel [${c_id}] : ${e}`);
-        }
-
-        return true;
     },
 
     triggers: {
