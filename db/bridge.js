@@ -184,7 +184,7 @@ module.exports = {
             return res.ops[0]; // Return the new sticky msg doc
         },
 
-        getExpiredStickyDocs: async function (guildId, forceUpdate) {
+        getExpired: async function (guildId, forceUpdate) {
             let eventExpiryDeadline = new Date().getTime();
             if (forceUpdate) {
                 eventExpiryDeadline = Infinity;

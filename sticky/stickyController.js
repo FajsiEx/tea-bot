@@ -80,9 +80,9 @@ module.exports = {
         let expiredDocs;
 
         try {
-            expiredDocs = await dbBridge.getExpiredStickyDocs(guildId, forceUpdate);
+            expiredDocs = await dbBridge.stickyDoc.getExpired(guildId, forceUpdate);
         } catch (e) {
-            throw ("Failed to getExpiredStickyDocs: " + e);
+            throw ("Failed to get expired sticky documents: " + e);
         }
 
         if (!expiredDocs) { // This WON'T trigger if expiredDocs is an empty array. It's just a safeguard...you never know ;)
