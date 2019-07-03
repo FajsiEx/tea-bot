@@ -117,4 +117,9 @@ module.exports = [
         type: "file",
         data: "https://i.imgur.com/8y9Uji5.jpg"
     },
+    {
+        keywords: ["wwtf"],
+        type: "file",
+        data: "https://media.giphy.com/media/y7LLt6Cmv62Lm/giphy.gif"
+    },
 ];
