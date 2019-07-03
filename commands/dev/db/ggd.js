@@ -57,7 +57,7 @@ module.exports = {
                 console.log(doc);
                 console.log("------------DEBUG OUTPUT END------------".debug);
             }).catch((e)=>{
-                return reject("Failed to getGuildDocument: " + e);
+                return reject("Failed to get guild document: " + e);
             });
         }); // End of promise
     } // End of handler
