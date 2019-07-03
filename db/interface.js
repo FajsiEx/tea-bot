@@ -22,7 +22,7 @@ module.exports = {
         } else { // Otherwise call db to get it and return that fetched guildDoc
             let guildDoc;
             try {
-                guildDoc = await dbBridge.getGuildDocument(guildId);
+                guildDoc = await dbBridge.guildDoc.get(guildId);
             } catch (e) {
                 throw ("Failed to get guildDoc from database: " + e);
             }

@@ -74,96 +74,99 @@ module.exports = {
 
     // * Database interface methods
 
-    // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
-    getGuildDocument: async function (guildId) {
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+    guildDoc: {
+        // Gets document of the guild data from guild collection. If it does not exist it will call createGuildDocument and return the freshly created document
+        get: async function (guildId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
-        let docs;
-        try {
-            docs = await db.collection("guilds").find({ // Find document in the guild collection by guildId and convert that to an array
-                guildId: guildId
-            }).toArray();
-        } catch (e) {
-            throw ("Could not get docs from collection: " + e);
-        }
-
-        if (docs.length < 1) { // If the array length is less than one (0) - the doc doesn't exist
-            let doc;
+            let docs;
             try {
-                doc = await this.createGuildDocument(guildId);
+                docs = await db.collection("guilds").find({ // Find document in the guild collection by guildId and convert that to an array
+                    guildId: guildId
+                }).toArray();
             } catch (e) {
-                throw ("Could not create guildDoc: " + e);
+                throw ("Could not get docs from collection: " + e);
             }
 
-            cache.setCache(guildId, doc); // store the doc in cache
-            return doc; // and return that newly created doc.
+            if (docs.length < 1) { // If the array length is less than one (0) - the doc doesn't exist
+                let doc;
+                try {
+                    doc = await this.createGuildDocument(guildId);
+                } catch (e) {
+                    throw ("Could not create guildDoc: " + e);
+                }
 
-        } else { // If the guild doc exists
-            cache.setCache(guildId, docs[0]); // store the doc in cache
-            return docs[0]; // and return that.
-        }
-    },
+                cache.setCache(guildId, doc); // store the doc in cache
+                return doc; // and return that newly created doc.
 
-    // Creates a doc in the guilds collection based on guildId
-    createGuildDocument: async function (guildId) {
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+            } else { // If the guild doc exists
+                cache.setCache(guildId, docs[0]); // store the doc in cache
+                return docs[0]; // and return that.
+            }
+        },
 
-        let res;
-        try {
-            res = await db.collection("guilds").insertOne({ // Insert doc with guildId to the guilds collection
-                guildId: guildId,
-                events: []
-            });
-        } catch (e) {
-            throw ("Failed to insert the new guildDoc: " + e);
-        }
+        // Creates a doc in the guilds collection based on guildId
+        createGuildDocument: async function (guildId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
-        return res.ops[0]; // Return the created guild doc
-    },
-
-    // Creates a doc in the guilds collection based on guildId
-    deleteGuildDocument: async function (guildId) {
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
-
-        try {
-            db.collection("guilds").deleteOne({ // Delete doc with guildId to the guilds collection
-                guildId: guildId
-            });
-        } catch (e) {
-            throw ("Could not delete guild document: " + e);
-        }
-
-        console.log(`[DB:DELETEGD] WARNING Deleted guild document [${guildId}]!`.warn);
-
-        try {
-            cache.setCache(guildId, false); // Delete guild doc from cache kthx
-        } catch (e) {
-            console.log("Guild doc was deleted, but the cache failed to update it: " + e);
-        }
-
-        return true; // Return with success
-    },
-
-    writeGuildDocument: async function (guildId, guildDoc) {
-        try {
-            cache.setCache(guildId, guildDoc); // store the doc in cache
-        } catch (e) {
-            console.log("Guild doc will be written, but cache refused to store the updated guildDoc:" + e);
-        }
-
-        if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
-
-        try {
-            await db.collection("guilds").updateOne({ // Update doc
-                guildId: guildId // with guildId
-            }, {
-                    $set: guildDoc // with the new updated doc
+            let res;
+            try {
+                res = await db.collection("guilds").insertOne({ // Insert doc with guildId to the guilds collection
+                    guildId: guildId,
+                    events: []
                 });
-        } catch (e) {
-            throw ("Could not update guildDoc: " + e);
-        }
+            } catch (e) {
+                throw ("Failed to insert the new guildDoc: " + e);
+            }
 
-        return true;
+            return res.ops[0]; // Return the created guild doc
+        },
+
+        // Creates a doc in the guilds collection based on guildId
+        deleteGuildDocument: async function (guildId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            try {
+                db.collection("guilds").deleteOne({ // Delete doc with guildId to the guilds collection
+                    guildId: guildId
+                });
+            } catch (e) {
+                throw ("Could not delete guild document: " + e);
+            }
+
+            console.log(`[DB:DELETEGD] WARNING Deleted guild document [${guildId}]!`.warn);
+
+            try {
+                cache.setCache(guildId, false); // Delete guild doc from cache kthx
+            } catch (e) {
+                console.log("Guild doc was deleted, but the cache failed to update it: " + e);
+            }
+
+            return true; // Return with success
+        },
+
+        writeGuildDocument: async function (guildId, guildDoc) {
+            try {
+                cache.setCache(guildId, guildDoc); // store the doc in cache
+            } catch (e) {
+                console.log("Guild doc will be written, but cache refused to store the updated guildDoc:" + e);
+            }
+
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            try {
+                await db.collection("guilds").updateOne({ // Update doc
+                    guildId: guildId // with guildId
+                }, {
+                        $set: guildDoc // with the new updated doc
+                    });
+            } catch (e) {
+                throw ("Could not update guildDoc: " + e);
+            }
+
+            return true;
+        },
+
     },
 
     createStickyMsgDocument: async function (documentData) {
@@ -270,12 +273,12 @@ module.exports = {
             }
 
             if (docs.length < 1) {
-                throw("No triggerDoc found.");
+                throw ("No triggerDoc found.");
             }
 
             if (docs.length > 1) {
                 console.log(`[BRIDGE:TRIGGERS] There is more than one triggerDoc with token: ${token}. Wait, that's illegal.`.warn);
-                throw("More than one triggerDoc found.");
+                throw ("More than one triggerDoc found.");
             }
 
             let triggerDoc = docs[0];
@@ -285,8 +288,8 @@ module.exports = {
     },
 
     maintenance: {
-        killEverything: async function() {
-            db.executeDbAdminCommand({ killAllSessions: [{user: "wanilla", db: "tea-bot"}]});
+        killEverything: async function () {
+            db.executeDbAdminCommand({ killAllSessions: [{ user: "wanilla", db: "tea-bot" }] });
         }
     }
 };
