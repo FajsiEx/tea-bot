@@ -122,4 +122,9 @@ module.exports = [
         type: "file",
         data: "https://media.giphy.com/media/y7LLt6Cmv62Lm/giphy.gif"
     },
+    {
+        keywords: ["ooth"],
+        type: "file",
+        data: "https://i.imgur.com/vwMOUZN.gif"
+    },
 ];
