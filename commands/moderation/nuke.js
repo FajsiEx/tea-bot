@@ -99,6 +99,11 @@ module.exports = {
                 return 3;
             }
 
+            try { // For the edge case that happens sometimes for some reason.
+                let selectedMessage = await msg.channel.fetchMessage(arg);
+                await selectedMessage.delete();
+            }catch(e){} // It's fine.
+
             try {
                 await module.exports.responses.success.nuked(handleData, messages.size);
             } catch (e) {
