@@ -43,6 +43,10 @@ module.exports = {
         return 0;
     },
 
+    convertStatusFormat: function(status) {
+        return status.charAt(0) + status.slice(1).toLowerCase();
+    },
+
     responses: {
         success: {
             searched: async function (messageEventData,anime) {
@@ -56,6 +60,7 @@ module.exports = {
                                 **${anime.episodes}** episodes
                                 ${anime.description.replace(/<br\s*\/?>/mg,"")}
 
+                                Status: **${(anime.status) ? module.exports.convertStatusFormat(anime.status) : "?"}**
                                 Avg score: **${(anime.averageScore) ? anime.averageScore : "?"}**
                                 Ep duration: **${(anime.duration) ? anime.duration : "?"} minutes**
                                 Genres: **${anime.genres.join(", ")}**
