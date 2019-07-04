@@ -46,6 +46,19 @@ module.exports = {
     convertStatusFormat: function(status) {
         return (status.charAt(0) + status.slice(1).toLowerCase()).replace(/_/g, ' ');
     },
+    convertTimeFormat: function(time) {
+        console.log(time);
+
+        let days = Math.floor(time / (24*60*60));
+        time -= days * (24*60*60);
+
+        let hours = Math.floor(time / (60*60));
+        time -= hours * (60*60);
+
+        let minutes = Math.floor(time / 60);
+        
+        return `${days}d ${hours}h ${minutes}m`;
+    },
 
     responses: {
         success: {
@@ -57,7 +70,7 @@ module.exports = {
                             "url": anime.siteUrl,
                             "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
                             "description": outdent`
-                                **${anime.episodes}** episodes
+                                **${anime.episodes}** episodes ${(anime.nextAiringEpisode) ? `| **Ep ${anime.nextAiringEpisode.episode}**: ${module.exports.convertTimeFormat(anime.nextAiringEpisode.timeUntilAiring)}`: ""}
                                 ${anime.description.replace(/<br\s*\/?>/mg,"")}
 
                                 Status: **${(anime.status) ? module.exports.convertStatusFormat(anime.status) : "?"}**
