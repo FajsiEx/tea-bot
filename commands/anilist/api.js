@@ -39,7 +39,9 @@ module.exports = {
             throw ("Failed to get user: " + e);
         }
 
-        if (user.profile.User === null || user.stats.User === null) { return false; }
+        if (user.profile.User === null || user.stats.User === null) return false;
+        if (!user.stats.animeListScores) user.stats.animeListScores = {meanScore: "?"};
+        if (!user.stats.mangaListScores) user.stats.mangaListScores = {meanScore: "?"};
 
         return user;
     }
