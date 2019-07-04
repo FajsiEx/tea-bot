@@ -30,15 +30,19 @@ module.exports = {
         return result;
     },
 
-    getUser: async function(username) {
+    getUser: async function (username) {
         let user = {};
         try {
             user.profile = await anilistClient.user.profile(username);
             user.stats = await anilistClient.user.stats(username);
-        }catch(e){
-            throw("Failed to get user: " + e);
+        } catch (e) {
+            throw ("Failed to get user: " + e);
         }
+
+        if (user.profile.User === null || user.stats.User === null) return false;
+        if (!user.stats.animeListScores) user.stats.animeListScores = {meanScore: "?"};
+        if (!user.stats.mangaListScores) user.stats.mangaListScores = {meanScore: "?"};
 
         return user;
     }
-}
+};

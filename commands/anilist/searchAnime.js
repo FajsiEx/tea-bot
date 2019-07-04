@@ -43,6 +43,23 @@ module.exports = {
         return 0;
     },
 
+    convertStatusFormat: function(status) {
+        return (status.charAt(0) + status.slice(1).toLowerCase()).replace(/_/g, ' ');
+    },
+    convertTimeFormat: function(time) {
+        console.log(time);
+
+        let days = Math.floor(time / (24*60*60));
+        time -= days * (24*60*60);
+
+        let hours = Math.floor(time / (60*60));
+        time -= hours * (60*60);
+
+        let minutes = Math.floor(time / 60);
+        
+        return `${days}d ${hours}h ${minutes}m`;
+    },
+
     responses: {
         success: {
             searched: async function (messageEventData,anime) {
@@ -53,13 +70,15 @@ module.exports = {
                             "url": anime.siteUrl,
                             "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
                             "description": outdent`
-                                **${anime.episodes}** episodes
-                                ${anime.description.replace(/<br\s*\/?>/mg,"")}
+                                **${anime.episodes}** episode${(anime.episodes < 2) ? "":"s"} ${(anime.nextAiringEpisode) ? `| **Ep ${anime.nextAiringEpisode.episode}**: ${module.exports.convertTimeFormat(anime.nextAiringEpisode.timeUntilAiring)}`: ""}
 
-                                Avg score: **${anime.averageScore}**
-                                Ep duration: **${anime.duration} minutes**
+                                Status: **${(anime.status) ? module.exports.convertStatusFormat(anime.status) : "?"}**
+                                Avg score: **${(anime.averageScore) ? anime.averageScore : "?"}**
+                                Ep duration: **${(anime.duration) ? anime.duration : "?"} minutes**
                                 Genres: **${anime.genres.join(", ")}**
                                 ${(anime.trailer) ? (anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : "" : ""}
+
+                                ${anime.description.replace(/<br\s*\/?>/mg,"")}
                             `,
                             "thumbnail": {
                                 "url": anime.coverImage.medium

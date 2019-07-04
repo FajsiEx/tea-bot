@@ -12,8 +12,8 @@ module.exports = {
         if (!username) {
             try {
                 await module.exports.responses.fail.noResults(messageEventData);
-            }catch(e){
-                throw("Failed sending noResults message: " + e);
+            } catch (e) {
+                throw ("Failed sending noResults message: " + e);
             }
             return 1;
         }
@@ -28,16 +28,16 @@ module.exports = {
         if (!user) {
             try {
                 await module.exports.responses.fail.noResults(messageEventData);
-            }catch(e){
-                throw("Failed sending noResults message: " + e);
+            } catch (e) {
+                throw ("Failed sending noResults message: " + e);
             }
             return 2;
         }
 
         try {
             await module.exports.responses.success.searched(messageEventData, user);
-        }catch(e){
-            throw("Failed sending response message: " + e);
+        } catch (e) {
+            throw ("Failed sending response message: " + e);
         }
 
         return 0;
@@ -45,7 +45,7 @@ module.exports = {
 
     responses: {
         success: {
-            searched: async function (messageEventData,user) {
+            searched: async function (messageEventData, user) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
@@ -72,7 +72,7 @@ module.exports = {
             }
         },
         fail: {
-            noResults: async function(messageEventData) {
+            noResults: async function (messageEventData) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
@@ -93,25 +93,27 @@ module.exports = {
         }
     },
 
-    convertMinutesToTimeString: function(minutes) {
+    convertMinutesToTimeString: function (minutes) {
         let rawDays = Math.floor(minutes / 60 / 24 * 1000) / 1000;
         let days = Math.floor(minutes / 60 / 24);
-        minutes-=days*24*60;
+        minutes -= days * 24 * 60;
 
         let hours = Math.floor(minutes / 60);
-        minutes-=hours*60;
+        minutes -= hours * 60;
 
         return `${days}d ${hours}h ${minutes}m (${rawDays} total days)`;
     },
 
-    calculateActivityStreak: function(activityHistory) {
+    calculateActivityStreak: function (activityHistory) {
         let streak = 0;
         let lastDayTS = 0;
 
-        activityHistory.forEach(day=>{
-            if ((day.date - lastDayTS) > 24*60*60+2) {
+        if (!activityHistory) { return 0; }
+
+        activityHistory.forEach(day => {
+            if ((day.date - lastDayTS) > 24 * 60 * 60 + 2) {
                 streak = 0;
-            }else{
+            } else {
                 streak++;
             }
             lastDayTS = day.date;
