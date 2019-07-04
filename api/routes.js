@@ -39,6 +39,8 @@ module.exports = {
         app.post('/api/triggers/send', async (req, res) => {
             if (!req.body) {res.send("inv_arg_guilds");}
 
+            console.log(req.body);
+
             try {
                 await triggers.incomingData(req.body);
             }catch(e){
