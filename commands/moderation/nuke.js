@@ -11,11 +11,11 @@ module.exports = {
         let msg = handleData.msg;
 
         let type = msg.content.split(" ")[1];
-        let arg = parseInt(msg.content.split(" ")[2]);
+        let arg = msg.content.split(" ")[2];
 
         //* count nuke type
         if (type == "count") {
-            if (!arg) {
+            if (!parseInt(arg)) {
                 try {
                     await module.exports.responses.error.noCount(handleData);
                 } catch (e) {
@@ -49,7 +49,7 @@ module.exports = {
             return 0;
 
             //* from nuke type
-        } else if (type == "from") { 
+        } else if (type == "from") {
             if (!parseInt(arg)) { // If arg is not a number
                 try {
                     await module.exports.responses.error.idIntError(handleData);
@@ -101,11 +101,11 @@ module.exports = {
 
             try { // For the edge case that happens sometimes for some reason.
                 let selectedMessage = await msg.channel.fetchMessage(arg);
-                await selectedMessage.delete();
-            }catch(e){} // It's fine.
+                selectedMessage.delete();
+            } catch (e) { console.warn(e); } // It's fine.
 
             try {
-                await module.exports.responses.success.nuked(handleData, messages.size);
+                await setTimeout(async () => { module.exports.responses.success.nuked(handleData, messages.size); }, 5000);
             } catch (e) {
                 throw ("Failed to send success message: " + e);
             }
