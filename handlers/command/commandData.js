@@ -156,11 +156,11 @@ let COMMANDS = [
                 desc: "Deletes a number of messages specified by a number or id",
                 usage: [
                     "count <message count>",
-                    "after <message id>",
+                    "from <message id>",
                 ],
                 examples: [
                     "count 15",
-                    "after 798454351214864"
+                    "from 798454351214864"
                 ],
                 rights: {
                     adminOnly: true

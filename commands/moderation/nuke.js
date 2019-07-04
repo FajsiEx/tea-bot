@@ -48,8 +48,8 @@ module.exports = {
             }
             return 0;
 
-            //* after nuke type
-        } else if (type == "after") { 
+            //* from nuke type
+        } else if (type == "from") { 
             if (!parseInt(arg)) { // If arg is not a number
                 try {
                     await module.exports.responses.error.idIntError(handleData);
