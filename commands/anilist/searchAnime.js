@@ -44,7 +44,7 @@ module.exports = {
     },
 
     convertStatusFormat: function(status) {
-        return status.charAt(0) + status.slice(1).toLowerCase();
+        return (status.charAt(0) + status.slice(1).toLowerCase()).replace(/_/g, ' ');
     },
 
     responses: {
