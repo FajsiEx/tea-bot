@@ -70,7 +70,7 @@ module.exports = {
                             "url": anime.siteUrl,
                             "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
                             "description": outdent`
-                                **${anime.episodes}** episodes ${(anime.nextAiringEpisode) ? `| **Ep ${anime.nextAiringEpisode.episode}**: ${module.exports.convertTimeFormat(anime.nextAiringEpisode.timeUntilAiring)}`: ""}
+                                **${anime.episodes}** episode${(anime.episodes < 2) ? "":"s"} ${(anime.nextAiringEpisode) ? `| **Ep ${anime.nextAiringEpisode.episode}**: ${module.exports.convertTimeFormat(anime.nextAiringEpisode.timeUntilAiring)}`: ""}
 
                                 Status: **${(anime.status) ? module.exports.convertStatusFormat(anime.status) : "?"}**
                                 Avg score: **${(anime.averageScore) ? anime.averageScore : "?"}**
