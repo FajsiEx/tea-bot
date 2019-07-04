@@ -105,7 +105,7 @@ module.exports = {
             } catch (e) { console.warn(e); } // It's fine.
 
             try {
-                await setTimeout(async () => { module.exports.responses.success.nuked(handleData, messages.size); }, 5000);
+                module.exports.responses.success.nuked(handleData, messages.size);
             } catch (e) {
                 throw ("Failed to send success message: " + e);
             }
