@@ -11,11 +11,11 @@ module.exports = {
         let msg = handleData.msg;
 
         let type = msg.content.split(" ")[1];
-        let arg = parseInt(msg.content.split(" ")[2]);
+        let arg = msg.content.split(" ")[2];
 
         //* count nuke type
         if (type == "count") {
-            if (!arg) {
+            if (!parseInt(arg)) {
                 try {
                     await module.exports.responses.error.noCount(handleData);
                 } catch (e) {
@@ -31,9 +31,10 @@ module.exports = {
                     throw ("Failed to send invalidCount fail message: " + e);
                 }
                 return 2;
-            }
+            } 
 
             try {
+                await msg.delete(); // Delete the OP message also
                 await msg.channel.bulkDelete(arg);
             } catch (e) {
                 console.log(`Failed to delete messages: ${e}`.warn);
@@ -48,8 +49,8 @@ module.exports = {
             }
             return 0;
 
-            //* after nuke type
-        } else if (type == "after") { 
+            //* from nuke type
+        } else if (type == "from") {
             if (!parseInt(arg)) { // If arg is not a number
                 try {
                     await module.exports.responses.error.idIntError(handleData);
@@ -99,8 +100,13 @@ module.exports = {
                 return 3;
             }
 
+            try { // For the edge case that happens sometimes for some reason.
+                let selectedMessage = await msg.channel.fetchMessage(arg);
+                selectedMessage.delete();
+            } catch (e) { } // It's fine.
+
             try {
-                await module.exports.responses.success.nuked(handleData, messages.size);
+                module.exports.responses.success.nuked(handleData, messages.size);
             } catch (e) {
                 throw ("Failed to send success message: " + e);
             }
