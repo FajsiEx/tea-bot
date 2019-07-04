@@ -56,8 +56,8 @@ module.exports = {
                                 **${anime.episodes}** episodes
                                 ${anime.description.replace(/<br\s*\/?>/mg,"")}
 
-                                Avg score: **${anime.averageScore}**
-                                Ep duration: **${anime.duration} minutes**
+                                Avg score: **${(anime.averageScore) ? anime.averageScore : "?"}**
+                                Ep duration: **${(anime.duration) ? anime.duration : "?"} minutes**
                                 Genres: **${anime.genres.join(", ")}**
                                 ${(anime.trailer) ? (anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : "" : ""}
                             `,
