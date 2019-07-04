@@ -31,9 +31,10 @@ module.exports = {
                     throw ("Failed to send invalidCount fail message: " + e);
                 }
                 return 2;
-            }
+            } 
 
             try {
+                await msg.delete(); // Delete the OP message also
                 await msg.channel.bulkDelete(arg);
             } catch (e) {
                 console.log(`Failed to delete messages: ${e}`.warn);
