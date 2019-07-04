@@ -10,17 +10,17 @@ const dClient = require("../discord/client").getDiscordClient();
 
 module.exports = {
     incomingData: async function (incomingData) {
-        if(!module.exports.checkIncomingData(incomingData)) {
+        if (!module.exports.checkIncomingData(incomingData)) {
             console.log(`handleTrigger failed ${e}`.warn);
-            throw("Invalid data");
+            throw ("Invalid data");
         }
 
         let triggerDoc = await dbBridge.triggers.getDocFromToken(incomingData.token);
 
         try {
             await module.exports.handleTrigger(incomingData, triggerDoc);
-        }catch(e){
-            throw("Could not handle the trigger: " + e);
+        } catch (e) {
+            throw ("Could not handle the trigger: " + e);
         }
 
         return 0;
@@ -31,18 +31,22 @@ module.exports = {
             try {
                 targetChannel = await dClient.channels.get(triggerDoc.c_id);
             } catch (e) {
-                throw("Could not get target channel: " + e);
+                throw ("Could not get target channel: " + e);
             }
 
             try {
-                await targetChannel.send(incomingData.body);
-            }catch(e){
-                throw("Could not send message to the target channel: " + e);
+                if (incomingData.file) {
+                    await targetChannel.send(incomingData.body, {files: [incomingData.file]});
+                } else {
+                    await targetChannel.send(incomingData.body);
+                }
+            } catch (e) {
+                throw ("Could not send message to the target channel: " + e);
             }
-            
+
             return 0;
-        }else{
-            throw("Invalid trigger type");
+        } else {
+            throw ("Invalid trigger type");
         }
     },
 
