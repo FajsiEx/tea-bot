@@ -8,6 +8,7 @@
 const dbBridge = require("../db/bridge");
 const dClient = require("../discord/client").getDiscordClient();
 const imageDownload = require("image-downloader");
+const fs = require("fs");
 
 module.exports = {
     incomingData: async function (incomingData) {
@@ -50,6 +51,12 @@ module.exports = {
                     }
                     
                     await targetChannel.send(incomingData.body, {files: [fileName]});
+
+                    try {
+                        await fs.unlink(fileName, ()=>{});
+                    }catch(e){
+                        console.warn(e);
+                    }
                 } else {
                     await targetChannel.send(incomingData.body);
                 }
