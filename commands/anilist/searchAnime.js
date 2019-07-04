@@ -71,13 +71,14 @@ module.exports = {
                             "color": CONFIG.EMBED.COLORS.INFO, // TODO: Tidy up that thing down there
                             "description": outdent`
                                 **${anime.episodes}** episodes ${(anime.nextAiringEpisode) ? `| **Ep ${anime.nextAiringEpisode.episode}**: ${module.exports.convertTimeFormat(anime.nextAiringEpisode.timeUntilAiring)}`: ""}
-                                ${anime.description.replace(/<br\s*\/?>/mg,"")}
 
                                 Status: **${(anime.status) ? module.exports.convertStatusFormat(anime.status) : "?"}**
                                 Avg score: **${(anime.averageScore) ? anime.averageScore : "?"}**
                                 Ep duration: **${(anime.duration) ? anime.duration : "?"} minutes**
                                 Genres: **${anime.genres.join(", ")}**
                                 ${(anime.trailer) ? (anime.trailer.site == "youtube") ? "**[Trailer](https://youtube.com/watch?v="+anime.trailer.id+")**" : "" : ""}
+
+                                ${anime.description.replace(/<br\s*\/?>/mg,"")}
                             `,
                             "thumbnail": {
                                 "url": anime.coverImage.medium
