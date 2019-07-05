@@ -42,7 +42,7 @@ module.exports = {
                     try {
                         let image = await imageDownload.image({
                             url: incomingData.file,
-                            dest: "/"
+                            dest: "./"
                         });
 
                         fileName = image.filename;
