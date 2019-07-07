@@ -8,6 +8,7 @@ module.exports = {
             working: 'blue',
             success: 'green',
             special: ['bgBlue', 'black'],
+            subspecial: ['blue', 'italic'],
             warn: ['bgYellow', 'black'],
             error: 'red',
             critError: ['bgRed', 'black'],
