@@ -20,16 +20,16 @@ const CONFIG = {
 
     EMBED: {
         COLORS: {
-            DEFAULT:    0x0088ff,
-            INFO:       0x0088ff,
-            SUCCESS:    0x22ff00,
-            PROGRESS:   0x5500ff,
-            WARN:       0xffff00,
-            FAIL:       0xff2222,
-            STICKY:     0x00ffaa,
-            OSU:        0xff66aa
+            DEFAULT: 0x0088ff,
+            INFO: 0x0088ff,
+            SUCCESS: 0x22ff00,
+            PROGRESS: 0x5500ff,
+            WARN: 0xffff00,
+            FAIL: 0xff2222,
+            STICKY: 0x00ffaa,
+            OSU: 0xff66aa
         },
-        FOOTER: function(handleData){
+        FOOTER: function (handleData) {
             if (handleDataCheck(handleData, true)) {
                 return {
                     //"icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
@@ -43,13 +43,18 @@ const CONFIG = {
         }
     },
 
-    SPLASH_STRINGS: [
-        "Writing code in a better way from zero",
-        "That time I got reincarnated as a rewrite",
-        "God's blessing on this wonderful code!",
-        "~No Matter How I Look at It, It’s You Guys Fault I’m Crashing!~",
-        "Rewrite!!!!!!!!"
-    ],
+    SPLASH_STRINGS: {
+        STRINGS: [
+            "Writing code in a better way from zero",
+            "That time I got reincarnated as a rewrite",
+            "God's blessing on this wonderful code!",
+            "~No Matter How I Look at It, It’s You Guys Fault I’m Crashing!~",
+            "Rewrite!!!!!!!!"
+        ],
+        GET: function() {
+            return (this.STRINGS[Math.floor(Math.random() * 100 % this.STRINGS.length)]);
+        }
+    },
 
     SECRETS: {
         ANILIST: {
