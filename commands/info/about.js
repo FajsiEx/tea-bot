@@ -10,7 +10,8 @@ module.exports = {
                     "title": "Tea-bot | About",
                     "color": CONFIG.EMBED.COLORS.INFO,
                     "description": outdent`
-                        **「 Tea-bot Re:Write 」** *Starting code in a better way from zero*
+                        **「 Tea-bot Re:Write 」 Project **
+                        *${CONFIG.SPLASH_STRINGS.GET()}*
                         
                         Build **${CONFIG.BOT.BUILD_INFO.BUILD_STRING}**
                         Server message latency: **${new Date().getTime() - msg.createdTimestamp} ms**
