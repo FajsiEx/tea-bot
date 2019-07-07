@@ -43,6 +43,14 @@ const CONFIG = {
         }
     },
 
+    SPLASH_STRINGS: [
+        "Writing code in a better way from zero",
+        "That time I got reincarnated as a rewrite",
+        "God's blessing on this wonderful code!",
+        "~No Matter How I Look at It, It’s You Guys Fault I’m Crashing!~",
+        "Rewrite!!!!!!!!"
+    ],
+
     SECRETS: {
         ANILIST: {
             TOKEN: process.env.T_ALT
