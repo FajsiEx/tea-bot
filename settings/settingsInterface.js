@@ -14,7 +14,8 @@ module.exports = {
             throw("Failed to get guildDoc: " + e);
         }
 
-        if (!guildDoc.settings) {guildDoc.settings = [];} // If settings array doesn't exist in the guildDoc, simulate an empty array.
+        if (!guildDoc.settings) {guildDoc.settings = {hasSettings: true};} // If settings object doesn't exist in the guildDoc
+        if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
 
         if (guildDoc.settings[settingName]) {
             return guildDoc.settings[settingName];
