@@ -314,6 +314,17 @@ let COMMANDS = [
                     "nsfw.allowed"
                 ],
                 handler: require(DEFAULT_COMMANDS_PATH + "settings/getSetting").handler
+            },
+            {
+                keywords: ["set"],
+                desc: "Sets a value of a given setting",
+                usage: [
+                    "<setting name> <value>",
+                ],
+                examples: [
+                    "nsfw.allowed false"
+                ],
+                handler: require(DEFAULT_COMMANDS_PATH + "settings/setSetting").handler
             }
         ]
     },

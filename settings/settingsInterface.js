@@ -38,6 +38,8 @@ module.exports = {
         // TODO: add perm checks
         
         guildDoc.settings[settingName] = settingValue;
+
+        return 0;
     },
 
     getSettingTemplate: function(settingName) {
