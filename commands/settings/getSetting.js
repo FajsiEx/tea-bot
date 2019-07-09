@@ -9,6 +9,7 @@ module.exports = {
         if (!settingName) {
             try {
                 await module.exports.responses.fail.noSettingName(messageEventData);
+                return 0;
             }catch(e){
                 throw("Failed to send msg: " + e);
             }
