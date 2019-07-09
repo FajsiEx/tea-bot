@@ -10,7 +10,7 @@ module.exports = {
         if (!settingName) {
             try {
                 await module.exports.responses.fail.noSettingName(messageEventData);
-                return 0;
+                return 1;
             }catch(e){
                 throw("Failed to send msg: " + e);
             }
@@ -18,7 +18,16 @@ module.exports = {
         if (!settingValue) {
             try {
                 await module.exports.responses.fail.noSettingValue(messageEventData);
-                return 0;
+                return 2;
+            }catch(e){
+                throw("Failed to send msg: " + e);
+            }
+        }
+
+        if (!settingsInterface.getSettingTemplate(settingName)) {
+            try {
+                await module.exports.responses.fail.invalidSetting(messageEventData, settingName);
+                return 3;
             }catch(e){
                 throw("Failed to send msg: " + e);
             }
@@ -63,6 +72,23 @@ module.exports = {
         },
 
         fail: {
+            invalidSetting: async function (messageEventData, settingName) {
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Settings | Set",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Setting \`${settingName}\` does not exist.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    return 0;
+                } catch (e) {
+                    throw ("Failed to send a fail message: " + e);
+                }
+            },
             noSettingName: async function (messageEventData) {
                 try {
                     await messageEventData.msg.channel.send({
