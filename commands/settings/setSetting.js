@@ -29,7 +29,7 @@ module.exports = {
             throw("Failed to set setting: " + e);
         }
 
-        console.log(settingValue);
+        console.log(responseCode);
     },
 
     responses: {
