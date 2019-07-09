@@ -32,9 +32,36 @@ module.exports = {
         }
 
         console.log(responseCode);
+
+        try {
+            await module.exports.responses.success.done(messageEventData, settingName, settingValue);
+            return 0;
+        }catch(e){
+            throw("Failed to send msg: " + e);
+        }
     },
 
     responses: {
+        success: {
+            done: async function (messageEventData, settingName, settingValue) {
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Settings | Set",
+                            "color": CONFIG.EMBED.COLORS.SUCCESS,
+                            "description": `
+                                Setting \`${settingName}\` was set to \`${settingValue}\`.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    return 0;
+                } catch (e) {
+                    throw ("Failed to send a success message: " + e);
+                }
+            },
+        },
+
         fail: {
             noSettingName: async function (messageEventData) {
                 try {
