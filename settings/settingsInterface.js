@@ -25,6 +25,21 @@ module.exports = {
         }
     },
 
+    set: async function(guildId, settingName, settingValue) {
+        let guildDoc;
+        try {
+            guildDoc = await dbInt.getGuildDoc(guildId);
+        }catch(e){
+            throw("Failed to get guildDoc: " + e);
+        }
+
+        if (!guildDoc.settings) {guildDoc.settings = {hasSettings: true};} // If settings object doesn't exist in the guildDoc
+        if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
+        // TODO: add perm checks
+        
+        guildDoc.settings[settingName] = settingValue;
+    },
+
     getSettingTemplate: function(settingName) {
         let settingTemplatesForGivenSettingName = settingsTemplate.filter((setting)=>{
             return setting.name == settingName;
