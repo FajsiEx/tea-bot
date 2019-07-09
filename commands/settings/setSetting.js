@@ -17,7 +17,7 @@ module.exports = {
         }
         if (!settingValue) {
             try {
-                await module.exports.responses.fail.noSettingName(messageEventData);
+                await module.exports.responses.fail.noSettingValue(messageEventData);
                 return 0;
             }catch(e){
                 throw("Failed to send msg: " + e);
