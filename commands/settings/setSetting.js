@@ -9,14 +9,14 @@ module.exports = {
 
         if (!settingName) {
             try {
-                await module.exports.responses.fail.noSettingName(messageEventData.msg);
+                await module.exports.responses.fail.noSettingName(messageEventData);
             }catch(e){
                 throw("Failed to send msg: " + e);
             }
         }
         if (!settingValue) {
             try {
-                await module.exports.responses.fail.noSettingName(messageEventData.msg);
+                await module.exports.responses.fail.noSettingName(messageEventData);
             }catch(e){
                 throw("Failed to send msg: " + e);
             }
@@ -34,7 +34,7 @@ module.exports = {
 
     responses: {
         fail: {
-            noSettingName: async function (msg) {
+            noSettingName: async function (messageEventData) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
@@ -51,7 +51,7 @@ module.exports = {
                     throw ("Failed to send a fail message: " + e);
                 }
             },
-            noSettingValue: async function (msg) {
+            noSettingValue: async function (messageEventData) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
