@@ -20,6 +20,7 @@ module.exports = {
         if (guildDoc.settings[settingName]) {
             return guildDoc.settings[settingName];
         }else{
+            guildDoc.settings[settingName] = settingTemplate.defaultValue;
             return settingTemplate.defaultValue;
         }
     },
