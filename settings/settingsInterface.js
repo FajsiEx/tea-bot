@@ -26,7 +26,7 @@ module.exports = {
         }
     },
 
-    set: async function(guildId, settingName, settingValue) {
+    set: async function(guildId, settingName, settingValue, member) {
         let settingTemplate = this.getSettingTemplate(settingName);
         if (!settingTemplate) {throw("Unknown settings. Please check if the setting exists in settingsTemplate.");}
 
@@ -41,10 +41,20 @@ module.exports = {
         if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
 
         // TODO: add perm checks
+        if (settingTemplate.perm == "dev") {
+            if (!permChecker.dev(member.user.id)) {
+                return false;
+            }
+        }
+        if (settingTemplate.perm == "admin") {
+            if (!permChecker.admin(member)) {
+                return false;
+            }
+        }
         
         guildDoc.settings[settingName] = settingValue;
 
-        return 0;
+        return true;
     },
 
     getSettingTemplate: function(settingName) {

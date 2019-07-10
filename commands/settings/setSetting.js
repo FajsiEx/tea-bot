@@ -35,7 +35,7 @@ module.exports = {
 
         let responseCode;
         try {
-            responseCode = await settingsInterface.set(messageEventData.msg.guild.id, settingName, settingValue);
+            responseCode = await settingsInterface.set(messageEventData.msg.guild.id, settingName, settingValue, messageEventData.msg.member);
         }catch(e){
             throw("Failed to set setting: " + e);
         }
