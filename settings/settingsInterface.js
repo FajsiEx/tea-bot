@@ -1,6 +1,7 @@
 
 const settingsTemplate = require("./settingsTemplate");
 const dbInt = require("../db/interface");
+const permChecker = require("../modules/permChecker");
 
 module.exports = {
     get: async function(guildId, settingName) {
@@ -26,6 +27,9 @@ module.exports = {
     },
 
     set: async function(guildId, settingName, settingValue) {
+        let settingTemplate = this.getSettingTemplate(settingName);
+        if (!settingTemplate) {throw("Unknown settings. Please check if the setting exists in settingsTemplate.");}
+
         let guildDoc;
         try {
             guildDoc = await dbInt.getGuildDoc(guildId);
@@ -35,6 +39,7 @@ module.exports = {
 
         if (!guildDoc.settings) {guildDoc.settings = {hasSettings: true};} // If settings object doesn't exist in the guildDoc
         if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
+
         // TODO: add perm checks
         
         guildDoc.settings[settingName] = settingValue;
