@@ -7,12 +7,22 @@ module.exports = {
         let settingName = messageEventData.msg.content.split(" ")[1];
 
         if (!settingName) {
+            // We want all settings
+
+            let listOfSettings;
             try {
-                await module.exports.responses.fail.noSettingName(messageEventData);
-                return 1;
-            } catch (e) {
-                throw ("Failed to send msg: " + e);
+                listOfSettings = await settingsInterface.getSettingsList(messageEventData.msg.guild.id);
+            }catch(e){
+                throw("Could not get list of settings from settingsInterface: " + e);
             }
+
+            try {
+                await module.exports.responses.success.list(messageEventData, listOfSettings);
+            }catch(e){
+                throw("Failed to send msg: " + e);
+            }
+
+            return 0;
         }
 
         if (!settingsInterface.getSettingTemplate(settingName)) {
@@ -60,6 +70,28 @@ module.exports = {
                     throw ("Failed to send a success message: " + e);
                 }
             },
+
+            list: async function (messageEventData, listOfSettings) {
+                let responseString = "";
+
+                for (let setting of listOfSettings) {
+                    responseString+= `\`${setting.name}\`: \`${setting.value}\`\n`;
+                }
+
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Settings | Get all settings",
+                            "color": CONFIG.EMBED.COLORS.SUCCESS,
+                            "description": responseString,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    return 0;
+                } catch (e) {
+                    throw ("Failed to send a success message: " + e);
+                }
+            }
         },
 
         fail: {

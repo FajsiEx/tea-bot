@@ -98,5 +98,36 @@ module.exports = {
             default:
                 throw("Setting type the setting uses is not valid");
         }
+    },
+
+    getSettingsList: async function(guildId) {
+        let guildDoc;
+        try {
+            guildDoc = await dbInt.getGuildDoc(guildId);
+        }catch(e){
+            throw("Failed to get guildDoc: " + e);
+        }
+
+        let guildSettings = [];
+
+        for (let settingTemplate of settingsTemplate) {
+            if (!guildDoc.settings) {guildDoc.settings = {hasSettings: true};} // If settings object doesn't exist in the guildDoc
+            if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
+
+            if (guildDoc.settings[settingTemplate.name] !== undefined) {
+                guildSettings.push({
+                    name: settingTemplate.name,
+                    value: guildDoc.settings[settingTemplate.name]
+                });
+            }else{
+                guildDoc.settings[settingTemplate.name] = settingTemplate.defaultValue;
+                guildSettings.push({
+                    name: settingTemplate.name,
+                    value: settingTemplate.defaultValue
+                });
+            }
+        }
+
+        return guildSettings;
     }
 };
