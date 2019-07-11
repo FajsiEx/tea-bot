@@ -93,7 +93,7 @@ module.exports = {
 
         if (requestedCommand.rights) { // If the command has any rights
             if (requestedCommand.rights.adminOnly) {
-                let isAdmin = await permChecker.admin(handleData);
+                let isAdmin = await permChecker.admin(handleData.msg.member);
                 if (!isAdmin) {
                     msg.channel.send({
                         "embed": {
