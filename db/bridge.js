@@ -185,6 +185,8 @@ module.exports = {
         },
 
         getExpired: async function (guildId, forceUpdate) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
             let eventExpiryDeadline = new Date().getTime();
             if (forceUpdate) {
                 eventExpiryDeadline = Infinity;
@@ -293,6 +295,8 @@ module.exports = {
 
     maintenance: {
         killEverything: async function () {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+            
             db.executeDbAdminCommand({ killAllSessions: [{ user: "wanilla", db: "tea-bot" }] });
         }
     }
