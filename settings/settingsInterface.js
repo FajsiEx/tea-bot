@@ -18,7 +18,7 @@ module.exports = {
         if (!guildDoc.settings) {guildDoc.settings = {hasSettings: true};} // If settings object doesn't exist in the guildDoc
         if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
 
-        if (guildDoc.settings[settingName]) {
+        if (guildDoc.settings[settingName] !== undefined) {
             return guildDoc.settings[settingName];
         }else{
             guildDoc.settings[settingName] = settingTemplate.defaultValue;
@@ -91,7 +91,7 @@ module.exports = {
                 else if (settingValue === "false") { return false; }
                 else {throw("Invalid value for bool type");}
             case "int":
-                settingValue = settingValue.parseInt();
+                settingValue = parseInt(settingValue);
                 if (!settingValue) {throw("Invalid value for int type");}
             case "string":
                 return settingValue;
