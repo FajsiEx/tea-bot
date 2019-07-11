@@ -11,16 +11,16 @@ module.exports = {
             try {
                 await module.exports.responses.fail.noSettingName(messageEventData);
                 return 1;
-            }catch(e){
-                throw("Failed to send msg: " + e);
+            } catch (e) {
+                throw ("Failed to send msg: " + e);
             }
         }
         if (!settingValue) {
             try {
                 await module.exports.responses.fail.noSettingValue(messageEventData);
                 return 2;
-            }catch(e){
-                throw("Failed to send msg: " + e);
+            } catch (e) {
+                throw ("Failed to send msg: " + e);
             }
         }
 
@@ -28,25 +28,32 @@ module.exports = {
             try {
                 await module.exports.responses.fail.invalidSetting(messageEventData, settingName);
                 return 3;
-            }catch(e){
-                throw("Failed to send msg: " + e);
+            } catch (e) {
+                throw ("Failed to send msg: " + e);
             }
         }
 
-        let responseCode;
+        let successful;
         try {
-            responseCode = await settingsInterface.set(messageEventData.msg.guild.id, settingName, settingValue, messageEventData.msg.member);
-        }catch(e){
-            throw("Failed to set setting: " + e);
+            successful = await settingsInterface.set(messageEventData.msg.guild.id, settingName, settingValue, messageEventData.msg.member);
+        } catch (e) {
+            throw ("Failed to set setting: " + e);
         }
 
-        console.log(responseCode);
-
-        try {
-            await module.exports.responses.success.done(messageEventData, settingName, settingValue);
-            return 0;
-        }catch(e){
-            throw("Failed to send msg: " + e);
+        if (successful) {
+            try {
+                await module.exports.responses.success.done(messageEventData, settingName, settingValue);
+                return 0;
+            } catch (e) {
+                throw ("Failed to send msg: " + e);
+            }
+        }else{
+            try {
+                await module.exports.responses.fail.perm(messageEventData);
+                return 0;
+            } catch (e) {
+                throw ("Failed to send msg: " + e);
+            }
         }
     },
 
@@ -72,6 +79,23 @@ module.exports = {
         },
 
         fail: {
+            perm: async function (messageEventData) {
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Settings | Set",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Insufficient permissions.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    return 0;
+                } catch (e) {
+                    throw ("Failed to send a fail message: " + e);
+                }
+            },
             invalidSetting: async function (messageEventData, settingName) {
                 try {
                     await messageEventData.msg.channel.send({
