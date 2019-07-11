@@ -4,7 +4,7 @@
     
 */
 
-const handleDataCheck = require("../checks/handleData").check;
+//const handleDataCheck = require("../checks/handleData").check;
 
 const CONFIG = {
     BOT: {
@@ -29,7 +29,7 @@ const CONFIG = {
             STICKY: 0x00ffaa,
             OSU: 0xff66aa
         },
-        FOOTER: function (handleData) {
+        FOOTER: function (/* handleData */) {
             /* if (handleDataCheck(handleData, true)) {
                 return {
                     //"icon_url": "https://cdn.discordapp.com/avatars/555826737066278942/211ca3a8b06d60210ffcfcf96845ca80.png",
