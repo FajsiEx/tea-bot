@@ -42,12 +42,26 @@ module.exports = {
 
         // TODO: add perm checks
         if (settingTemplate.perm == "dev") {
-            if (!permChecker.dev(member.user.id)) {
+            let isDev;
+            try {
+                isDev = await permChecker.dev(member.user.id);
+            }catch(e){
+                throw("Dev perm check rejected: " + e);
+            }
+
+            if (!isDev) {
                 return false;
             }
         }
         if (settingTemplate.perm == "admin") {
-            if (!permChecker.admin(member)) {
+            let isAdmin;
+            try {
+                isAdmin = await permChecker.admin(member);
+            }catch(e){
+                throw("Admin perm check rejected: " + e);
+            }
+
+            if (!isAdmin) {
                 return false;
             }
         }
