@@ -313,6 +313,10 @@ let COMMANDS = [
                 examples: [
                     "nsfw.allowed"
                 ],
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
+                },
                 handler: require(DEFAULT_COMMANDS_PATH + "settings/getSetting").handler
             },
             {
@@ -324,6 +328,10 @@ let COMMANDS = [
                 examples: [
                     "nsfw.allowed false"
                 ],
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
+                },
                 handler: require(DEFAULT_COMMANDS_PATH + "settings/setSetting").handler
             }
         ]
