@@ -23,7 +23,7 @@ module.exports = {
             switch (doc.restrictions) {
                 case "admin": //* Admin mode - only admins can use commands
                     try {
-                        isPermitted = await permChecker.admin(handleData); // Awaits response if the user is indeed an admin (bool)
+                        isPermitted = await permChecker.admin(handleData.msg.member); // Awaits response if the user is indeed an admin (bool)
                     } catch (e) {
                         throw ("Couldn't check permissions: " + e);
                     }

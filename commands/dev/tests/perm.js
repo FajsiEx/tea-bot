@@ -7,7 +7,7 @@ module.exports = {
         let isDev;
 
         try {
-            isAdmin = await permChecker.admin(messageEventData);
+            isAdmin = await permChecker.admin(messageEventData.msg.member);
         }catch(e){
             throw("Failed to check admin perms: " + e);
         }
