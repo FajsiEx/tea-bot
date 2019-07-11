@@ -1,12 +1,11 @@
 module.exports = {
-    admin: async function (messageEventData) {
-        let msg = messageEventData.msg;
+    admin: async function (member) {
 
-        if (!msg.member) { // If the msg is not in guild, user has every right to do shit
+        if (!member) { // If the msg is not in guild, user has every right to do shit
             return true;
         }
 
-        if (msg.member.hasPermission('MANAGE_GUILD') || msg.member.hasPermission('ADMINISTRATOR')) {
+        if (member.hasPermission('MANAGE_GUILD') || member.hasPermission('ADMINISTRATOR')) {
             return true;
         } else {
             return false;

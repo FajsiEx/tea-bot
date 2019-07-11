@@ -300,6 +300,35 @@ let COMMANDS = [
         ]
     },
 
+    {
+        categoryName: "settings",
+        displayName: "Settings commands",
+        commands: [
+            {
+                keywords: ["get"],
+                desc: "Gets a value of a given setting",
+                usage: [
+                    "<setting name>",
+                ],
+                examples: [
+                    "nsfw.allowed"
+                ],
+                handler: require(DEFAULT_COMMANDS_PATH + "settings/getSetting").handler
+            },
+            {
+                keywords: ["set"],
+                desc: "Sets a value of a given setting",
+                usage: [
+                    "<setting name> <value>",
+                ],
+                examples: [
+                    "nsfw.allowed false"
+                ],
+                handler: require(DEFAULT_COMMANDS_PATH + "settings/setSetting").handler
+            }
+        ]
+    },
+
     { // TODO: do this seriously
         categoryName: "edupica",
         displayName: "Edupage commands",
