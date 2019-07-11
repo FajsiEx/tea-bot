@@ -40,7 +40,6 @@ module.exports = {
         if (!guildDoc.settings) {guildDoc.settings = {hasSettings: true};} // If settings object doesn't exist in the guildDoc
         if (!guildDoc.settings.hasSettings) {guildDoc.settings = {hasSettings: true};}
 
-        // TODO: add perm checks
         if (settingTemplate.perm == "dev") {
             let isDev;
             try {
@@ -50,7 +49,7 @@ module.exports = {
             }
 
             if (!isDev) {
-                return false;
+                return "insufPerm";
             }
         }
         if (settingTemplate.perm == "admin") {
@@ -62,10 +61,16 @@ module.exports = {
             }
 
             if (!isAdmin) {
-                return false;
+                return "insufPerm";
             }
         }
         
+        try {
+            settingValue = this.parseValueToCorrectType(settingTemplate, settingValue);
+        }catch(e){
+            return "incorrectType";
+        }
+
         guildDoc.settings[settingName] = settingValue;
 
         return true;
@@ -77,5 +82,21 @@ module.exports = {
         });
 
         return settingTemplatesForGivenSettingName[0];
+    },
+
+    parseValueToCorrectType: function(settingTemplate, settingValue) {
+        switch (settingTemplate.type) {
+            case "bool":
+                if (settingValue === "true") { return true; }
+                else if (settingValue === "false") { return false; }
+                else {throw("Invalid value for bool type");}
+            case "int":
+                settingValue = settingValue.parseInt();
+                if (!settingValue) {throw("Invalid value for int type");}
+            case "string":
+                return settingValue;
+            default:
+                throw("Setting type the setting uses is not valid");
+        }
     }
 };
