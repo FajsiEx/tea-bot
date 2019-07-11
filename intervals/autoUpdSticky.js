@@ -21,9 +21,12 @@ module.exports = {
     },
 
     setup: function (dClient) {
-        this.interval(dClient);
-        setInterval(()=>{
-            this.interval(dClient);
+        setInterval(async ()=>{
+            try {
+                await this.interval(dClient);
+            }catch(e){
+                console.log(`Failed to autoUpdSticky: ${e}`.error);
+            }
         }, 5000); // TODO: move this to config along with lifespan of stickyDoc
     }
 };
