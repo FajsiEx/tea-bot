@@ -55,6 +55,10 @@ module.exports = {
         console.log("[DISCORD] Created event listeners".success);
     },
 
+    isReady: function() {
+        return this.isReady;
+    },
+
     getDiscordClient: function() {
         return dClient;
     }

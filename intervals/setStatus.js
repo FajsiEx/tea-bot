@@ -16,6 +16,7 @@ module.exports = {
     },
 
     setup: function (dClient) {
+        this.interval(dClient);
         setInterval(()=>{
             this.interval(dClient);
         }, 15000);
