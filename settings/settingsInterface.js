@@ -61,19 +61,19 @@ module.exports = {
             }
 
             if (!isAdmin) {
-                return "insufPerm";
+                return {error: "perm", minimalPerm: settingTemplate.perm};
             }
         }
         
         try {
             settingValue = this.parseValueToCorrectType(settingTemplate, settingValue);
         }catch(e){
-            return "incorrectType";
+            return {error: "type", settingType: settingTemplate.type};
         }
 
         guildDoc.settings[settingName] = settingValue;
 
-        return true;
+        return {success:true};
     },
 
     getSettingTemplate: function(settingName) {

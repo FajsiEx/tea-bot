@@ -33,24 +33,31 @@ module.exports = {
             }
         }
 
-        let successful;
+        let status;
         try {
-            successful = await settingsInterface.set(messageEventData.msg.guild.id, settingName, settingValue, messageEventData.msg.member);
+            status = await settingsInterface.set(messageEventData.msg.guild.id, settingName, settingValue, messageEventData.msg.member);
         } catch (e) {
             throw ("Failed to set setting: " + e);
         }
 
-        if (successful) {
+        if (status.success) {
             try {
                 await module.exports.responses.success.done(messageEventData, settingName, settingValue);
                 return 0;
             } catch (e) {
                 throw ("Failed to send msg: " + e);
             }
-        }else{
+        }else if (status.error == "perm"){
             try {
-                await module.exports.responses.fail.perm(messageEventData);
-                return 0;
+                await module.exports.responses.fail.perm(messageEventData, status.minimalPerm);
+                return 4;
+            } catch (e) {
+                throw ("Failed to send msg: " + e);
+            }
+        }else if (status.error == "type"){
+            try {
+                await module.exports.responses.fail.invalidType(messageEventData, status.settingType);
+                return 5;
             } catch (e) {
                 throw ("Failed to send msg: " + e);
             }
@@ -79,14 +86,31 @@ module.exports = {
         },
 
         fail: {
-            perm: async function (messageEventData) {
+            perm: async function (messageEventData, minimalPerm) {
                 try {
                     await messageEventData.msg.channel.send({
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": `
-                                Insufficient permissions.
+                                Insufficient permissions. You need to be \`${minimalPerm}\` to modify this setting.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    return 0;
+                } catch (e) {
+                    throw ("Failed to send a fail message: " + e);
+                }
+            },
+            invalidType: async function (messageEventData, settingType) {
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Settings | Set",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Invalid value for type \`${settingType}\`
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
