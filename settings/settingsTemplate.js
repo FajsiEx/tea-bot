@@ -1,18 +1,18 @@
 module.exports = [
     {
-        name: "settest",
+        name: "tany",
         perm: "dev",
         defaultValue: "DEFAULT VALUE NYA.",
         type: "string"
     },
     {
-        name: "settestint",
+        name: "tint",
         perm: "dev",
         defaultValue: 69,
         type: "int"
     },
     {
-        name: "settestbool",
+        name: "tbool",
         perm: "dev",
         defaultValue: true,
         type: "bool"
