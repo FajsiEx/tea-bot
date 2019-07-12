@@ -16,8 +16,12 @@ module.exports = {
     },
 
     setup: function (dClient) {
-        setInterval(()=>{
-            this.interval(dClient);
+        setInterval(async ()=>{
+            try {
+                await this.interval(dClient);
+            }catch(e){
+                console.log(`Failed to setStatus: ${e}`.error);
+            }
         }, 15000);
     },
 
