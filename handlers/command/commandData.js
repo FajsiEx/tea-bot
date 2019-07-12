@@ -397,22 +397,6 @@ let COMMANDS = [
     },
 
     {
-        categoryName: "invalid", // Invalid command/category replies
-        commands: [
-            {
-                keywords: ["category"],
-                desc: "Response for invalid category",
-                handler: require(DEFAULT_COMMANDS_PATH + "invalid/category").handler,
-            },
-            {
-                keywords: ["command"],
-                desc: "Response for invalid command",
-                handler: require(DEFAULT_COMMANDS_PATH + "invalid/command").handler,
-            }
-        ]
-    },
-
-    {
         categoryName: false, // Without prefix
         commands: [
             // Commands that don't need prefixes go here. If it's only a simple response [!hi => msg.channel.send("Hello")], take a look at QRs
