@@ -378,7 +378,7 @@ let COMMANDS = [
         displayName: "AniList commands",
         commands: [
             {
-                keywords: ["a"],
+                keywords: ["a", "ani", "anime"],
                 desc: "Gets anime by it's name",
                 usage: [
                     "<anime name>",
@@ -389,7 +389,7 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "anilist/searchAnime").handler
             },
             {
-                keywords: ["u"],
+                keywords: ["u", "user"],
                 desc: "Gets user by his/her/its name",
                 usage: [
                     "<username>",
