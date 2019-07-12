@@ -15,6 +15,31 @@ const qrData = require("/qr/qrData");
 
 const htmlEscape = require("escape-html");
 
+/*
+
+* Command template
+
+{
+    keywords: ["keyword", "keyword2"],
+    handler: require(DEFAULT_COMMANDS_PATH + "someFolder/someCommand").handler,
+    desc: "Description for docs",
+    rights: { devOnly: false, adminOnly: false },
+    cannotBeUsedWithoutCommandCategory: false,
+    requirements: {
+        channelType: "text",
+        readyDatabase: true
+    }
+    usage: [
+        "<some parameter> <another parameter>",
+    ],
+    examples: [
+        "value value2"
+    ],
+},
+
+*/
+
+
 // Just add command™
 let COMMANDS = [
     {
@@ -23,8 +48,9 @@ let COMMANDS = [
         commands: [
             {
                 keywords: ["send"],
-                handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler, // TODO: dev only
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/send").handler,
                 desc: "Sends a message to channel specified",
+                rights: { devOnly: true },
                 usage: [
                     "<channel id> <message>",
                 ],
@@ -37,9 +63,7 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/shutdown").handler,
                 desc: "Shuts down the bot",
                 cannotBeUsedWithoutCommandCategory: true,
-                rights: {
-                    devOnly: true
-                }
+                rights: { devOnly: true },
             },
             {
                 keywords: ["nou"],
@@ -524,27 +548,27 @@ module.exports = {
 
                 formattedMsg += `<tr class="${rowColor}"><td>`;
 
-                command.keywords.forEach(keyword=>{
+                command.keywords.forEach(keyword => {
                     formattedMsg += `!${commandCategory.categoryName}:${keyword}<br>`;
                 });
 
                 formattedMsg += `</td><td>${command.desc}</td><td>`;
 
                 if (command.usage) {
-                    command.usage.forEach(usage=>{
+                    command.usage.forEach(usage => {
                         formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(usage)}<br>`;
                     });
-                }else{
+                } else {
                     formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
                 }
 
                 formattedMsg += "</td><td>";
 
                 if (command.examples) {
-                    command.usage.forEach(example=>{                        
+                    command.usage.forEach(example => {
                         formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(example)}<br>`;
                     });
-                }else{
+                } else {
                     formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
                 }
 
