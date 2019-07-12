@@ -57,36 +57,24 @@ module.exports = {
             throw ("Empty requestedCommandArray");
         }
 
+        //* Get category
         let requestedCommandCategory = COMMANDS.filter(commandCategory => { // Now we get the command category from the category name (or the false category if none was defined)
             return commandCategory.categoryName == requestedCommandCategoryName;
         })[0];
 
         if (!requestedCommandCategory) { // If the command category for the requested command isn't found
-            let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
-                return commandCategory.categoryName == "invalid";
-            })[0];
-            let invalidCommandCategoryCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:category "command" from it
-                return command.keywords.indexOf("category") > -1;
-            })[0];
-
-            invalidCommandCategoryCommand.handler(handleData); // Call it
+            module.exports.responses.invalid.category(handleData);
 
             return 2; // 2 = category not found
         }
 
+        //* Get command
         let requestedCommand = requestedCommandCategory.commands.filter(command => { // Get command itself from the category by the command name entered.
             return command.keywords.indexOf(requestedCommandName) > -1;
         })[0];
 
         if (!requestedCommand) { // If no command was found in it's category
-            let invalidCommandCategory = COMMANDS.filter(commandCategory => { // Get the invalid cat
-                return commandCategory.categoryName == "invalid";
-            })[0];
-            let invalidCommandCommand = invalidCommandCategory.commands.filter(command => { // and get invalid:command "command" from it
-                return command.keywords.indexOf("command") > -1;
-            })[0];
-
-            invalidCommandCommand.handler(handleData); // Call it
+            module.exports.responses.invalid.command(handleData);
 
             return 1; // 1 = command not found
         }
@@ -206,6 +194,48 @@ module.exports = {
     }, // End of handler
 
     responses: {
+        invalid: {
+            category: async function (messageEventData) {
+                try {
+                    let botMsg = await messageEventData.msg.channel.send({
+                        embed: {
+                            "title": "Invalid command category",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Look at the docs for valid command categories and their commands
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    botMsg.delete(15000);
+                } catch (e) {
+                    throw("Failed to send invalid command message: " + e);
+                }
+        
+                return 0;
+            },
+
+            command: async function (messageEventData) {
+                try {
+                    let botMsg = await messageEventData.msg.channel.send({
+                        embed: {
+                            "title": "Invalid command",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": `
+                                Look at the docs for valid commands
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                    botMsg.delete(15000);
+                } catch (e) {
+                    throw("Failed to send invalid command message: " + e);
+                }
+        
+                return 0;
+            }
+        },
+
         dbNotReadyResponse: async function (handleData) {
             try {
                 await handleData.msg.channel.send({
