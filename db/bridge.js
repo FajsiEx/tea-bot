@@ -290,6 +290,22 @@ module.exports = {
             let triggerDoc = docs[0];
 
             return triggerDoc;
+        },
+
+        createDoc: async function(authorId, channelId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            try {
+                await db.collection("triggers").insertOne({
+                    token: 69420,
+                    c_id: channelId,
+                    author: authorId
+                });
+            } catch (e) {
+                throw ("Failed to insert the new triggerDoc: " + e);
+            }
+
+            return true;
         }
     },
 
