@@ -286,6 +286,25 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "triggers",
+        displayName: "API Triggers",
+        commands: [
+            {
+                keywords: ["create"],
+                handler: require(DEFAULT_COMMANDS_PATH + "triggers/create").handler,
+                desc: "Creates and sends you a token for the current channel",
+                rights: {
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
+                }
+            }
+        ]
+    },
+
+    {
         categoryName: "events",
         displayName: "Event commands",
         commands: [
