@@ -300,6 +300,18 @@ let COMMANDS = [
                     channelType: "text",
                     readyDatabase: true
                 }
+            },
+            {
+                keywords: ["delete", "revoke"],
+                handler: require(DEFAULT_COMMANDS_PATH + "triggers/delete").handler,
+                desc: "Deletes the specified token. Must be executed in the channel it was created",
+                rights: {
+                    adminOnly: true
+                },
+                requirements: {
+                    channelType: "text",
+                    readyDatabase: true
+                }
             }
         ]
     },
