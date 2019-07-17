@@ -5,21 +5,22 @@ const dbBridge = require("../../db/bridge");
 
 module.exports = {
     handler: async function (messageEventData) {
+        let msg = messageEventData.msg;
+
         let token;
         try {
-            token = await dbBridge.triggers.createDoc(messageEventData.msg.author.id, messageEventData.msg.channel.id, messageEventData.msg.id);
+            token = await dbBridge.triggers.createDoc(msg.author.id, msg.channel.id, msg.id);
         }catch(e){
             throw("triggers.createDoc failed: " + e);
         }
 
-        let msg = messageEventData.msg;
         try {
             await msg.author.send({
                 "embed": {
                     "title": "Trigger | Created",
                     "color": CONFIG.EMBED.COLORS.INFO,
                     "description": outdent`
-                        Token has been generated for the \`${messageEventData.msg.channel.name}\` channel:
+                        Token has been generated for the \`${msg.channel.name}\` channel:
                         \`\`\`
                         ${token}
                         \`\`\`
