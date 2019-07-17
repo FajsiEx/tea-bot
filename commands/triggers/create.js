@@ -18,7 +18,7 @@ module.exports = {
             await msg.author.send({
                 "embed": {
                     "title": "Trigger | Created",
-                    "color": CONFIG.EMBED.COLORS.INFO,
+                    "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": outdent`
                         Token has been generated for the \`${msg.channel.name}\` channel:
                         \`\`\`
@@ -36,7 +36,7 @@ module.exports = {
             await msg.channel.send({
                 "embed": {
                     "title": "Trigger | Created",
-                    "color": CONFIG.EMBED.COLORS.INFO,
+                    "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": outdent`
                         Token successfully generated!
                         Check your DM for the token.
