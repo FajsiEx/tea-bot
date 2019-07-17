@@ -292,7 +292,7 @@ module.exports = {
             return triggerDoc;
         },
 
-        createDoc: async function(authorId, channelId) {
+        createDoc: async function(authorId, channelId, msgId) {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
             try {
