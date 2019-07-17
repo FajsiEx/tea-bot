@@ -317,6 +317,23 @@ module.exports = {
             }
 
             return token;
+        },
+
+        deleteDoc: async function(token, channelId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            let response;
+            try {
+                response = await db.collection("triggers").deleteOne({
+                    token: token,
+                    c_id: channelId
+                });
+            } catch (e) {
+                throw ("Could not delete trigger document: " + e);
+            }
+            
+            if (response.deletedCount < 1) {return false;}
+            return true;
         }
     },
 

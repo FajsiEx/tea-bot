@@ -14,7 +14,7 @@ module.exports = {
                 await msg.channel.send({
                     "embed": {
                         "title": "Trigger | Delete",
-                        "color": CONFIG.EMBED.COLORS.SUCCESS,
+                        "color": CONFIG.EMBED.COLORS.FAIL,
                         "description": outdent`
                             Not a valid or non-existing token.
 
@@ -30,24 +30,41 @@ module.exports = {
             } catch (e) {
                 throw ("Failed sending invalid token message: " + e);
             }
+            return 1;
         }
 
-        return;
-
+        let deleteSuccess;
         try {
-            await dbBridge.triggers.createDoc(token);
-        }catch(e){
-            throw("triggers.createDoc failed: " + e);
+            deleteSuccess = await dbBridge.triggers.deleteDoc(token, msg.channel.id);
+        } catch (e) {
+            throw ("triggers.deleteDoc failed: " + e);
+        }
+
+        if (!deleteSuccess) {
+            try {
+                await msg.channel.send({
+                    "embed": {
+                        "title": "Trigger | Delete",
+                        "color": CONFIG.EMBED.COLORS.FAIL,
+                        "description": outdent`
+                            Did not find the entered token. Make sure you are running this command in a channel that created this token!
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed sending no token message: " + e);
+            }
+            return 2
         }
 
         try {
             await msg.channel.send({
                 "embed": {
-                    "title": "Trigger | Created",
+                    "title": "Trigger | Delete",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
                     "description": outdent`
-                        Token successfully generated!
-                        Check your DM for the token.
+                        Token successfully deleted!
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
