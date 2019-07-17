@@ -3,6 +3,8 @@ const MongoClient = require('mongodb').MongoClient;
 
 const cache = require("./cache");
 
+const triggerTokenGen = require("../modules/triggerTokenGen");
+
 let client, db;
 
 // Status:
@@ -290,6 +292,48 @@ module.exports = {
             let triggerDoc = docs[0];
 
             return triggerDoc;
+        },
+
+        createDoc: async function(authorId, channelId, msgId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            let token;
+            try {
+                token = await triggerTokenGen.generate(msgId);
+            }catch(e){
+                throw("Failed to generate token: " + e);
+            }
+
+            console.log(token);
+
+            try {
+                await db.collection("triggers").insertOne({
+                    token: token,
+                    c_id: channelId,
+                    author: authorId
+                });
+            } catch (e) {
+                throw ("Failed to insert the new triggerDoc: " + e);
+            }
+
+            return token;
+        },
+
+        deleteDoc: async function(token, channelId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            let response;
+            try {
+                response = await db.collection("triggers").deleteOne({
+                    token: token,
+                    c_id: channelId
+                });
+            } catch (e) {
+                throw ("Could not delete trigger document: " + e);
+            }
+            
+            if (response.deletedCount < 1) {return false;}
+            return true;
         }
     },
 
