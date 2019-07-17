@@ -3,6 +3,8 @@ const MongoClient = require('mongodb').MongoClient;
 
 const cache = require("./cache");
 
+const triggerTokenGen = require("../modules/triggerTokenGen");
+
 let client, db;
 
 // Status:
@@ -295,9 +297,16 @@ module.exports = {
         createDoc: async function(authorId, channelId, msgId) {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
 
+            let token;
+            try {
+                token = await triggerTokenGen.generate();
+            }catch(e){
+                throw("Failed to generate token: " + e);
+            }
+            
             try {
                 await db.collection("triggers").insertOne({
-                    token: 69420,
+                    token: token,
                     c_id: channelId,
                     author: authorId
                 });
