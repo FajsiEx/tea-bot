@@ -14,7 +14,7 @@ module.exports = {
 
         let msg = messageEventData.msg;
         try {
-            await msg.channel.send({
+            await msg.author.send({
                 "embed": {
                     "title": "Trigger | Created",
                     "color": CONFIG.EMBED.COLORS.INFO,
