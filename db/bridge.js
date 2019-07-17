@@ -299,11 +299,13 @@ module.exports = {
 
             let token;
             try {
-                token = await triggerTokenGen.generate();
+                token = await triggerTokenGen.generate(msgId);
             }catch(e){
                 throw("Failed to generate token: " + e);
             }
-            
+
+            console.log(token);
+
             try {
                 await db.collection("triggers").insertOne({
                     token: token,
@@ -314,7 +316,7 @@ module.exports = {
                 throw ("Failed to insert the new triggerDoc: " + e);
             }
 
-            return true;
+            return token;
         }
     },
 

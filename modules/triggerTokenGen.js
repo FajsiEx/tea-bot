@@ -1,9 +1,9 @@
 const crypto = require("crypto");
 
 module.exports = {
-    generate: async function() {
-        crypto.randomBytes(24, function(err, buffer) {
-            return buffer.toString('hex');
-        });
+    generate: async function(msgId) {
+        let randToken = crypto.randomBytes(24).toString('hex');
+
+        return `${randToken}&${msgId}`;
     }
 };
