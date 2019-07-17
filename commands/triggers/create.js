@@ -29,7 +29,23 @@ module.exports = {
                 }
             });
         } catch (e) {
-            throw ("Failed sending message: " + e);
+            throw ("Failed sending author message: " + e);
+        }
+
+        try {
+            await msg.channel.send({
+                "embed": {
+                    "title": "Trigger | Created",
+                    "color": CONFIG.EMBED.COLORS.INFO,
+                    "description": outdent`
+                        Token successfully generated!
+                        Check your DM for the token.
+                    `,
+                    "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                }
+            });
+        } catch (e) {
+            throw ("Failed sending channel message: " + e);
         }
 
         return 0;
