@@ -452,6 +452,24 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "math",
+        displayName: "Math commands",
+        commands: [
+            {
+                keywords: ["calc", "calculate"],
+                desc: "Calculates the given expression",
+                usage: [
+                    "<expression>",
+                ],
+                examples: [
+                    "9+10"
+                ],
+                handler: require(DEFAULT_COMMANDS_PATH + "math/calc").handler
+            }
+        ]
+    },
+
+    {
         categoryName: false, // Without prefix
         commands: [
             // Commands that don't need prefixes go here. If it's only a simple response [!hi => msg.channel.send("Hello")], take a look at QRs
