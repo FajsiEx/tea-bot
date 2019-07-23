@@ -1,5 +1,6 @@
 const CONFIG = require("/modules/config");
 const dbInt = require("/db/interface");
+const outdent = require("outdent");
 
 module.exports = {
     handler: (handleData) => {
@@ -22,7 +23,7 @@ module.exports = {
                     "embed": {
                         "title": "Get guild document",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                             Could not get guild id from the message and no id was specified.
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -40,7 +41,7 @@ module.exports = {
                     "embed": {
                         "title": "Get guild document",
                         "color": CONFIG.EMBED.COLORS.SUCCESS,
-                        "description": `
+                        "description": outdent`
                             Check logs for result.
                             Guild ID: ${guildId}
                         `,
