@@ -1,4 +1,5 @@
 const CONFIG = require("../../../modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -12,7 +13,7 @@ module.exports = {
                     embed: {
                         "title": "Mute",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                             You must mention someone to be muted.
                         `,
                         "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -38,7 +39,7 @@ module.exports = {
                 embed: {
                     "title": "Mute",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
-                    "description": `
+                    "description": outdent`
                         User(s) were muted.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)
