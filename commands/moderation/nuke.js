@@ -5,6 +5,7 @@
 */
 
 const CONFIG = require("../../modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (handleData) {
@@ -131,7 +132,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuked",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
-                            "description": `
+                            "description": outdent`
                                 Deleted \`${messageCount}\` messages.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -155,7 +156,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | No count",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 You must specify a type of nuke
                                 \`nuke count 60\`
                                 \`nuke after (msgId)\`
@@ -180,7 +181,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | No count",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 You must specify the number of messages to be nuked (maximum 99)
                                 \`!nuke count 15\`
                             `,
@@ -204,7 +205,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | Invalid range",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Only 1 to 99 messages can be deleted.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -227,7 +228,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | Couldn't nuke",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Make sure the messages you want to nuke are less than 14 days old. (discord's API limit)
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -250,7 +251,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | Invalid message id",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 What you entered as a message id is not valid.
                                 \`!nuke after 588437298459443203\`
                             `,
@@ -274,7 +275,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | No messages to be deleted",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 There are no message that can be deleted. Select older than the most recent message to use 'after' or copy the right message id.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -297,7 +298,7 @@ module.exports = {
                         "embed": {
                             "title": "Nuke | That's too many",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Maximum I can delete is 99, but you selected ${messageCount}. That's ${99 - messageCount} over the limit!
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
