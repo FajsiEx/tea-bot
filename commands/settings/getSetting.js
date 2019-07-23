@@ -59,7 +59,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Get",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
-                            "description": `
+                            "description": outdent`
                                 Setting \`${settingName}\` has value \`${settingValue}\`.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -101,7 +101,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Get",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Setting \`${settingName}\` does not exist.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -118,7 +118,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Get",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 No setting name was given.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
