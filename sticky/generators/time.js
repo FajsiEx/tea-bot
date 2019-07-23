@@ -1,4 +1,5 @@
 const CONFIG = require("../../modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     generator: async function (generatorData) {
@@ -12,7 +13,7 @@ module.exports = {
             "embed": {
                 "title": "Time sticky post",
                 "color": CONFIG.EMBED.COLORS.STICKY,
-                "description": `
+                "description": outdent`
                     Current server time: ${new Date().toString()}
                 `,
                 "footer": CONFIG.EMBED.FOOTER()

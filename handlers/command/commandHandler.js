@@ -14,6 +14,7 @@ const CONFIG = require("/modules/config");
 const dbBridge = require("/db/bridge");
 const permChecker = require("/modules/permChecker");
 const restrictionChecker = require("/modules/restrictionChecker");
+const outdent = require("outdent");
 
 const handleDataCheck = require("/checks/handleData").check;
 
@@ -87,7 +88,7 @@ module.exports = {
                         "embed": {
                             "title": "Nope",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 You don't have the MANAGE_GUILD permission. Oops.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -138,7 +139,7 @@ module.exports = {
                         "embed": {
                             "title": "Nope",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 That command works only in ${requestedCommand.requirements.channelType} channels. sry.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -201,7 +202,7 @@ module.exports = {
                         embed: {
                             "title": "Invalid command category",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Look at the docs for valid command categories and their commands
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -221,7 +222,7 @@ module.exports = {
                         embed: {
                             "title": "Invalid command",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Look at the docs for valid commands
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -242,7 +243,7 @@ module.exports = {
                     "embed": {
                         "title": "This command is currently unavailable",
                         "color": CONFIG.EMBED.COLORS.WARN,
-                        "description": `
+                        "description": outdent`
                             Due to temporary database outage, I cannot run this command. Please try again later.
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -264,7 +265,7 @@ module.exports = {
                     "embed": {
                         "title": "Error | Command error",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                             While processing the \`!${requestedCommandCategoryName}${requestedCommandName}\` command an error has occurred.
                             Don't worry, this error will be reported to Sentry in a couple of seconds.
                             If you feel like it, you should report this bug [here](https://github.com/tea-bot-project/tea-bot/issues/new) with as much info as possible.

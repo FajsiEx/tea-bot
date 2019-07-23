@@ -1,5 +1,6 @@
 const CONFIG = require("../../../modules/config");
 const dbBridge = require("../../../db/bridge");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -9,7 +10,7 @@ module.exports = {
             "embed": {
                 "title": "KILLED EVERYONE",
                 "color": CONFIG.EMBED.COLORS.SUCCESS,
-                "description": `
+                "description": outdent`
                     :)
                 `,
                 "footer": CONFIG.EMBED.FOOTER(messageEventData)

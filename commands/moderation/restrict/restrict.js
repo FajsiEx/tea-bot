@@ -1,5 +1,6 @@
 const CONFIG = require("../../../modules/config");
 const dbInt = require("../../../db/interface");
+const outdent = require("outdent");
 
 const permChecker = require("../../../modules/permChecker");
 
@@ -45,7 +46,7 @@ module.exports = {
                     embed: {
                         "title": "Restrict",
                         "color": CONFIG.EMBED.COLORS.INFO,
-                        "description": `
+                        "description": outdent`
                             Current restrictions:
                             **${restrictions}**
                         `,
@@ -77,7 +78,7 @@ module.exports = {
                         embed: {
                             "title": "Baka!",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 You really thought you can restrict my master? wwwww\n\`Do that one more time and I'll break your fucking knees :)\`
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -121,7 +122,7 @@ module.exports = {
                     embed: {
                         "title": "Restrict command usage",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                         You must mention someone to be restricted or enter a restrict type.
                     `,
                         "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -147,7 +148,7 @@ module.exports = {
                 embed: {
                     "title": "Restrict",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
-                    "description": `
+                    "description": outdent`
                         Done.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)

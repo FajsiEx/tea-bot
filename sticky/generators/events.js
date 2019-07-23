@@ -1,5 +1,6 @@
 const CONFIG = require("../../modules/config");
 const dbInt = require("../../db/interface");
+const outdent = require("outdent");
 
 module.exports = {
     generator: async function (generatorData) {
@@ -106,7 +107,7 @@ module.exports = {
             "embed": {
                 "title": "Events",
                 "color": CONFIG.EMBED.COLORS.STICKY,
-                "description": `
+                "description": outdent`
                     ${resultEventString}
                 `,
                 "footer": CONFIG.EMBED.FOOTER()

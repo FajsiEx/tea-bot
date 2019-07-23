@@ -6,6 +6,7 @@
 */
 
 const CONFIG = require("../../modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (handleData) {
@@ -21,7 +22,7 @@ module.exports = {
                     "embed": {
                         "title": "Send | Invalid syntax",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                             That's an invalid syntax! Use:
                             \`!dev:send <chan_id> <msg>\`
                         `,
@@ -46,7 +47,7 @@ module.exports = {
                     "embed": {
                         "title": "Send",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                             Could not get the channel
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -67,7 +68,7 @@ module.exports = {
                     "embed": {
                         "title": "Send",
                         "color": CONFIG.EMBED.COLORS.FAIL,
-                        "description": `
+                        "description": outdent`
                             Failed to send the message.
                         `,
                         "footer": CONFIG.EMBED.FOOTER(handleData)
@@ -86,7 +87,7 @@ module.exports = {
                 "embed": {
                     "title": "Send",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
-                    "description": `
+                    "description": outdent`
                         The following message was sent to \`${channelId}\`
                         \`\`\`${sendMsg}\`\`\`
                     `,
