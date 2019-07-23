@@ -72,7 +72,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.SUCCESS,
-                            "description": `
+                            "description": outdent`
                                 Setting \`${settingName}\` was set to \`${settingValue}\`.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -92,7 +92,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Insufficient permissions. You need to be \`${minimalPerm}\` to modify this setting.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -109,7 +109,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Invalid value for type \`${settingType}\`
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -126,7 +126,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Setting \`${settingName}\` does not exist.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -143,7 +143,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 No setting name was given.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
@@ -160,7 +160,7 @@ module.exports = {
                         "embed": {
                             "title": "Settings | Set",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 No setting value was given.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
