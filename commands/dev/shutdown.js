@@ -1,4 +1,5 @@
 const CONFIG = require("../../modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -7,7 +8,7 @@ module.exports = {
                 "embed": {
                     "title": "Shutdown",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
-                    "description": `
+                    "description": outdent`
                         Ok then. Here goes nothing.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)
