@@ -1,6 +1,7 @@
 const stickyController = require("/sticky/stickyController");
 const generators = require("/sticky/generatorData").generators;
 const CONFIG = require("/modules/config");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (handleData) {
@@ -40,7 +41,7 @@ module.exports = {
                         "embed": {
                             "title": "Create sticky | Invalid type",
                             "color": CONFIG.EMBED.COLORS.FAIL,
-                            "description": `
+                            "description": outdent`
                                 Invalid or missing sticky type.
                                 For valid sticky types, visit docs.
 
