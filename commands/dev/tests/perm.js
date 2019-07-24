@@ -1,5 +1,6 @@
 const CONFIG = require("../../../modules/config");
 const permChecker = require("../../../modules/permChecker");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -24,7 +25,7 @@ module.exports = {
                 "embed": {
                     "title": "Permission module check",
                     "color": CONFIG.EMBED.COLORS.INFO,
-                    "description": `
+                    "description": outdent`
                         Admin perms: **${isAdmin}**
                         Dev perms: **${isDev}**
                     `,

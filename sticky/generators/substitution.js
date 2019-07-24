@@ -1,6 +1,7 @@
 const CONFIG = require("../../modules/config");
 const dbInt = require("../../db/interface");
 const eduApi = require("../../commands/edu/api");
+const outdent = require("outdent");
 
 module.exports = {
     generator: async function (generatorData) {
@@ -28,7 +29,7 @@ module.exports = {
             "embed": {
                 "title": "Substitution",
                 "color": CONFIG.EMBED.COLORS.STICKY,
-                "description": `
+                "description": outdent`
                     ***Today - ${todayDate.getDate()}.${todayDate.getMonth() + 1}.${todayDate.getFullYear()}***
                     ${todaySubstString}
                     ***Tomorrow - ${tomorrowDate.getDate()}.${tomorrowDate.getMonth() + 1}.${tomorrowDate.getFullYear()}***

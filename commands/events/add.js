@@ -1,6 +1,7 @@
 const CONFIG = require("../../modules/config");
 const dbInt = require("../../db/interface");
 const stickyController = require("../../sticky/stickyController");
+const outdent = require("outdent");
 
 module.exports = {
     handler: async function (messageEventData) {
@@ -83,7 +84,7 @@ module.exports = {
                 "embed": {
                     "title": "Add event",
                     "color": CONFIG.EMBED.COLORS.SUCCESS,
-                    "description": `
+                    "description": outdent`
                             Done.
                             Event \`${eventContentString}\` was added on \`${eventObject.date.getDate()}.${eventObject.date.getMonth() + 1}.${eventObject.date.getFullYear()}\`
                         `,
@@ -103,7 +104,7 @@ module.exports = {
                 "embed": {
                     "title": "Add event",
                     "color": CONFIG.EMBED.COLORS.FAIL,
-                    "description": `
+                    "description": outdent`
                             Invalid format of event.
                             
                             \`!events:add 11 something\` - Adds something on 11.${new Date().getMonth() + 1}.${new Date().getFullYear()}
