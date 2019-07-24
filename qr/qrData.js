@@ -161,4 +161,9 @@ module.exports = [
         type: "file",
         data: "https://i.imgur.com/Dv9li1r.jpg"
     },
+    {
+        keywords: ["aysat", "areyousure","sure","areyousureaboutthat"],
+        type: "file",
+        data: "https://tenor.com/view/sure-john-cena-gif-5783187"
+    }
 ];
