@@ -39,6 +39,7 @@ module.exports = {
             try {
                 if (incomingData.file) {
                     let fileName;
+
                     try {
                         let image = await imageDownload.image({
                             url: incomingData.file,
@@ -47,10 +48,15 @@ module.exports = {
 
                         fileName = image.filename;
                     }catch(e) {
-                        throw("Failed to get image: " + e);
+                        // Fallback if image download fails for whatever reason
+                        fileName = incomingData.file;
                     }
                     
-                    await targetChannel.send(incomingData.body, {files: [fileName]});
+                    try {
+                        await targetChannel.send(incomingData.body, {files: [fileName]});
+                    }catch(e){
+                        throw("Failed to send message to target channel: " + e);
+                    }
 
                     try {
                         await fs.unlink(fileName, ()=>{});
