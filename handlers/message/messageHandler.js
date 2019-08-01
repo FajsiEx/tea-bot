@@ -2,6 +2,7 @@ const CONFIG = require("/modules/config");
 const commandHandler = require("/handlers/command/commandHandler").handler;
 const handleDataCheck = require("/checks/handleData").check;
 const dbInt = require("/db/interface");
+const permChecker = require("../../modules/permChecker");
 
 module.exports = {
     handler: async function (handleData) {
@@ -11,6 +12,12 @@ module.exports = {
 
         if (handleData.msg.author.bot) {
             return 2; // 2 = ignored bot message
+        }
+
+        for (let user of handleData.msg.mentions.users.array()) { // Go through all message ping
+            if (permChecker.dev(user.id)) { // If any of the mentioned users is a dev
+                handleData.msg.delete(); // Delete that message now ffs
+            }
         }
 
         let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
