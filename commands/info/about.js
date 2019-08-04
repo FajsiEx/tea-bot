@@ -19,7 +19,7 @@ module.exports = {
 
                         (c) FajsiEx 2019. Licensed under **MIT** license.
 
-                        Open source on [GitHub (tea-bot-projects/tea-bot)](https://github.com/tea-bot-project/tea-bot),
+                        Open source on [GitHub (tea-bot-project/tea-bot)](https://github.com/tea-bot-project/tea-bot),
                         because open source is the future.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)

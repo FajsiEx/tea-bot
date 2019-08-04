@@ -165,5 +165,127 @@ module.exports = [
         keywords: ["aysat", "areyousure","sure","areyousureaboutthat"],
         type: "file",
         data: "https://i.imgur.com/auM1Xmb.gif"
+    },
+    
+    // Aug 4th 2019
+    {
+        keywords: ["nice"],
+        type: "file",
+        data: "https://i.imgur.com/6vxtRLP.jpg"
+    },
+    {
+        keywords: ["absolutelynot", "anot"],
+        type: "file",
+        data: "https://i.imgur.com/YQGxJK3.jpg"
+    },
+    {
+        keywords: ["oygghh"],
+        type: "file",
+        data: "https://i.imgur.com/znFYJ4L.jpg"
+    },
+    {
+        keywords: ["life", "lifesabitch"],
+        type: "file",
+        data: "https://i.imgur.com/meAyNLI.jpg"
+    },
+    {
+        keywords: ["fear"],
+        type: "file",
+        data: "https://i.imgur.com/YprZNrM.jpg"
+    },
+    {
+        keywords: ["stares"],
+        type: "file",
+        data: "https://i.imgur.com/dHhgJMr.jpg"
+    },
+    {
+        keywords: ["hellye"],
+        type: "file",
+        data: "https://i.imgur.com/vRBmJp5.jpg"
+    },
+    {
+        keywords: ["fuckyou"],
+        type: "file",
+        data: "https://i.imgur.com/d186kBy.jpg"
+    },
+    {
+        keywords: ["didifuckingask", "didiask"],
+        type: "file",
+        data: "https://i.imgur.com/pnHKaWq.jpg"
+    },
+    {
+        keywords: ["eskius", "eskiusmi"],
+        type: "file",
+        data: "https://i.imgur.com/wEE9JqI.jpg"
+    },
+    {
+        keywords: ["noucard"],
+        type: "file",
+        data: "https://i.imgur.com/pBP6ZWM.jpg"
+    },
+    {
+        keywords: ["dingdong"],
+        type: "file",
+        data: "https://i.imgur.com/UxLr16p.jpg"
+    },
+    {
+        keywords: ["itsano"],
+        type: "file",
+        data: "https://i.imgur.com/7EADYi2.jpg"
+    },
+    {
+        keywords: ["illfky", "killyou"],
+        type: "file",
+        data: "https://i.imgur.com/tlnzFCq.jpg"
+    },
+    {
+        keywords: ["cringe"],
+        type: "file",
+        data: "https://i.imgur.com/htYKeXp.jpg"
+    },
+    {
+        keywords: ["flippityflop", "un2stop"],
+        type: "file",
+        data: "https://i.imgur.com/S92SQWh.jpg"
+    },
+    {
+        keywords: ["doyouthinkimjoking"],
+        type: "file",
+        data: "https://i.imgur.com/XGkCvn6.jpg"
+    },
+    {
+        keywords: ["disappointed"],
+        type: "file",
+        data: "https://i.imgur.com/p8R3euu.jpg"
+    },
+    {
+        keywords: ["listen"],
+        type: "file",
+        data: "https://i.imgur.com/Hw7XeXv.jpg"
+    },
+    {
+        keywords: ["beepboop"],
+        type: "file",
+        data: "https://i.imgur.com/gnmPn5s.jpg"
+    },
+    {
+        keywords: ["991"],
+        type: "file",
+        data: "https://i.imgur.com/xMBXSA6.jpg"
+    },
+    {
+        keywords: ["waff", "wait"],
+        type: "file",
+        data: "https://i.imgur.com/0aXXyV1.jpg"
+    },
+    {
+        keywords: ["howtoslap", "slap"],
+        type: "file",
+        data: "https://i.imgur.com/uA5VtLD.jpg"
+    },
+    {
+        keywords: ["uwot", "youwhat"],
+        type: "file",
+        data: "https://i.imgur.com/8UOS5zg.jpg"
     }
 ];
