@@ -8,6 +8,17 @@ module.exports = {
     init: function (app, dClientRef) {
         dClient = dClientRef;
 
+        // Wanilla status endpoint
+        app.get('/api/wanilla/status', (req, res) => {
+            res.json({
+                type: "wanilla-status-response",
+                body: {
+                    status: 1
+                }
+            });
+        });
+
+
         app.get('/api/stats', (req, res) => {
             stats.get().then((stat)=>{
                 res.json(stat);
