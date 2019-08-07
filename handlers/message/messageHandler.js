@@ -15,7 +15,7 @@ module.exports = {
         }
 
         for (let user of handleData.msg.mentions.users.array()) { // Go through all message ping
-            if (permChecker.dev(user.id)) { // If any of the mentioned users is a dev
+            if (await permChecker.dev(user.id)) { // If any of the mentioned users is a dev
                 handleData.msg.delete(); // Delete that message now ffs
 
                 try {
