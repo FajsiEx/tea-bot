@@ -287,5 +287,13 @@ module.exports = [
         keywords: ["uwot", "youwhat"],
         type: "file",
         data: "https://i.imgur.com/8UOS5zg.jpg"
+    },
+
+    // Aug 7th 2019
+
+    {
+        keywords: ["shook"],
+        type: "file",
+        data: "https://i.imgur.com/kgraRZX.jpg"
     }
 ];
