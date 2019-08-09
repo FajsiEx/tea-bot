@@ -167,6 +167,12 @@ let COMMANDS = [
                 desc: "Replies with your current permissions",
                 cannotBeUsedWithoutCommandCategory: true,
             },
+            {
+                keywords: ["mofu"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/tests/mofu").handler,
+                desc: "Experiment for jimp module",
+                cannotBeUsedWithoutCommandCategory: true,
+            },
         ]
     },
 
