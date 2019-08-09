@@ -295,5 +295,20 @@ module.exports = [
         keywords: ["shook"],
         type: "file",
         data: "https://i.imgur.com/kgraRZX.jpg"
+    },
+
+    // INSERTABLES
+
+    {
+        keywords: ["nya"],
+        type: "insertable",
+        data: {
+            src: "https://preview.redd.it/a4jogwm2p2631.png?width=1024&auto=webp&s=7f0bf0e7dc18a8a06c9f847459537280b44e1840", // Original template picture
+            font: "FONT_SANS_32_BLACK", // Jimp font [https://github.com/oliver-moran/jimp/tree/master/packages/plugin-print#included-fonts]
+            textPosition: {x: 150, y: 80}, // Where to display the text
+            fontCanvasSize: {x: 1024, y: 576}, // Most of the time this should be the same resolution as the og picture
+            maxTextWidth: 200, // Defines max width of the text
+            textRotate: -12, // Rotate the text
+        }
     }
 ];
