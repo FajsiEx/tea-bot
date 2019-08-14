@@ -17,10 +17,8 @@ module.exports = {
         app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
             extended: true
         }));
-        app.use(cors({
-            credentials: true,
-            origin: (o,c)=>{c(null,true)}
-        }));
+
+        app.use(cors());
 
         server = http.Server(app);
 
