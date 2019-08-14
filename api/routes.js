@@ -68,7 +68,7 @@ module.exports = {
             return;
         });
 
-        app.get('/api/getCommandList', (req, res) => {
+        app.get('/api/commands', (req, res) => {
             res.json({
                 status: "ok",
                 data: commandData.getCommandList()
