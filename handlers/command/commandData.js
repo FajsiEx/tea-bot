@@ -588,7 +588,12 @@ module.exports = {
                 command.handler = undefined;
             }
         }
+
         
-        return commands;
+        
+        return {
+            commands: commands,
+            qrs: qrData
+        };
     }
 };
