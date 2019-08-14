@@ -13,8 +13,6 @@ const DEFAULT_COMMANDS_PATH = "/commands/";
 const qrHandler = require("/qr/qrHandler");
 const qrData = require("/qr/qrData");
 
-const htmlEscape = require("escape-html");
-
 /*
 
 * Command template
