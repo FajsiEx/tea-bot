@@ -573,66 +573,22 @@ module.exports = {
     },
 
     getCommandList: function () {
-        let formattedMsg = "";
+        const rawCommands = JSON.parse(JSON.stringify(COMMANDS));
 
-        COMMANDS.forEach(commandCategory => {
-            if (commandCategory.categoryName == "qr") return;
-            if (commandCategory.categoryName == "invalid") return;
-            if (!commandCategory.categoryName) return;
+        let commands = [];
+        
+        for (let commandCategory of rawCommands) {
+            if (commandCategory.categoryName != "qr" && commandCategory.categoryName) {
+                commands.push(commandCategory);
+            }
+        }
 
-
-            formattedMsg += `<h2>${commandCategory.displayName}</h2>`;
-
-            formattedMsg += `
-                <table class="table table-bordered text-light">
-                    <thead class="thead-dark">
-                        <td><b>Command</b></td>
-                        <td><b>Description</b></td>
-                        <td><b>Usage</b></td>
-                        <td><b>Examples</b></td>
-                    </thead>
-                    <tbody>
-            `;
-
-            commandCategory.commands.forEach(command => {
-                let rowColor = "";
-                if (command.rights) {
-                    if (command.rights.devOnly) { rowColor = "bg-danger"; }
-                    if (command.rights.adminOnly) { rowColor = "bg-info"; }
-                }
-
-                formattedMsg += `<tr class="${rowColor}"><td>`;
-
-                command.keywords.forEach(keyword => {
-                    formattedMsg += `!${commandCategory.categoryName}:${keyword}<br>`;
-                });
-
-                formattedMsg += `</td><td>${command.desc}</td><td>`;
-
-                if (command.usage) {
-                    command.usage.forEach(usage => {
-                        formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(usage)}<br>`;
-                    });
-                } else {
-                    formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
-                }
-
-                formattedMsg += "</td><td>";
-
-                if (command.examples) {
-                    command.usage.forEach(example => {
-                        formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]} ${htmlEscape(example)}<br>`;
-                    });
-                } else {
-                    formattedMsg += `!${commandCategory.categoryName}:${command.keywords[0]}`;
-                }
-
-                formattedMsg += "</td></tr>";
-            });
-
-            formattedMsg += "</tbody></table><br>";
-        });
-
-        return formattedMsg;
+        for (let commandCategory of commands) {
+            for(let command of commandCategory.commands) {
+                command.handler = undefined;
+            }
+        }
+        
+        return commands;
     }
 };
