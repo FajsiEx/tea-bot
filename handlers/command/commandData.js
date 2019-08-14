@@ -30,7 +30,7 @@ const htmlEscape = require("escape-html");
         readyDatabase: true
     }
     usage: [
-        "<some parameter> <another parameter>",
+        "[some parameter] [another parameter]",
     ],
     examples: [
         "value value2"
@@ -52,7 +52,7 @@ let COMMANDS = [
                 desc: "Sends a message to channel specified",
                 rights: { devOnly: true },
                 usage: [
-                    "<channel id> <message>",
+                    "[channel id] [message]",
                 ],
                 examples: [
                     "4546751213754314 Hello, World!"
@@ -115,7 +115,7 @@ let COMMANDS = [
                 desc: "Gets guild doc for the specified guild and logs it to the console", // TODO: make this pp and available to everyone
                 usage: [
                     "",
-                    "<guild id>",
+                    "[guild id]",
                 ],
                 examples: [
                     "",
@@ -135,7 +135,7 @@ let COMMANDS = [
                 desc: "Deletes the guild doc and resets all cache for that guild to zero",
                 usage: [
                     "",
-                    "<guild id>",
+                    "[guild id]",
                 ],
                 examples: [
                     "",
@@ -185,8 +185,8 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/nuke").handler,
                 desc: "Deletes a number of messages specified by a number or id",
                 usage: [
-                    "count <message count>",
-                    "from <message id>",
+                    "count [message count]",
+                    "from [message id]",
                 ],
                 examples: [
                     "count 15",
@@ -204,8 +204,8 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/mute").handler,
                 desc: "Mutes mentioned users",
                 usage: [
-                    "<mention>",
-                    "<mention> <mention2> ...",
+                    "[mention]",
+                    "[mention] [mention2] ...",
                 ],
                 examples: [
                     "@FajsiEx",
@@ -223,8 +223,8 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "moderation/mute/unmute").handler,
                 desc: "Un-mutes mentioned users",
                 usage: [
-                    "<mention>",
-                    "<mention> <mention2> ...",
+                    "[mention]",
+                    "[mention] [mention2] ...",
                 ],
                 examples: [
                     "@FajsiEx",
@@ -243,7 +243,7 @@ let COMMANDS = [
                 desc: "Restrict command usage to selected group or excludes mentioned users",
                 usage: [
                     "",
-                    "<mention>",
+                    "[mention]",
                     "admin",
                     "dev",
                 ],
@@ -273,7 +273,7 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "sticky/create").handler,
                 desc: "Creates sticky message of specified type",
                 usage: [
-                    "<sticky type>",
+                    "[sticky type]",
                 ],
                 examples: [
                     "time",
@@ -331,9 +331,9 @@ let COMMANDS = [
                 handler: require(DEFAULT_COMMANDS_PATH + "events/add").handler,
                 desc: "Adds to guild events on specified date",
                 usage: [
-                    "<day> <event name>",
-                    "<day>.<month> <event name>",
-                    "<day>.<month>.<year> <event name>",
+                    "[day] [event name]",
+                    "[day].[month] [event name]",
+                    "[day].[month].[year] [event name]",
                 ],
                 examples: [
                     "5 event",
@@ -369,7 +369,7 @@ let COMMANDS = [
                 keywords: ["get"],
                 desc: "Gets a value of a given setting",
                 usage: [
-                    "<setting name>",
+                    "[setting name]",
                 ],
                 examples: [
                     "nsfw.allowed"
@@ -384,7 +384,7 @@ let COMMANDS = [
                 keywords: ["set"],
                 desc: "Sets a value of a given setting",
                 usage: [
-                    "<setting name> <value>",
+                    "[setting name] [value]",
                 ],
                 examples: [
                     "nsfw.allowed false"
@@ -418,7 +418,7 @@ let COMMANDS = [
                 keywords: ["anime", "ani", "a"],
                 desc: "Gets anime by it's name",
                 usage: [
-                    "<anime name>",
+                    "[anime name]",
                 ],
                 examples: [
                     "kimi no na wa"
@@ -429,7 +429,7 @@ let COMMANDS = [
                 keywords: ["user", "u"],
                 desc: "Gets user by his/her/its name",
                 usage: [
-                    "<username>",
+                    "[username]",
                 ],
                 examples: [
                     "fajsiex"
@@ -447,7 +447,7 @@ let COMMANDS = [
                 keywords: ["user", "u"],
                 desc: "Gets user by his/her/it's name",
                 usage: [
-                    "<username>",
+                    "[username]",
                 ],
                 examples: [
                     "fajsiex"
@@ -465,7 +465,7 @@ let COMMANDS = [
                 keywords: ["calc", "calculate"],
                 desc: "Calculates the given expression",
                 usage: [
-                    "<expression>",
+                    "[expression]",
                 ],
                 examples: [
                     "9+10"
