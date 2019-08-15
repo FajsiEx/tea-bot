@@ -17,10 +17,10 @@ module.exports = {
                         Server message latency: **${new Date().getTime() - msg.createdTimestamp} ms**
                         Server time: **${new Date().toString()}**
 
-                        (c) FajsiEx 2019. Licensed under **MIT** license.
+                        > [Command list](https://beta.fajsiex.ml/projects/teabotre)
+                        > [GitHub (tea-bot-project/tea-bot)](https://github.com/tea-bot-project/tea-bot)
 
-                        Open source on [GitHub (tea-bot-project/tea-bot)](https://github.com/tea-bot-project/tea-bot),
-                        because open source is the future.
+                        (c) FajsiEx 2019. Licensed under **MIT** license.
                     `,
                     "footer": CONFIG.EMBED.FOOTER(messageEventData)
                 }
