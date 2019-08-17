@@ -22,7 +22,13 @@ module.exports = {
         expression = expression.replace(/×/g, '*');
         expression = expression.replace(/x/g, '*');
 
-        let result = math.eval(expression);
+        let result;
+        try {
+            result = math.eval(expression);
+        }catch(e) {
+            module.exports.responses.fail.invalidExpression(messageEventData);
+            return 2;
+        }
 
         try {
             await module.exports.responses.success.result(messageEventData, expression, result);
@@ -64,6 +70,23 @@ module.exports = {
                             "color": CONFIG.EMBED.COLORS.FAIL,
                             "description": outdent`
                                 No expression was provided.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed sending message: " + e);
+                }
+                return;
+            },
+            invalidExpression: async function(messageEventData) {
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Math | Calculate",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": outdent`
+                                Invalid expression.
                             `,
                             "footer": CONFIG.EMBED.FOOTER(messageEventData)
                         }
