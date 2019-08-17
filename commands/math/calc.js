@@ -22,7 +22,13 @@ module.exports = {
         expression = expression.replace(/×/g, '*');
         expression = expression.replace(/x/g, '*');
 
-        let result = math.eval(expression);
+        let result;
+        try {
+            result = math.eval(expression);
+        }catch(e) {
+            module.exports.responses.fail.invalidExpression(messageEventData);
+            return 2;
+        }
 
         try {
             await module.exports.responses.success.result(messageEventData, expression, result);
