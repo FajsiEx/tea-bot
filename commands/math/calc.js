@@ -72,6 +72,23 @@ module.exports = {
                     throw ("Failed sending message: " + e);
                 }
                 return;
+            },
+            invalidExpression: async function(messageEventData) {
+                try {
+                    await messageEventData.msg.channel.send({
+                        "embed": {
+                            "title": "Math | Calculate",
+                            "color": CONFIG.EMBED.COLORS.FAIL,
+                            "description": outdent`
+                                Invalid expression.
+                            `,
+                            "footer": CONFIG.EMBED.FOOTER(messageEventData)
+                        }
+                    });
+                } catch (e) {
+                    throw ("Failed sending message: " + e);
+                }
+                return;
             }
         }
     }
