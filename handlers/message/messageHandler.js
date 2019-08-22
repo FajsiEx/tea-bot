@@ -2,7 +2,6 @@ const CONFIG = require("/modules/config");
 const commandHandler = require("/handlers/command/commandHandler").handler;
 const handleDataCheck = require("/checks/handleData").check;
 const dbInt = require("/db/interface");
-const permChecker = require("../../modules/permChecker");
 
 module.exports = {
     handler: async function (handleData) {
@@ -14,24 +13,7 @@ module.exports = {
             return 2; // 2 = ignored bot message
         }
 
-        for (let user of handleData.msg.mentions.users.array()) { // Go through all message ping
-            if (await permChecker.dev(user.id)) { // If any of the mentioned users is a dev
-                handleData.msg.delete(); // Delete that message now ffs
-
-                try {
-                    handleData.msg.author.send("Your message was deleted, because he doesn't like pings. Feel free to send it again ***WITHOUT*** pinging him: `" + handleData.msg.content + "`");
-
-                    if (handleData.msg.author.id == "342227744513327107" || handleData.msg.author.id ==  "194497230189756416") {
-                        handleData.msg.author.send("If you don't stop, she'll come for you.");
-                        handleData.msg.author.send({files: ["https://i.redd.it/lfr64ixd5ud31.png"]});
-                    }else{
-                        handleData.msg.author.send("Further pings may cause an angry bot.");
-                    }
-                }catch(e){
-                    console.error("Failed to send ping auto delete msg: " + e);
-                }
-            }
-        }
+        console.log(`[MSG] -${handleData.msg.channel.type}- ${handleData.msg.author.tag}: ${handleData.msg.content}`); // For testing. Will be removed later
 
         let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
         if (commandPrefix) {

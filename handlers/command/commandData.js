@@ -456,6 +456,18 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "inspbot",
+        displayName: "InspiroBot commands",
+        commands: [
+            {
+                keywords: ["generate", "gen", "g"],
+                desc: "Generates image from InspiroBot",
+                handler: require(DEFAULT_COMMANDS_PATH + "inspirobot/generate").handler
+            }
+        ]
+    },
+
+    {
         categoryName: "math",
         displayName: "Math commands",
         commands: [
