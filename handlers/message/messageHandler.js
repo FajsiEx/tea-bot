@@ -13,6 +13,8 @@ module.exports = {
             return 2; // 2 = ignored bot message
         }
 
+        console.log(`[MSG] -${handleData.msg.channel.type}- ${handleData.msg.author.tag}: ${handleData.msg.content}`); // For testing. Will be removed later
+
         let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
         if (commandPrefix) {
             try { await commandHandler(handleData, commandPrefix); } // This will return a status
