@@ -7,8 +7,12 @@
 
 const dbBridge = require("../db/bridge");
 const dClient = require("../discord/client").getDiscordClient();
+
 const imageDownload = require("image-downloader");
 const fs = require("fs");
+
+const converter = require("video-converter");
+const fdownload = require("file-downloadr");
 
 module.exports = {
     incomingData: async function (incomingData) {
@@ -47,20 +51,58 @@ module.exports = {
                         });
 
                         fileName = image.filename;
-                    }catch(e) {
-                        // Fallback if image download fails for whatever reason
-                        fileName = incomingData.file;
+                    } catch (e) {
+                        // Fallback if image download fails because it isn't an image or whatever reason
+
+
+                        if (incomingData.convertMp4ToAudio) {
+                            baseFileName = "fdl_" + new Date().getTime() + incomingData.token.slice(-4);
+
+                            try {
+                                res = await fdownload(
+                                    incomingData.file,
+                                    `${baseFileName}.mp4`
+                                );
+                            } catch (e) {
+                                throw ("Failed to fdownload video to convert:" + e);
+                            }
+
+                            console.log(res);
+
+                            try {
+                                await new Promise((resolve, reject) => {
+                                    converter.convert(`${baseFileName}.mp4`, `${baseFileName}.mp3`, function (err) {
+                                        if (err) reject(err);
+                                        resolve();
+                                    });
+                                });
+                            } catch (e) {
+                                throw ("Failed to convert mp4 to mp3: " + e);
+                            }
+
+                            fileName = baseFileName + ".mp3";
+
+                            try {
+                                await fs.unlink(baseFileName + ".mp4", () => { });
+                            } catch (e) {
+                                console.warn(e);
+                            }
+                        } else {
+                            fileName = incomingData.file;
+                        }
                     }
-                    
+
+                    console.log(fileName);
+
                     try {
-                        await targetChannel.send(incomingData.body, {files: [fileName]});
-                    }catch(e){
-                        throw("Failed to send message to target channel: " + e);
+                        await targetChannel.send(incomingData.body, { files: [fileName] });
+                    } catch (e) {
+                        throw ("Failed to send message to target channel: " + e);
                     }
 
                     try {
-                        await fs.unlink(fileName, ()=>{});
-                    }catch(e){
+                        await fs.unlink(fileName, () => { });
+                    } catch (e) {
                         console.warn(e);
                     }
                 } else {
