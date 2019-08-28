@@ -10,7 +10,7 @@ module.exports = {
                     "title": "Tea-bot | About",
                     "color": CONFIG.EMBED.COLORS.INFO,
                     "description": outdent`
-                        **「 Tea-bot Re:Write 」 Project **
+                        **「 Tea-bot 」 Project **
                         *${CONFIG.SPLASH_STRINGS.GET()}*
                         
                         Build **${CONFIG.BOT.BUILD_INFO.BUILD_STRING}**

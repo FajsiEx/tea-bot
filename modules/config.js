@@ -9,7 +9,7 @@
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "19.beta!3",
+            BUILD: "19.rc-4",
             BUILD_STRING: "local build",
         }
     },
@@ -50,7 +50,8 @@ const CONFIG = {
             "That time I got reincarnated as a rewrite",
             "God's blessing on this wonderful code!",
             "~No Matter How I Look at It, It’s You Guys Fault I’m Crashing!~",
-            "Rewrite!!!!!!!!"
+            "Rewrite!!!!!!!!",
+            "This rewrite has a beginning, but no end. - Infinite"
         ],
         GET: function() {
             return (this.STRINGS[Math.floor(Math.random() * 100 % this.STRINGS.length)]);

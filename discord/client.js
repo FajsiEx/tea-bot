@@ -24,7 +24,7 @@ module.exports = {
         dClient.on("ready", () => {
             if (!ready) {
                 console.log("________________________________________________________\n");
-                console.log("「 Tea-bot Re:Write 」 Project ".special + " " + CONFIG.SPLASH_STRINGS.GET().subspecial);
+                console.log("「 Tea-bot 」 Project ".special + " " + CONFIG.SPLASH_STRINGS.GET().subspecial);
                 
                 console.log(`Build ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`.warn);
                 console.log("(c) FajsiEx 2019 - under MIT license\n");
