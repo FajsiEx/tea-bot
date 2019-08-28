@@ -51,27 +51,13 @@ module.exports = {
                         });
 
                         fileName = image.filename;
-                    } catch (e) {
-                        // Fallback if image download fails because it isn't an image or whatever reason
-
 
                         if (incomingData.convertMp4ToAudio) {
-                            baseFileName = "fdl_" + new Date().getTime() + incomingData.token.slice(-4);
-
-                            try {
-                                res = await fdownload(
-                                    incomingData.file,
-                                    `${baseFileName}.mp4`
-                                );
-                            } catch (e) {
-                                throw ("Failed to fdownload video to convert:" + e);
-                            }
-
-                            console.log(res);
+                            baseAudioFileName = "fdl_" + new Date().getTime() + incomingData.token.slice(-4);
 
                             try {
                                 await new Promise((resolve, reject) => {
-                                    converter.convert(`${baseFileName}.mp4`, `${baseFileName}.mp3`, function (err) {
+                                    converter.convert(fileName, `${baseAudioFileName}.mp3`, function (err) {
                                         if (err) reject(err);
                                         resolve();
                                     });
@@ -80,16 +66,20 @@ module.exports = {
                                 throw ("Failed to convert mp4 to mp3: " + e);
                             }
 
-                            fileName = baseFileName + ".mp3";
-
                             try {
-                                await fs.unlink(baseFileName + ".mp4", () => { });
+                                await fs.unlink(fileName, () => { });
                             } catch (e) {
                                 console.warn(e);
                             }
-                        } else {
-                            fileName = incomingData.file;
+                            
+                            fileName = baseAudioFileName + ".mp3";
+                            
                         }
+                    } catch (e) {
+                        // Fallback if image download fails because it isn't an image or whatever reason
+                        console.log("Falling back!!!!!!!!");
+                        
+                        fileName = incomingData.file;
                     }
 
                     console.log(fileName);
