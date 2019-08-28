@@ -9,7 +9,7 @@
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "19.beta!3",
+            BUILD: "19.rc-4",
             BUILD_STRING: "local build",
         }
     },
