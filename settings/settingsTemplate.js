@@ -17,4 +17,10 @@ module.exports = [
         defaultValue: true,
         type: "bool"
     },
+    {
+        name: "nsfw.allowed",
+        perm: "admin",
+        defaultValue: false,
+        type: "bool"
+    },
 ];
