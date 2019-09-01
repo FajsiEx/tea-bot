@@ -3,7 +3,7 @@ const dbBridge = require("/db/bridge");
 
 module.exports = {
     interval: function (dClient) {
-        let activityString = `with ${dClient.guilds.size} guilds | ${CONFIG.BOT.BUILD_INFO.BUILD_STRING} | ${module.exports.getTimeString()}`;
+        let activityString = `with ${dClient.guilds.size} guilds | ${CONFIG.BOT.BUILD_INFO.BUILD_STRING}`;
 
         if (!dbBridge.isDBReady()) {
             dClient.user.setStatus("idle");
