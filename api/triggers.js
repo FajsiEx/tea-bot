@@ -14,6 +14,8 @@ const fs = require("fs");
 const converter = require("video-converter");
 const fdownload = require("file-downloadr");
 
+const decode = require("urldecode");
+
 module.exports = {
     incomingData: async function (incomingData) {
         if (!module.exports.checkIncomingData(incomingData)) {
@@ -42,6 +44,8 @@ module.exports = {
 
             try {
                 if (incomingData.file) {
+                    incomingData.file = decode(incomingData.file); // Decode anything encoded in the url
+
                     let fileName;
 
                     try {

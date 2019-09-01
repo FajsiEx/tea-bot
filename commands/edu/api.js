@@ -40,7 +40,7 @@ module.exports = {
             let classSubString = "";
             subSects.forEach(section => {
                 let className = section.querySelector(".header span").innerHTML;
-                if (className != "I.B") return;
+                if (className != "II.B") return;
 
                 classSubString = `**${className}**`;
 
