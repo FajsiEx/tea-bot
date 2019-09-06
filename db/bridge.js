@@ -337,6 +337,35 @@ module.exports = {
         }
     },
 
+    bridges: {
+        getDocFromSource: async function (_service, _sourceId) {
+            if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
+
+            let docs;
+            try {
+                docs = await db.collection("bridges").find({
+                    source: {
+                        service: _service,
+                        source_id: _sourceId
+                    }
+                }).toArray();
+            } catch (e) {
+                throw ("Could not get docs from collection: " + e);
+            }
+
+            if (docs.length < 1) {
+                return false;
+            }
+
+            if (docs.length > 1) {
+                console.log(`[BRIDGE:BRIDGES] There is more than one bridgeDoc with this data! Wait, that's illegal.`.warn, docs);
+                throw ("More than one bridgeDoc found.");
+            }
+
+            return docs[0];
+        },
+    },
+
     maintenance: {
         killEverything: async function () {
             if (dbConnStatus != 1) { throw ("Database error. !DB!"); }
