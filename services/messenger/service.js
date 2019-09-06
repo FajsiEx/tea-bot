@@ -71,6 +71,29 @@ module.exports.bridgingHandler = async function (msg) {
 
                         let fileName = file.filename;
 
+                        if (attachment.audioType == "VOICE_MESSAGE") {
+                            baseAudioFileName = "fdl_" + new Date().getTime() + msg.messageID.slice(-4);
+
+                            try {
+                                await new Promise((resolve, reject) => {
+                                    converter.convert(fileName, `${baseAudioFileName}.mp3`, function (err) {
+                                        if (err) reject(err);
+                                        resolve();
+                                    });
+                                });
+                            } catch (e) {
+                                console.error("Failed to convert mp4 to mp3: " + e);
+                            }
+
+                            try {
+                                await fs.unlink(fileName, () => { });
+                            } catch (e) {
+                                console.warn(e);
+                            }
+                            
+                            fileName = baseAudioFileName + ".mp3";
+                        }
+
                         files.push(fileName);
                     }
                 }
