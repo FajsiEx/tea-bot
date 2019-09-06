@@ -6,6 +6,9 @@
 */
 
 const fbMessenger = require("facebook-chat-api");
+const fetch = require('node-fetch');
+const htmlParser = require('node-html-parser');
+
 const dbBridge = require("../../db/bridge");
 const discordClient = require("../../discord/client").getDiscordClient();
 
@@ -31,6 +34,19 @@ module.exports.bridgingHandler = async function (msg) {
         catch (e) { console.error("Could not get bridgeDoc: " + e); }
 
         if (bridgeDoc) {
+            let username;
+            try {
+                const res = await fetch("https://www.facebook.com/profile.php?id=" + msg.senderID);
+                const pageContent = await res.text();
+
+                let document = htmlParser.parse(pageContent, "text/html");
+                username = document.querySelector("#pageTitle").innerHTML.split(" | ")[0];
+            } catch (e) {
+                console.error("Failed to fetch userpage for fb profile: " + e);
+            }
+
+            console.log(username);
+
             if (bridgeDoc.target.service == "discord") { // TODO: Integrate this with services when they're done.
                 let channel;
                 try {
@@ -39,12 +55,23 @@ module.exports.bridgingHandler = async function (msg) {
                     console.error("Could not send bridge message: " + e);
                 }
 
-                try {
-                    await channel.send(msg.body);
-                } catch (e) {
-                    console.log("Failed to send msg to target: " + e);
+                let files = [];
+                if (msg.attachments.length > 0) {
+                    for (const attachment of msg.attachments) {
+                        files.push(attachment.url);
+                    }
                 }
+
+                try {
+                    const msgDate = new Date(parseInt(msg.timestamp));
+                    await channel.send({
+                        body: `${msgDate.getHours()}:${msgDate.getMinutes()}:${msgDate.getSeconds()} **${username}**: ${msg.body}`,
+                        files
+                    });
+                } catch (e) {
+                console.log("Failed to send msg to target: " + e);
             }
         }
     }
+}
 };
