@@ -15,18 +15,19 @@ module.exports.init = function () {
 
         api.listen((err, msg) => {
             console.log("[SERVICE: MESSENGER] Message event", msg);
+            module.exports.messageEventHandler(msg);
         });
     });
 };
 
 module.exports.messageEventHandler = function (msg) {
-
+    module.exports.bridgingHandler(msg);
 };
 
 module.exports.bridgingHandler = async function (msg) {
     if (msg.isGroup) {
         let bridgeDoc;
-        try { bridgeDoc = dbBridge.bridges.getDocFromSource("messenger", msg); }
+        try { bridgeDoc = await dbBridge.bridges.getDocFromSource("messenger", msg.threadID); }
         catch (e) { console.error("Could not get bridgeDoc: " + e); }
 
         if (bridgeDoc) {

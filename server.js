@@ -20,6 +20,8 @@ console.log("[BOOT] Sentry initialized".success);
 require("./discord/client").init();
 const dClient = require("./discord/client").getDiscordClient();
 
+require("./services/messenger/service").init();
+
 console.log("[BOOT] Initialized Discord client".success);
 
 require("./api/server").init(dClient);
