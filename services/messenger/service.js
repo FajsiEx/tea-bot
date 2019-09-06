@@ -8,6 +8,10 @@
 const fbMessenger = require("facebook-chat-api");
 const fetch = require('node-fetch');
 const htmlParser = require('node-html-parser');
+const imageDownload = require("image-downloader");
+const fs = require("fs");
+const converter = require("video-converter");
+const decode = require("urldecode");
 
 const dbBridge = require("../../db/bridge");
 const discordClient = require("../../discord/client").getDiscordClient();
@@ -58,20 +62,35 @@ module.exports.bridgingHandler = async function (msg) {
                 let files = [];
                 if (msg.attachments.length > 0) {
                     for (const attachment of msg.attachments) {
-                        files.push(attachment.url);
+                        const attachUrl = decode(attachment.url); // Decode anything encoded in the url
+
+                        const file = await imageDownload.image({
+                            url: attachUrl,
+                            dest: "./"
+                        });
+
+                        let fileName = file.filename;
+
+                        files.push(fileName);
                     }
                 }
 
                 try {
                     const msgDate = new Date(parseInt(msg.timestamp));
-                    await channel.send({
-                        body: `${msgDate.getHours()}:${msgDate.getMinutes()}:${msgDate.getSeconds()} **${username}**: ${msg.body}`,
-                        files
-                    });
+                    await channel.send(
+                        `${msgDate.getHours()}:${msgDate.getMinutes()}:${msgDate.getSeconds()} **${username}**: ${msg.body}`,
+                        {files}
+                    );
+
+                    if (files.length > 0) {
+                        for (const fileName of files) {
+                            fs.unlink("./" + fileName.name, () => { });
+                        }
+                    }
                 } catch (e) {
-                console.log("Failed to send msg to target: " + e);
+                    console.log("Failed to send msg to target: " + e);
+                }
             }
         }
     }
-}
 };
