@@ -16,6 +16,7 @@
     "discord.js": "^11.4.2",
     "escape-html": "^1.0.3",
     "express": "^4.16.4",
+    "facebook-chat-api": "^1.6.1",
     "file-downloadr": "^1.0.3",
     "hoek": "^4.2.1",
     "image-downloader": "^3.4.2",
