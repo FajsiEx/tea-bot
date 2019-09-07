@@ -100,8 +100,12 @@ module.exports.bridgingHandler = async function (msg) {
 
                 try {
                     const msgDate = new Date(parseInt(msg.timestamp));
+
+                    const msgHours = (msgDate.getHours() >= 10) ? msgDate.getHours() : "0" + msgDate.getHours();
+                    const msgMinutes = (msgDate.getMinutes() >= 10) ? msgDate.getMinutes() : "0" + msgDate.getMinutes();
+
                     await channel.send(
-                        `${msgDate.getHours()}:${msgDate.getMinutes()}:${msgDate.getSeconds()} **${username}**: ${msg.body}`,
+                        `${msgHours}:${msgMinutes} **${username}**: ${msg.body}`,
                         {files}
                     );
 
