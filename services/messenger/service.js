@@ -21,8 +21,8 @@ module.exports.init = function () {
         if (err) {
             switch (err.error) {
                 case 'login-approval':
-                    console.log("Login approving. Waiting for 1 minute.");
-                    await new Promise((resolve, reject) => { setTimeout(resolve, 1 * 60 * 1000); });
+                    console.log("Login approving. Waiting for 20 seconds. Please enter auth code via !dev:messauth <code>");
+                    await new Promise((resolve, reject) => { setTimeout(resolve, 20 * 1000); });
                     let code = require("../../commands/dev/services/messAuth").getCode();
                     err.continue(code);
                     break;
