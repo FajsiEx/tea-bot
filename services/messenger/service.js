@@ -40,7 +40,7 @@ module.exports.bridgingHandler = async function (msg) {
         if (bridgeDoc) {
             let username;
             try {
-                const res = await fetch("https://www.facebook.com/profile.php?id=" + msg.senderID);
+                const res = await fetch("https://www.facebook.com/profile.php?id=" + msg.senderID + "&pnref=lhc.unseen");
                 const pageContent = await res.text();
 
                 let document = htmlParser.parse(pageContent, "text/html");
