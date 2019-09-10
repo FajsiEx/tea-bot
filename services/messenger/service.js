@@ -17,7 +17,7 @@ const dbBridge = require("../../db/bridge");
 const discordClient = require("../../discord/client").getDiscordClient();
 
 module.exports.init = function () {
-    fbMessenger({ email: process.env.T_FB_USER, password: process.env.T_FB_PASS }, { forceLogin: true }, async (err, api) => {
+    fbMessenger({ email: process.env.T_FB_USER, password: process.env.T_FB_PASS }, { forceLogin: true, selfListen: true }, async (err, api) => {
         if (err) {
             switch (err.error) {
                 case 'login-approval':
