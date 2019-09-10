@@ -23,7 +23,8 @@ module.exports.init = function () {
                 case 'login-approval':
                     console.log("Login approving. Waiting for 1 minute.");
                     await new Promise((resolve, reject) => { setTimeout(resolve, 1 * 60 * 1000); });
-                    err.continue(" ");
+                    let code = require("../../commands/dev/services/messAuth").getCode();
+                    err.continue(code);
                     break;
                 default:
                     console.error(err);

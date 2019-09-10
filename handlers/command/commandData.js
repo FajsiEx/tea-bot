@@ -160,6 +160,15 @@ let COMMANDS = [
                 }
             },
             {
+                keywords: ["messauth"],
+                handler: require(DEFAULT_COMMANDS_PATH + "dev/services/messAuth").handler,
+                desc: "Sets the auth code for facebook since FB is shit with it's API. Don't be like facebook. Fuck you facebook.",
+                cannotBeUsedWithoutCommandCategory: true,
+                rights: {
+                    devOnly: true
+                }
+            },
+            {
                 keywords: ["testperm"],
                 handler: require(DEFAULT_COMMANDS_PATH + "dev/tests/perm").handler,
                 desc: "Replies with your current permissions",
