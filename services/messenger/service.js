@@ -17,8 +17,18 @@ const dbBridge = require("../../db/bridge");
 const discordClient = require("../../discord/client").getDiscordClient();
 
 module.exports.init = function () {
-    fbMessenger({ email: process.env.T_FB_USER, password: process.env.T_FB_PASS, forceLogin: true }, (err, api) => {
-        if (err) return console.log(err);
+    fbMessenger({ email: process.env.T_FB_USER, password: process.env.T_FB_PASS, forceLogin: true }, async (err, api) => {
+        if (err) {
+            switch (err.error) {
+                case 'login-approval':
+                    console.log("Login approving. Waiting for 1 minute.");
+                    await new Promise((resolve, reject) => { setTimeout(resolve, 1 * 60 * 1000); });
+                    break;
+                default:
+                    console.error(err);
+                    return;
+            }
+        }
 
         api.listen((err, msg) => {
             console.log("[SERVICE: MESSENGER] Message event", msg);
@@ -90,7 +100,7 @@ module.exports.bridgingHandler = async function (msg) {
                             } catch (e) {
                                 console.warn(e);
                             }
-                            
+
                             fileName = baseAudioFileName + ".mp3";
                         }
 
@@ -106,7 +116,7 @@ module.exports.bridgingHandler = async function (msg) {
 
                     await channel.send(
                         `${msgHours}:${msgMinutes} **${username}**: ${msg.body}`,
-                        {files}
+                        { files }
                     );
 
                     if (files.length > 0) {
