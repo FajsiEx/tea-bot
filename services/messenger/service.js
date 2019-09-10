@@ -57,6 +57,8 @@ module.exports.bridgingHandler = async function (msg) {
                 const res = await fetch("https://graph.facebook.com/" + msg.senderID + "?fields=id,name&access_token=" + process.env.T_FB_ACCESSTOKEN);
                 const profileData = await res.json();
 
+                console.log(profileData);
+
                 username = profileData.name;
             } catch (e) {
                 console.error("Failed to fetch userpage for fb profile: " + e);
