@@ -54,11 +54,10 @@ module.exports.bridgingHandler = async function (msg) {
         if (bridgeDoc) {
             let username;
             try {
-                const res = await fetch("https://www.facebook.com/profile.php?id=" + msg.senderID + "&pnref=lhc.unseen");
-                const pageContent = await res.text();
+                const res = await fetch("https://graph.facebook.com/" + msg.senderID + "?fields=id,name&access_token=" + process.env.T_FB_ACCESSTOKEN);
+                const profileData = await res.json();
 
-                let document = htmlParser.parse(pageContent, "text/html");
-                username = document.querySelector("#pageTitle").innerHTML.split(" | ")[0];
+                username = profileData.name;
             } catch (e) {
                 console.error("Failed to fetch userpage for fb profile: " + e);
             }
