@@ -17,18 +17,21 @@ const dbBridge = require("../../db/bridge");
 const discordClient = require("../../discord/client").getDiscordClient();
 
 module.exports.init = function () {
-    fbMessenger({ email: process.env.T_FB_USER, password: process.env.T_FB_PASS, forceLogin: true }, async (err, api) => {
+    fbMessenger({ email: process.env.T_FB_USER, password: process.env.T_FB_PASS }, { forceLogin: true }, async (err, api) => {
         if (err) {
             switch (err.error) {
                 case 'login-approval':
                     console.log("Login approving. Waiting for 1 minute.");
                     await new Promise((resolve, reject) => { setTimeout(resolve, 1 * 60 * 1000); });
+                    err.continue(" ");
                     break;
                 default:
                     console.error(err);
                     return;
             }
         }
+
+        console.log(api);
 
         api.listen((err, msg) => {
             console.log("[SERVICE: MESSENGER] Message event", msg);
