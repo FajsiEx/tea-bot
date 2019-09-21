@@ -51,7 +51,8 @@ const CONFIG = {
             "God's blessing on this wonderful code!",
             "~No Matter How I Look at It, It’s You Guys Fault I’m Crashing!~",
             "Rewrite!!!!!!!!",
-            "This rewrite has a beginning, but no end. - Infinite"
+            "This rewrite has a beginning, but no end. - Infinite",
+            "Rewriting at the Velocity of Light"
         ],
         GET: function() {
             return (this.STRINGS[Math.floor(Math.random() * 100 % this.STRINGS.length)]);
