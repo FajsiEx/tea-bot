@@ -9,7 +9,7 @@
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "19.9.11",
+            BUILD: "19.9.25",
             BUILD_STRING: "release",
         }
     },
