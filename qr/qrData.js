@@ -288,6 +288,16 @@ module.exports = [
         type: "file",
         data: "https://i.imgur.com/8UOS5zg.jpg"
     },
+    {
+        keywords: ["true"],
+        type: "file",
+        data: "https://www.onlygfx.com/wp-content/uploads/2019/02/grunge-true-false-stamp-3.png"
+    },
+    {
+        keywords: ["false"],
+        type: "file",
+        data: "https://www.onlygfx.com/wp-content/uploads/2019/02/grunge-true-false-stamp-2.png"
+    },
 
     // Aug 7th 2019
 
