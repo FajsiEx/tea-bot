@@ -114,7 +114,7 @@ module.exports = {
             }
 
             return 0;
-            //* from nuke type
+            //* range nuke type
         } else if (type == "range") {
             if (!parseInt(arg) || !parseInt(arg2)) { // If arg or arg2 is not a number
                 try {
