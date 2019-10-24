@@ -13,6 +13,7 @@ module.exports = {
 
         let type = msg.content.split(" ")[1];
         let arg = msg.content.split(" ")[2];
+        let arg2 = msg.content.split(" ")[3]; // Used only for the range type nuke
 
         //* count nuke type
         if (type == "count") {
@@ -65,6 +66,70 @@ module.exports = {
             try {
                 messages = await msg.channel.fetchMessages({
                     after: arg
+                });
+            } catch (e) {
+                try {
+                    await module.exports.responses.error.noFetchedMessages(handleData);
+                } catch (e) {
+                    throw ("Failed to send empty fetch message collection fail message: " + e);
+                }
+                return 4;
+            }
+
+            if (messages.size < 1) {
+                try {
+                    await module.exports.responses.error.noFetchedMessages(handleData);
+                } catch (e) {
+                    throw ("Failed to send empty fetch message collection fail message: " + e);
+                }
+                return 4;
+            }
+
+            if (messages.size > 99) {
+                try {
+                    await module.exports.responses.error.noFetchedMessages(handleData);
+                } catch (e) {
+                    throw ("Failed to send empty fetch message collection fail message: " + e);
+                }
+                return 5;
+            }
+
+            try {
+                await msg.channel.bulkDelete(messages);
+            } catch (e) {
+                console.log(`Failed to delete messages: ${e}`.warn);
+                module.exports.responses.error.deleteError(handleData);
+                return 3;
+            }
+
+            try { // For the edge case that happens sometimes for some reason.
+                let selectedMessage = await msg.channel.fetchMessage(arg);
+                selectedMessage.delete();
+            } catch (e) { } // It's fine.
+
+            try {
+                module.exports.responses.success.nuked(handleData, messages.size);
+            } catch (e) {
+                throw ("Failed to send success message: " + e);
+            }
+
+            return 0;
+            //* range nuke type
+        } else if (type == "range") {
+            if (!parseInt(arg) || !parseInt(arg2)) { // If arg or arg2 is not a number
+                try {
+                    await module.exports.responses.error.idIntError(handleData);
+                } catch (e) {
+                    throw ("Failed to send invalid id error message: " + e);
+                }
+                return 6;
+            }
+
+            let messages;
+            try {
+                messages = await msg.channel.fetchMessages({
+                    after: arg,
+                    before: arg2
                 });
             } catch (e) {
                 try {
