@@ -2,6 +2,9 @@ const CONFIG = require("/modules/config");
 const commandHandler = require("/handlers/command/commandHandler").handler;
 const handleDataCheck = require("/checks/handleData").check;
 const dbInt = require("/db/interface");
+const dbBridge = require("/db/bridge");
+
+let messApi;
 
 module.exports = {
     handler: async function (handleData) {
@@ -35,6 +38,20 @@ module.exports = {
             }).catch((e) => {
                 throw ("Increment message count failed: " + e);
             });
+
+            let bridgeDoc;
+            try { bridgeDoc = await dbBridge.bridges.getDocFromSource("discord", handleData.msg.channel.id); }
+            catch (e) { console.error("Could not get bridgeDoc: " + e); }
+
+            if (bridgeDoc) {
+                if (!messApi) {
+                    console.error("Mess API not ready yet!");
+                }
+            
+                messApi.sendMessage({
+                    body: handleData.msg.content
+                }, bridgeDoc.target.target_id);
+            }
         }
     },
 
@@ -44,6 +61,10 @@ module.exports = {
         })[0];
 
         return containsPrefix;
+    },
+
+    setMessApi: function(_messApi) {
+        messApi = _messApi;
     },
 
     incrementMessageCount: async function (handleData) {

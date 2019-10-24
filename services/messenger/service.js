@@ -15,7 +15,8 @@ const decode = require("urldecode");
 
 const dbBridge = require("../../db/bridge");
 const discordClient = require("../../discord/client").getDiscordClient();
-
+const messageHandler = require("../../handlers/message/messageHandler")
+;
 let messApi;
 
 module.exports.init = function () {
@@ -42,21 +43,12 @@ module.exports.init = function () {
         });
 
         messApi = api;
+        messageHandler.setMessApi(api);
     });
 };
 
 module.exports.messageEventHandler = function (msg) {
     module.exports.bridgingHandler(msg);
-};
-
-module.exports.sendMessage = async function(threadId, message) {
-    if (!messApi) {
-        console.error("Mess API not ready yet!");
-    }
-
-    messApi.sendMessage({
-        body: message
-    }, threadId);
 };
 
 module.exports.bridgingHandler = async function (msg) {
