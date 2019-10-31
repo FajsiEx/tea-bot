@@ -120,7 +120,7 @@ module.exports.bridgingHandler = async function (msg) {
                 }
 
                 try {
-                    const msgDate = new Date(parseInt(msg.timestamp));
+                    const msgDate = new Date(parseInt(msg.timestamp) + (2*60*60*1000));
 
                     const msgHours = (msgDate.getHours() >= 10) ? msgDate.getHours() : "0" + msgDate.getHours();
                     const msgMinutes = (msgDate.getMinutes() >= 10) ? msgDate.getMinutes() : "0" + msgDate.getMinutes();
