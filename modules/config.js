@@ -52,7 +52,8 @@ const CONFIG = {
             "~No Matter How I Look at It, It’s You Guys Fault I’m Crashing!~",
             "Rewrite!!!!!!!!",
             "This rewrite has a beginning, but no end. - Infinite",
-            "Rewriting at the Velocity of Light"
+            "Rewriting at the Velocity of Light",
+            "Escape the rewrites"
         ],
         GET: function() {
             return (this.STRINGS[Math.floor(Math.random() * 100 % this.STRINGS.length)]);
