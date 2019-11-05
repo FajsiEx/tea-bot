@@ -465,6 +465,25 @@ let COMMANDS = [
     },
 
     {
+        categoryName: "nsfw",
+        displayName: "NSFW commands",
+        commands: [
+            {
+                keywords: ["r34", "rule34", "kubko"],
+                desc: "Displays random image from r34 with selected tags",
+                nsfw: true,
+                usage: [
+                    "[tag1] [tag2]",
+                ],
+                examples: [
+                    "shrek"
+                ],
+                handler: require(DEFAULT_COMMANDS_PATH + "nsfw/r34").handler
+            }
+        ]
+    },
+
+    {
         categoryName: "inspbot",
         displayName: "InspiroBot commands",
         commands: [

@@ -15,6 +15,7 @@ const dbBridge = require("/db/bridge");
 const permChecker = require("/modules/permChecker");
 const restrictionChecker = require("/modules/restrictionChecker");
 const outdent = require("outdent");
+const settingsInterface = require("../../settings/settingsInterface");
 
 const handleDataCheck = require("/checks/handleData").check;
 
@@ -174,6 +175,15 @@ module.exports = {
                 }
                 return 20;
             }
+
+            console.log(requestedCommand);
+            
+            if (requestedCommand.nsfw) {
+                if (! await settingsInterface.get(msg.guild.id, "commands.nsfw.allowed")) {
+                    module.exports.responses.nsfwNotAllowed(handleData);
+                    return 30;
+                }
+            }
         }
 
         msg.channel.startTyping();
@@ -234,6 +244,24 @@ module.exports = {
                 }
         
                 return 0;
+            }
+        },
+
+        nsfwNotAllowed: async function (handleData) {
+            try {
+                await handleData.msg.channel.send({
+                    "embed": {
+                        "title": "NSFW is not allowed on this server",
+                        "color": CONFIG.EMBED.COLORS.WARN,
+                        "description": outdent`
+                            Contact the server admin to allow NSFW commands on this server.
+                            Or you know... you can just use them in DMs -wink wink-
+                        `,
+                        "footer": CONFIG.EMBED.FOOTER(handleData)
+                    }
+                });
+            } catch (e) {
+                throw ("Failed to send nsfw allown't message: " + e);
             }
         },
 
