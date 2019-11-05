@@ -9,7 +9,7 @@
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "19.11.5",
+            BUILD: "19.11.5a",
             BUILD_STRING: "release",
         }
     },
@@ -53,7 +53,8 @@ const CONFIG = {
             "Rewrite!!!!!!!!",
             "This rewrite has a beginning, but no end. - Infinite",
             "Rewriting at the Velocity of Light",
-            "Escape the rewrites"
+            "『XX:me - Escape』 the rewrites",
+            "Episode 3: I'm Not Afraid of Rewriting Anymore"
         ],
         GET: function() {
             return (this.STRINGS[Math.floor(Math.random() * 100 % this.STRINGS.length)]);

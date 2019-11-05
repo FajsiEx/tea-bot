@@ -17,9 +17,23 @@ module.exports = [
         defaultValue: true,
         type: "bool"
     },
+
+    
     {
         name: "commands.nsfw.allowed",
         perm: "admin",
+        defaultValue: false,
+        type: "bool"
+    },
+    {
+        name: "commands.nsfw.allow_timed",
+        perm: "admin",
+        defaultValue: false,
+        type: "bool"
+    },
+    {
+        name: "commands.nsfw.allow_dev_to_be_a_cunt_of_a_very_big_proportions",
+        perm: "dev",
         defaultValue: false,
         type: "bool"
     },
