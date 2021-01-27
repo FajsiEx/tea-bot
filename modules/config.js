@@ -9,13 +9,13 @@
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "19.11.5a",
+            BUILD: "20.12.21",
             BUILD_STRING: "release",
         }
     },
 
     DISCORD: {
-        PREFIXES: ["niektochcelzmenitskratkunacommandytaktumatenovuskratkulebosomkuntauzsanestaram!"]
+        PREFIXES: ["!"]
     },
 
     EMBED: {

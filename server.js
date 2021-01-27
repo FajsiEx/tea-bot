@@ -15,16 +15,16 @@ console.log("[BOOT] Modules loaded".success);
 
 //CONFIG.SENTRY.IS = require("./sentry/init").init();
 
-console.log("[BOOT] Sentry initialized".success);
+//console.log("[BOOT] Sentry initialized".success);
 
 require("./discord/client").init();
 const dClient = require("./discord/client").getDiscordClient();
 
-require("./services/messenger/service").init();
+//require("./services/messenger/service").init();
 
 console.log("[BOOT] Initialized Discord client".success);
 
-require("./api/server").init(dClient);
+//require("./api/server").init(dClient);
 require("./modules/stats").init(dClient);
 
 console.log("[BOOT] Initialized express API server".success);
