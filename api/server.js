@@ -26,8 +26,8 @@ module.exports = {
 
         let port = process.env.PORT || 3210;
 
-        server.listen(port, function () {
-            console.log(("[API_SERVER] Listening. Port [" + port + "]").success);
-        });
+        //server.listen(port, function () {
+        //    console.log(("[API_SERVER] Listening. Port [" + port + "]").success);
+        //});
     }
 };
