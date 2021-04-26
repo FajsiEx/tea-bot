@@ -16,7 +16,7 @@ module.exports = {
             return 2; // 2 = ignored bot message
         }
 
-        if (msg.author === '514489259290263557') {
+        if (msg.author === '342227744513327107') {
             await message.react('🤮');
             await message.react('💩');
             await message.react(':regional_indicator_h:');
