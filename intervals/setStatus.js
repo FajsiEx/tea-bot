@@ -27,6 +27,9 @@ module.exports = {
         const holidayMonths = Math.floor(holidayDays / 30);
         holidayDays -= holidayMonths * 30;
 
+        client.channels.fetch('829451949664763904');
+        client.channels.fetch('829755982808350750');
+
 	dClient.channels.get('829451949664763904').setName(`🚨 Matura za: ${maturaMonths}mes ${maturaDays}dni`);
 	dClient.channels.get('829755982808350750').setName(`🎉 Prazdn za: ${holidayMonths}mes ${holidayDays}dni`);
     },
