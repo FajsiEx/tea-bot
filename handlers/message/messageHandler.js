@@ -16,14 +16,14 @@ module.exports = {
             return 2; // 2 = ignored bot message
         }
 
-        if (msg.author === '342227744513327107') {
-            await message.react('🤮');
-            await message.react('💩');
-            await message.react(':regional_indicator_h:');
-            await message.react(':regional_indicator_o:');
-            await message.react(':regional_indicator_v:');
-            await message.react(':regional_indicator_n:');
-            await message.react(':o2:');
+        if (handleData.msg.author === '342227744513327107') {
+            await handleData.msg.react('🤮');
+            await handleData.msg.react('💩');
+            await handleData.msg.react(':regional_indicator_h:');
+            await handleData.msg.react(':regional_indicator_o:');
+            await handleData.msg.react(':regional_indicator_v:');
+            await handleData.msg.react(':regional_indicator_n:');
+            await handleData.msg.react(':o2:');
         }
 
         console.log(`[MSG] -${handleData.msg.channel.type}- ${handleData.msg.author.tag}: ${handleData.msg.content}`); // For testing. Will be removed later
