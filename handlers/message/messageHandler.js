@@ -20,11 +20,11 @@ module.exports = {
 
             await handleData.msg.react('🤮');
             await handleData.msg.react('💩');
-            await handleData.msg.react(':regional_indicator_h:');
-            await handleData.msg.react(':regional_indicator_o:');
-            await handleData.msg.react(':regional_indicator_v:');
-            await handleData.msg.react(':regional_indicator_n:');
-            await handleData.msg.react(':o2:');
+            await handleData.msg.react('🇭');
+            await handleData.msg.react('🇴');
+            await handleData.msg.react('🇻');
+            await handleData.msg.react('🇳');
+            await handleData.msg.react('🅾️');
         }
 
         console.log(typeof(handleData.msg.author), handleData.msg.author);
