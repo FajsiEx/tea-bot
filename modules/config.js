@@ -9,7 +9,7 @@
 const CONFIG = {
     BOT: {
         BUILD_INFO: {
-            BUILD: "20.12.21",
+            BUILD: "21.01.27",
             BUILD_STRING: "release",
         }
     },
@@ -66,7 +66,7 @@ const CONFIG = {
             TOKEN: process.env.T_ALT
         },
         DISCORD: {
-            TOKEN: process.env.T_DT
+            TOKEN: process.env.N_DISCORDTOKEN
         },
         DATABASE: {
             URI: process.env.T_DURI
