@@ -66,7 +66,7 @@ const CONFIG = {
             TOKEN: process.env.T_ALT
         },
         DISCORD: {
-            TOKEN: process.env.N_DISCORDTOKEN
+            TOKEN: process.env.T_DT
         },
         DATABASE: {
             URI: process.env.T_DURI

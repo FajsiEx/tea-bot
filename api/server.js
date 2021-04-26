@@ -11,26 +11,23 @@ let server;
 
 module.exports = {
     init: function (dClient) {
+        app = express();
 
-        
+        app.use(bodyParser.json()); // to support JSON-encoded bodies
+        app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
+            extended: true
+        }));
 
-        // app = express();
+        app.use(cors());
 
-        // app.use(bodyParser.json()); // to support JSON-encoded bodies
-        // app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
-        //     extended: true
-        // }));
+        server = http.Server(app);
 
-        // app.use(cors());
+        routes.init(app, dClient);
 
-        // server = http.Server(app);
+        let port = process.env.PORT || 3210;
 
-        // routes.init(app, dClient);
-
-        // let port = process.env.PORT || 3210;
-
-        // //server.listen(port, function () {
-        // //    console.log(("[API_SERVER] Listening. Port [" + port + "]").success);
-        // //});
+        //server.listen(port, function () {
+        //    console.log(("[API_SERVER] Listening. Port [" + port + "]").success);
+        //});
     }
 };
