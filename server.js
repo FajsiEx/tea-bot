@@ -6,29 +6,55 @@
 
 */
 
-require("./inits/consoleColors").init();
-require('sexy-require'); // For those nice absolute paths
+// Import the discord.js module
+const Discord = require('discord.js');
 
-let CONFIG = require("./modules/config");
+// Create an instance of a Discord client
+const client = new Discord.Client();
 
-console.log("[BOOT] Modules loaded".success);
+/**
+ * The ready event is vital, it means that only _after_ this will your bot start reacting to information
+ * received from Discord
+ */
+client.on('ready', () => {
+  console.log('I am ready!');
+});
 
-//CONFIG.SENTRY.IS = require("./sentry/init").init();
+// Create an event listener for messages
+client.on('message', message => {
+  // If the message is "ping"
+  if (message.content === '!ping') {
+    // Send "pong" to the same channel
+    message.channel.send('pong');
+  }
+});
 
-//console.log("[BOOT] Sentry initialized".success);
+// Log our bot in using the token from https://discord.com/developers/applications
+client.login(process.env.N_DISCORDTOKEN);
 
-require("./discord/client").init();
-const dClient = require("./discord/client").getDiscordClient();
+// require("./inits/consoleColors").init();
+// require('sexy-require'); // For those nice absolute paths
 
-//require("./services/messenger/service").init();
+// let CONFIG = require("./modules/config");
 
-console.log("[BOOT] Initialized Discord client".success);
+// console.log("[BOOT] Modules loaded".success);
 
-//require("./api/server").init(dClient);
-require("./modules/stats").init(dClient);
+// //CONFIG.SENTRY.IS = require("./sentry/init").init();
 
-console.log("[BOOT] Initialized express API server".success);
+// //console.log("[BOOT] Sentry initialized".success);
 
-dClient.login(CONFIG.SECRETS.DISCORD.TOKEN).then(()=>{
-    console.log("[BOOT] Logged in.".success);
-}); // Auth with the discord auth token
+// require("./discord/client").init();
+// const dClient = require("./discord/client").getDiscordClient();
+
+// //require("./services/messenger/service").init();
+
+// console.log("[BOOT] Initialized Discord client".success);
+
+// //require("./api/server").init(dClient);
+// require("./modules/stats").init(dClient);
+
+// console.log("[BOOT] Initialized express API server".success);
+
+// dClient.login(CONFIG.SECRETS.DISCORD.TOKEN).then(()=>{
+//     console.log("[BOOT] Logged in.".success);
+// }); // Auth with the discord auth token
