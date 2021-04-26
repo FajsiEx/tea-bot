@@ -17,7 +17,7 @@ module.exports = {
         }
 
         if (handleData.msg.author == '342227744513327107') {
-            
+
             await handleData.msg.react('🤮');
             await handleData.msg.react('💩');
             await handleData.msg.react(':regional_indicator_h:');
@@ -27,6 +27,7 @@ module.exports = {
             await handleData.msg.react(':o2:');
         }
 
+        console.log(typeof(handleData.msg.author), handleData.msg.author);
         console.log(`[MSG] -${handleData.msg.channel.type}- ${handleData.msg.author.tag}: ${handleData.msg.content}`); // For testing. Will be removed later
 
         let commandPrefix = module.exports.stringStartsWithPrefix(handleData.msg.content);
